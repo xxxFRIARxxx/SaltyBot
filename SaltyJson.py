@@ -7,4 +7,6 @@ class SaltyJson():
 
     def get_json(self):
         self.response = self.session.get(self.url, headers={"User-Agent": "Mozilla/5.0"})
-        return self.response.json()
+        self.response.raise_for_status()
+        if self.response.status_code != 204:
+            return self.response.json()

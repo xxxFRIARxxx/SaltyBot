@@ -51,16 +51,22 @@ class SaltyJsonParser():
         else:
             return False
     
-    def is_tourney(self): # TODO:  Work on this to get the math right for number of remaining fighters.
+    def is_tourney(self):
         reverse_split = self.json_dict["remaining"].rsplit(' ', 1)[-1]
         remaining_split = self.json_dict["remaining"].split(' ')[0]
-        if (reverse_split == "bracket!"):
-            return 1
-        elif (remaining_split == "FINAL"):
-            return 2       
+        if (reverse_split == "bracket!") or (remaining_split == "FINAL"):
+            return 1       
         else:
             return 0
         
+    def get_tourney_remaining(self):
+        if self.get_matchesremaining() != 1:
+            self.tourney_remaining = self.get_matchesremaining() - 1
+        elif self.get_matchesremaining() == 1:
+            self.tourney_remaining = self.get_matchesremaining()
+        else:
+            self.tourney_remaining = 0
+        return self.tourney_remaining 
 
     def get_matchesremaining(self):
         remaining_value = self.json_dict["remaining"].split(' ', 1)[0]
@@ -86,9 +92,9 @@ class SaltyJsonParser():
             gameMode = 'Exhibition'
             print(f"Currently in {gameMode} with {self.get_matchesremaining()} matches remaining.  Game state is {self.get_gamestate()}.")
             return gameMode
-        elif (self.is_tourney() == 1) or (self.is_tourney() == 2):
+        elif (self.is_tourney() == 1):
             gameMode = 'Tournament'
-            print(f"Currently in {gameMode} with {self.get_matchesremaining() - 1} matches remaining.  Game state is {self.get_gamestate()}.")
+            print(f"Currently in {gameMode} with {self.get_tourney_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")
             return gameMode
         elif (self.is_exhib() is False) and (self.is_tourney() == 0):
             gameMode = 'Matchmaking'

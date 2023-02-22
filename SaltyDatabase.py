@@ -17,40 +17,40 @@ class SaltyRecorder():
                     p1streak INT,
                     p1mu FLOAT,
                     p1sigma FLOAT,
+                    p1tier INT,
+                    p1tourney INT,
                     p2name TEXT,
                     p2odds FLOAT,
                     p2win INT,
                     p2streak INT,
                     p2mu FLOAT,
                     p2sigma FLOAT,
+                    p2tier INT,
+                    p2tourney INT,
                     matchLength INT,
-                    betOutcome INT,
-                    tier INT,
-                    tourneyFlag INT
+                    betOutcome INT
                 );
             """)
-        
-        
-        def record_match(self, my_parser: SaltyJsonParser, p1winstreak, p2winstreak, p1mu, p1sigma, p2mu, p2sigma, matchTime: int, betOutcome, game_tier):  
-            sql = 'INSERT INTO CHARDB (p1name, p1odds, p1win, p1streak, p1mu, p1sigma, p2name, p2odds, p2win, p2streak, p2mu, p2sigma, matchLength, betOutcome, tier, tourneyFlag) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+               
+        def record_match(self, p1name, p1odds, p1winstatus, p2name, p2odds, p2winstatus, adj_p1winstreak, adj_p2winstreak, adj_p1_tier, adj_p2_tier, p1mu, p1sigma, p2mu, p2sigma, matchTime, betOutcome, is_tourney):  
+            sql = 'INSERT INTO CHARDB (p1name, p1odds, p1win, p1streak, p1mu, p1sigma, p1tier, p1tourney, p2name, p2odds, p2win, p2streak, p2mu, p2sigma, p2tier, p2tourney, matchLength, betOutcome) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             data = [
-            (my_parser.get_p1name(), my_parser.get_p1odds(), my_parser.set_p1winstatus(), self.adj_p1winstreak, p1mu, p1sigma, my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), self.adj_p2winstreak, p2mu, p2sigma, matchTime, betOutcome, game_tier, my_parser.is_tourney())
+            (p1name, p1odds, p1winstatus, adj_p1winstreak, p1mu, p1sigma, adj_p1_tier, is_tourney, p2name, p2odds, p2winstatus, adj_p2winstreak, p2mu, p2sigma, adj_p2_tier, is_tourney, matchTime, betOutcome,)
             ]
             
-            if all(variables is not None for variables in [self.adj_p1winstreak, self.adj_p2winstreak, game_tier]): # If both player-winstreaks and tier come back successfully, record the match.
+            if all(variables is not None for variables in [adj_p1winstreak, adj_p2winstreak, adj_p1_tier, adj_p2_tier]): # If both player-winstreaks and tier come back successfully, record the match.
                 try:
                     with self.con:
                         self.con.executemany(sql, data)
                         self.con.commit()
                         print(str(data) + "\nThe record above has been added to the DB.")
-                    # self.print_db()
-                    self.make_backup()
+                        self.make_backup()
                 except sqlite3.IntegrityError:
                     print("This match already exists in the DB.")
+                self.num_from_db()                   
             else:
                 print("Either winstreaks or tier didn't retrieve.  This match wasn't recorded.")
-                
-        
+                      
         def update_match(self):  # Updates a match in the table. 
             with self.con:
                 self.con.execute("UPDATE CHARDB set p1win = 'BONGLOAD' WHERE p1win = 'locked'")
@@ -67,6 +67,12 @@ class SaltyRecorder():
                 for row in data:
                     print(row)
 
+        def num_from_db(self):  # Selects and prints out number of records in DB.
+            with self.con:
+                data = self.con.execute(f"""SELECT max(id) FROM CHARDB;""")
+                most_recent = data.fetchall()
+            print(f"There are now {most_recent[0][0]} records in the database.")            
+
         def make_backup(self):
             self.match_count += 1
             if self.match_count % 10 == 0:
@@ -75,7 +81,7 @@ class SaltyRecorder():
                 print("Successful DB Backup!")
               
         def get_ratings_from_DB(self, player_search):  # Gets the Mu and Sigma from the latest match, if a match exists.  # NOTE:  Can return None. (None = Default Ratings will be assigned from Bettor.)
-            if self.get_most_recent(player_search) == []:
+            if self.get_most_recent(player_search) == None:
                 player_mu = None
                 player_sigma = None
             elif self.get_most_recent(player_search)[0]['p1name'] == player_search:
@@ -99,42 +105,6 @@ class SaltyRecorder():
             
         def get_player_matches(self, player_search):  # Gathers ALL games of a selected player from the DB .  
             with self.con:
-                data = self.con.execute(f"""SELECT * FROM CHARDB WHERE p1name = ("{player_search}") OR p2name = ("{player_search}");""")  # TODO: THIS is where we introduce '' to the player names into the DB, B/C it needs them, AND the formatting of " to input to the DB.
+                data = self.con.execute(f"""SELECT * FROM CHARDB WHERE p1name = ("{player_search}") OR p2name = ("{player_search}");""")
                 all_games= data.fetchall()  # Replace the single quotes, and double quotes, with escaped quotes:  ex:  player_search.replace('"', '\"')}")
                 return all_games # Returns either an empty list, or a list of tuples of all matches, with each tuple containing 1 match.
-
-        def adjust_winstreak(self, my_parser: SaltyJsonParser, my_socket: SaltySocket):  # TODO: put this in SaltySocket instead of SaltyRecorder # TODO: Return the values of adj_winstreaks  TODO: get rid of my parser and my socket parameters (too general) to winstreaks and winstatus.
-            self.adj_p1winstreak = my_socket.p1winstreak
-            self.adj_p2winstreak = my_socket.p2winstreak
-            if (self.adj_p1winstreak == None) or (self.adj_p2winstreak == None):
-                pass
-            elif (self.adj_p1winstreak < 0) and (my_parser.set_p1winstatus() == 1):
-                self.adj_p1winstreak = 1
-            elif (self.adj_p1winstreak < 0) and (my_parser.set_p1winstatus() == 0):
-                self.adj_p1winstreak = (self.adj_p1winstreak - 1)           
-            elif (self.adj_p1winstreak > 0) and (my_parser.set_p1winstatus() == 1):
-                self.adj_p1winstreak = (self.adj_p1winstreak + 1) 
-            elif (self.adj_p1winstreak > 0) and (my_parser.set_p1winstatus() == 0):
-                self.adj_p1winstreak = -1
-            else:
-                print("This prints if P1 winstreak hasn't been adjusted for some reason.")
-        
-            if (self.adj_p1winstreak == None) or (self.adj_p2winstreak == None):
-                pass
-            elif (self.adj_p2winstreak < 0) and (my_parser.set_p2winstatus() == 1):
-                self.adj_p2winstreak = 1
-            elif (self.adj_p2winstreak < 0) and (my_parser.set_p2winstatus() == 0):
-                self.adj_p2winstreak = (self.adj_p2winstreak - 1)       
-            elif (self.adj_p2winstreak > 0) and (my_parser.set_p2winstatus() == 1):
-                self.adj_p2winstreak = (self.adj_p2winstreak + 1) 
-            elif (self.adj_p2winstreak > 0) and (my_parser.set_p2winstatus() == 0):
-                self.adj_p2winstreak = -1
-            else:
-                print("This prints if P2 winstreak hasn't been adjusted for some reason.")
-
-# TODO APOHSTROPHIES -  KINDA FIXED, BUT NOT? :
-                # (93, 'Strike freedom nitori', 1.8, 0, -4, 20.604167980000835, 7.171475587326195, 'Toki 2', 1.0, 1, 1, 29.39583201999916, 7.171475587326195, 309, 1)
-                # (94, "Black_k'", 2.2, 0, -1, 20.604167980000835, 7.171475587326195, 'B.jenet motw', 1.0, 1, 1, 29.39583201999916, 7.171475587326195, 115, 1)
-# TODO: Apohstrophies in player names break recorder (get_player_matches): (Kinda fixed using " instead of ' surrounding function call for pl/p2)
-                #  see:  https://stackoverflow.com/questions/45575608/python-sqlite-operationalerror-near-s-syntax-error
-                #  Can I just use triple quotes in    recorder.get_player_matches  -> player_formatted = f"\'{player_search}\'"   - No...no I may not, lol.

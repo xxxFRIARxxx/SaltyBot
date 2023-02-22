@@ -30,7 +30,11 @@ class SaltySocket():
             self.socket.send(constructor_message.encode('utf-8'))  
         
     def read_message(self):
-        message = self.socket.recv(4096).decode('utf-8')
+        try:
+            message = self.socket.recv(4096).decode('utf-8')
+        except ConnectionAbortedError:
+            time.sleep(3)
+            self.open_socket()
         self.is_ping(message)
         return message
 
@@ -107,26 +111,26 @@ class SaltySocket():
         self.adj_p2winstreak = self.p2winstreak
         if (self.adj_p1winstreak == None) or (self.adj_p2winstreak == None):
             pass
-        elif (self.adj_p1winstreak < 0) and (p1win_status == 1):
+        elif (self.adj_p1winstreak <= 0) and (p1win_status == 1):
             self.adj_p1winstreak = 1
-        elif (self.adj_p1winstreak < 0) and (p1win_status == 0):
+        elif (self.adj_p1winstreak <= 0) and (p1win_status == 0):
             self.adj_p1winstreak = (self.adj_p1winstreak - 1)  
-        elif (self.adj_p1winstreak > 0) and (p1win_status == 1):
+        elif (self.adj_p1winstreak >= 0) and (p1win_status == 1):
             self.adj_p1winstreak = (self.adj_p1winstreak + 1) 
-        elif (self.adj_p1winstreak > 0) and (p1win_status == 0):
+        elif (self.adj_p1winstreak >= 0) and (p1win_status == 0):
             self.adj_p1winstreak = -1
         else:
             print("This prints if P1 winstreak hasn't been adjusted for some reason.")
 
         if (self.adj_p1winstreak == None) or (self.adj_p2winstreak == None):
             pass
-        elif (self.adj_p2winstreak < 0) and (p2win_status == 1):
+        elif (self.adj_p2winstreak <= 0) and (p2win_status == 1):
             self.adj_p2winstreak = 1
-        elif (self.adj_p2winstreak < 0) and (p2win_status == 0):
+        elif (self.adj_p2winstreak <= 0) and (p2win_status == 0):
             self.adj_p2winstreak = (self.adj_p2winstreak - 1)       
-        elif (self.adj_p2winstreak > 0) and (p2win_status == 1):
+        elif (self.adj_p2winstreak >= 0) and (p2win_status == 1):
             self.adj_p2winstreak = (self.adj_p2winstreak + 1) 
-        elif (self.adj_p2winstreak > 0) and (p2win_status == 0):
+        elif (self.adj_p2winstreak >= 0) and (p2win_status == 0):
             self.adj_p2winstreak = -1
         else:
             print("This prints if P2 winstreak hasn't been adjusted for some reason.")

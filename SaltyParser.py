@@ -90,7 +90,7 @@ class SaltyJsonParser():
     def get_gameMode(self):
         if self.is_exhib() is True:
             gameMode = 'Exhibition'
-            print(f"Currently in {gameMode} with {self.get_matchesremaining()} matches remaining.  Game state is {self.get_gamestate()}.")
+            print(f"Currently in {gameMode} with {self.get_matchesremaining()} matches remaining.  No bets are placed and nothing is recorded.  Game state is {self.get_gamestate()}.  ")
             return gameMode
         elif (self.is_tourney() == 1):
             gameMode = 'Tournament'

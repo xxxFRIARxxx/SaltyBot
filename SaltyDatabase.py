@@ -44,11 +44,10 @@ class SaltyRecorder():
                     with self.con:
                         self.con.executemany(sql, data)
                         self.con.commit()
-                        print(str(data) + "\nThe record above has been added to the DB.")
+                        print(str(data) + f"\nThe record above has been added to the DB. There are now {self.num_from_db()} records in the database.")
                         self.make_backup()
                 except sqlite3.IntegrityError:
-                    print("This match already exists in the DB.")
-                self.num_from_db()                   
+                    print("This match already exists in the DB.")               
             else:
                 print("Either winstreaks or tier didn't retrieve.  This match wasn't recorded.")
                       
@@ -72,7 +71,7 @@ class SaltyRecorder():
             with self.con:
                 data = self.con.execute(f"""SELECT max(id) FROM SBMATCHES;""")
                 most_recent = data.fetchall()
-            print(f"There are now {most_recent[0][0]} records in the database.")            
+            return most_recent[0][0]          
 
         def make_backup(self):
             self.match_count += 1

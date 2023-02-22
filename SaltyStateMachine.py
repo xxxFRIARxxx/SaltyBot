@@ -33,6 +33,8 @@ first_run = True
 previousGameMode = None
 gameStateLies = False
 previousGameState = None
+p1DB_ratings = None
+p2DB_ratings = None
 
 while True:
     the_json = my_thing.get_json()
@@ -57,7 +59,7 @@ while True:
             if (new_match == 0):
                 first_run = False
                 bettor.set_balance(balance) # Sets and displays current balance of your account.
-                p1DB_ratings = bettor.get_player_rating(recorder.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are. # TODO: Put these variables in more global scope (up above before the while loop)
+                p1DB_ratings = bettor.get_player_rating(recorder.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 p2DB_ratings = bettor.get_player_rating(recorder.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 new_match = 1
                 my_socket.find_winstreak = True
@@ -83,8 +85,71 @@ while True:
                     my_socket.adjust_tier()
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), gameState)
                     recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, gameTime.snapshot, bettor.outcome, my_parser.is_tourney())
-    else:
-        print ("In Exhibitions.  Nothing is recorded, and no bets are placed.")
+
+# TODO: WINSTREAKS CAN BE 0!  Maybe fixed?  Make sure to check this when a streak comes back 0.
+
+# TODO: EXPLOSION:
+                # Traceback (most recent call last):
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+                #     httplib_response = self._make_request(
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 449, in _make_request
+                #     six.raise_from(e, None)
+                #   File "<string>", line 3, in raise_from
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 444, in _make_request
+                #     httplib_response = conn.getresponse()
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\http\client.py", line 1374, in getresponse
+                #     response.begin()
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\http\client.py", line 318, in begin
+                #     version, status, reason = self._read_status()
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\http\client.py", line 287, in _read_status
+                #     raise RemoteDisconnected("Remote end closed connection without"
+                # http.client.RemoteDisconnected: Remote end closed connection without response
+
+                # During handling of the above exception, another exception occurred:
+
+                # Traceback (most recent call last):
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\adapters.py", line 489, in send
+                #     resp = conn.urlopen(
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+                #     retries = retries.increment(
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\util\retry.py", line 550, in increment
+                #     raise six.reraise(type(error), error, _stacktrace)
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\packages\six.py", line 769, in reraise
+                #     raise value.with_traceback(tb)
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+                #     httplib_response = self._make_request(
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 449, in _make_request
+                #     six.raise_from(e, None)
+                #   File "<string>", line 3, in raise_from
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 444, in _make_request
+                #     httplib_response = conn.getresponse()
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\http\client.py", line 1374, in getresponse
+                #     response.begin()
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\http\client.py", line 318, in begin
+                #     version, status, reason = self._read_status()
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\http\client.py", line 287, in _read_status
+                #     raise RemoteDisconnected("Remote end closed connection without"
+                # urllib3.exceptions.ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
+                # During handling of the above exception, another exception occurred:
+
+                # Traceback (most recent call last):
+                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 67, in <module>
+                #     interactor.place_bet_on_website(bettor.format_bet(gameMode, my_parser.get_p1name(), my_parser.get_p2name())) # Decide bet, and place bet
+                #   File "e:\Python Scripts\SaltyBot\SaltyWebInteractant.py", line 56, in place_bet_on_website
+                #     self.session.post(URL_BET, cookies = cookies, headers = headers, data = bet_data)
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\sessions.py", line 635, in post
+                #     return self.request("POST", url, data=data, json=json, **kwargs)
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\sessions.py", line 587, in request
+                #     resp = self.send(prep, **send_kwargs)
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\sessions.py", line 701, in send
+                #     r = adapter.send(request, **kwargs)
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\adapters.py", line 547, in send
+                #     raise ConnectionError(err, request=request)
+                # requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
+
+
 
 # TODO: NEW EXPLOSION:
                 # Traceback (most recent call last):
@@ -138,6 +203,24 @@ while True:
                 #     raise SSLError(e, request=request)
                 # requests.exceptions.SSLError: HTTPSConnectionPool(host='www.saltybet.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failur failure (_ssl.c:997)')))
 
+# TODO: END OF GAME MODE STILL NOT RECORDING:
+                # Currently in Tournament with 0 matches remaining.  Game state is locked.
+                # Currently in Tournament with 0 matches remaining.  Game state is locked.
+                # Currently in Exhibition with 25 matches remaining.  Game state is 1.
+                # In Exhibitions, nothing is recorded, and no bets are placed.
+                # Currently in Exhibition with 25 matches remaining.  Game state is 1.
+                # In Exhibitions, nothing is recorded, and no bets are placed.
+                # Currently in Exhibition with 25 matches remaining.  Game state is 1.
+
+# TODO: Last match of exhib records as MM:
+                # Nothing should be recorded in Exhibitions.
+                # Currently in Exhibition with 2 matches remaining.  Game state is locked.
+                # Nothing should be recorded in Exhibitions.
+                # Currently in Matchmaking with 100 matches remaining.  Game state is 2.
+                # Player 2 wins!
+                # Player 1's new rating is trueskill.Rating(mu=33.506, sigma=4.889).  Player 2's new rating is trueskill.Rating(mu=38.643, sigma=4.906)
+                # You lost the bet.
+                # [('Beavis', 1.0, 0, -1, 33.50605031071917, 4.888723200212475, 'Butt-head', 1.6, 1, 4, 38.64297567161436, 4.906324626458675, 3982.0, 0, 0)]
 
 # TODO: Last match looks like:
                 # Currently in Tournament with 0 matches remaining.  Game state is locked.
@@ -151,83 +234,11 @@ while True:
                 # Nothing should be recorded in Exhibitions.
                 # Currently in Exhibition with 25 matches remaining.  Game state is 1.
 
-
-# TODO: Last match of exhib records as MM:
-                # Nothing should be recorded in Exhibitions.
-                # Currently in Exhibition with 2 matches remaining.  Game state is locked.
-                # Nothing should be recorded in Exhibitions.
-                # Currently in Matchmaking with 100 matches remaining.  Game state is 2.
-                # Player 2 wins!
-                # Player 1's new rating is trueskill.Rating(mu=33.506, sigma=4.889).  Player 2's new rating is trueskill.Rating(mu=38.643, sigma=4.906)
-                # You lost the bet.
-                # [('Beavis', 1.0, 0, -1, 33.50605031071917, 4.888723200212475, 'Butt-head', 1.6, 1, 4, 38.64297567161436, 4.906324626458675, 3982.0, 0, 0)]
-
-# TODO  HANG - 0 MATCHES REMAINING (SB BROKE)
-                # Currently in Matchmaking with 0 matches remaining.  Game state is open.
-                # Currently in Matchmaking with 0 matches remaining.  Game state is open.
-                # Currently in Matchmaking with 0 matches remaining.  Game state is open.
-
-# TODO: EXPLOSION:
-                # Traceback (most recent call last):
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 971, in json
-                #     return complexjson.loads(self.text, **kwargs)
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\__init__.py", line 346, in loads
-                #     return _default_decoder.decode(s)
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 337, in decode
-                #     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 355, in raw_decode
-                #     raise JSONDecodeError("Expecting value", s, err.value) from None
-                # json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-
-                # During handling of the above exception, another exception occurred:
-
-                # Traceback (most recent call last):
-                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 35, in <module>
-                #     the_json = my_thing.get_json()
-                #   File "e:\Python Scripts\SaltyBot\SaltyJson.py", line 10, in get_json
-                #     return self.response.json()
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 975, in json
-                #     raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
-                # requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-
-# TODO: EXPLOSION #2:
-
-
-                # Traceback (most recent call last):
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 971, in json
-                #     return complexjson.loads(self.text, **kwargs)
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\__init__.py", line 346, in loads
-                #     return _default_decoder.decode(s)
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 337, in decode
-                #     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 355, in raw_decode
-                #     raise JSONDecodeError("Expecting value", s, err.value) from None
-                # json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-
-                # During handling of the above exception, another exception occurred:
-
-                # Traceback (most recent call last):
-                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 38, in <module>
-                #     the_json = my_thing.get_json()
-                #   File "e:\Python Scripts\SaltyBot\SaltyJson.py", line 10, in get_json
-                #     return self.response.json()
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 975, in json
-                #     raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
-                # requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-
-# TODO: END OF GAME MODE STILL NOT RECORDING:
-                # Currently in Tournament with 0 matches remaining.  Game state is locked.
-                # Currently in Tournament with 0 matches remaining.  Game state is locked.
-                # Currently in Exhibition with 25 matches remaining.  Game state is 1.
-                # In Exhibitions, nothing is recorded, and no bets are placed.
-                # Currently in Exhibition with 25 matches remaining.  Game state is 1.
-                # In Exhibitions, nothing is recorded, and no bets are placed.
-                # Currently in Exhibition with 25 matches remaining.  Game state is 1.
-
 # NOTE: GENERAL QUESTIONS / THINGS.
+# TODO: Make a winstreak-difference function?  (From where their winstreak was before the match, to where it is after the match: the difference)
 # TODO: Any way to make it so that for any general explosions, to kill and restart the process?
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for matchTime:
 #       SaltyBet: Exhibitions will start shortly. Thanks for watching!
-# TODO: Eventually make it so we can read twitch chat continously at the same time my program runs
+# TODO: Eventually make it so we can read twitch chat continously at the same time my program runs (C: please god help me)
 # TODO: Make a requirements and a readme?
         

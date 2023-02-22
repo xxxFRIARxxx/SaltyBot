@@ -39,7 +39,7 @@ while True:
     my_parser = SaltyJsonParser(the_json)
     balance = interactor.get_balance()
     
-    gameMode = my_parser.get_gameMode()
+    gameMode = my_parser.get_gameMode()  # TODO:  Is this wrong?  The below 2 blocks.
     if (gameMode != previousGameMode):
         gameStateLies = True
     previousGameMode = gameMode
@@ -82,7 +82,7 @@ while True:
                     my_socket.adjust_winstreak(my_parser.set_p1winstatus(), my_parser.set_p2winstatus())
                     my_socket.adjust_tier()
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), gameState)
-                    recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, gameTime.snapshot, bettor.outcome, my_socket.tier_res_conv, my_parser.is_tourney())
+                    recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, gameTime.snapshot, bettor.outcome, my_parser.is_tourney())
     else:
         print ("In Exhibitions.  Nothing is recorded, and no bets are placed.")
 

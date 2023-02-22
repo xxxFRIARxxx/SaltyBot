@@ -208,10 +208,3 @@ class SaltySocket():
                 return self.adj_p2_tier
         else:
             print("This prints if P2 tier hasn't been adjusted for some reason.")
-
-        
-
-
-
-
-# TODO: If winstreak is < -15, or > 15 set winstreak to 1 (Only if you implement character tiers)

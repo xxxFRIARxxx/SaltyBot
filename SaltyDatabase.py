@@ -53,7 +53,7 @@ class SaltyRecorder():
                       
         def update_match(self):  # Updates a match in the table. 
             with self.con:
-                self.con.execute("UPDATE CHARDB set p1win = 'BONGLOAD' WHERE p1win = 'locked'")
+                self.con.execute("UPDATE CHARDB set p1win = 'TEST_STRING' WHERE p1win = 'locked'")
                 self.con.commit()
 
         def delete_match(self):  # Deletes a match from the table (leaves blank row).

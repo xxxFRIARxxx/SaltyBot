@@ -28,7 +28,7 @@ class SaltyRecorder():
     def __init__(self):
         self.con = sqlite3.connect('SaltDatabase.db')
         with self.con:
-            self.con.execute("""CREATE TABLE IF NOT EXISTS CHARDB (
+            self.con.execute("""CREATE TABLE IF NOT EXISTS SBMATCHES (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 p1rating TEXT
             );
@@ -37,7 +37,7 @@ class SaltyRecorder():
      
      
     def record_match(self): 
-        sql = 'INSERT INTO CHARDB (p1rating) values (?)'
+        sql = 'INSERT INTO SBMATCHES (p1rating) values (?)'
         data = [
         (skill.set_rating('1'))
         ]

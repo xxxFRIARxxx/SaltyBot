@@ -109,34 +109,25 @@ class SaltySocket():
             pass
         elif (self.adj_p1winstreak < 0) and (p1win_status == 1):
             self.adj_p1winstreak = 1
-            return self.adj_p1winstreak
         elif (self.adj_p1winstreak < 0) and (p1win_status == 0):
-            self.adj_p1winstreak = (self.adj_p1winstreak - 1)
-            return self.adj_p1winstreak           
+            self.adj_p1winstreak = (self.adj_p1winstreak - 1)  
         elif (self.adj_p1winstreak > 0) and (p1win_status == 1):
             self.adj_p1winstreak = (self.adj_p1winstreak + 1) 
-            return self.adj_p1winstreak
         elif (self.adj_p1winstreak > 0) and (p1win_status == 0):
             self.adj_p1winstreak = -1
-            return self.adj_p1winstreak
         else:
             print("This prints if P1 winstreak hasn't been adjusted for some reason.")
-            return self.adj_p1winstreak
-    
+
         if (self.adj_p1winstreak == None) or (self.adj_p2winstreak == None):
             pass
         elif (self.adj_p2winstreak < 0) and (p2win_status == 1):
             self.adj_p2winstreak = 1
-            return self.adj_p2winstreak
         elif (self.adj_p2winstreak < 0) and (p2win_status == 0):
             self.adj_p2winstreak = (self.adj_p2winstreak - 1)       
-            return self.adj_p2winstreak
         elif (self.adj_p2winstreak > 0) and (p2win_status == 1):
             self.adj_p2winstreak = (self.adj_p2winstreak + 1) 
-            return self.adj_p2winstreak
         elif (self.adj_p2winstreak > 0) and (p2win_status == 0):
             self.adj_p2winstreak = -1
-            return self.adj_p2winstreak
         else:
             print("This prints if P2 winstreak hasn't been adjusted for some reason.")
             
@@ -149,30 +140,24 @@ class SaltySocket():
             if self.adj_p1winstreak > 15:
                 self.adj_p1winstreak == 1
                 self.adj_p1_tier = 2
-                return self.adj_p1_tier
         elif self.tier_res_conv == 2:
             if self.adj_p1winstreak < -15:
                 self.adj_p1winstreak = 1
                 self.adj_p1_tier = 1
-                return self.adj_p1_tier
             elif self.adj_p1winstreak > 15:
                 self.adj_p1winstreak = 1
                 self.adj_p1_tier = 3
-                return self.adj_p1_tier
         elif self.tier_res_conv == 3:
             if self.adj_p1winstreak < -15:
                 self.adj_p1winstreak = 1
                 self.adj_p1_tier = 2
-                return self.adj_p1_tier
             elif self.adj_p1winstreak > 15:
                 self.adj_p1winstreak = 1
                 self.adj_p1_tier = 4
-                return self.adj_p1_tier
         elif self.tier_res_conv == 4:
             if self.adj_p1winstreak < -15:
                 self.adj_p1winstreak = 1
                 self.adj_p1_tier = 3
-                return self.adj_p1_tier
         else:
             print("This prints if P1 tier hasn't been adjusted for some reason.")
             
@@ -182,29 +167,23 @@ class SaltySocket():
             if self.adj_p2winstreak > 15:
                 self.adj_p2winstreak == 1
                 self.adj_p2_tier = 2
-                return self.adj_p2_tier
         elif self.tier_res_conv == 2:
             if self.adj_p2winstreak < -15:
                 self.adj_p2winstreak = 1
                 self.adj_p2_tier = 1
-                return self.adj_p2_tier
             elif self.adj_p2winstreak > 15:
                 self.adj_p2winstreak = 1
                 self.adj_p2_tier = 3
-                return self.adj_p2_tier
         elif self.tier_res_conv == 3:
             if self.adj_p2winstreak < -15:
                 self.adj_p2winstreak = 1
                 self.adj_p2_tier = 2
-                return self.adj_p2_tier
             elif self.adj_p2winstreak > 15:
                 self.adj_p2winstreak = 1
                 self.adj_p2_tier = 4
-                return self.adj_p2_tier
         elif self.tier_res_conv == 4:
             if self.adj_p2winstreak < -15:
                 self.adj_p2winstreak = 1
                 self.adj_p2_tier = 3
-                return self.adj_p2_tier
         else:
             print("This prints if P2 tier hasn't been adjusted for some reason.")

@@ -59,12 +59,12 @@ while True:
                 bettor.set_balance(balance) # Sets and displays current balance of your account.
                 p1DB_ratings = bettor.get_player_rating(recorder.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are. # TODO: Put these variables in more global scope (up above before the while loop)
                 p2DB_ratings = bettor.get_player_rating(recorder.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
-                # TODO:  Eventually do something with the Mu and Sigma (and regression of data) to compose bet, and place it below:
-                interactor.place_bet_on_website(bettor.format_bet(gameMode, my_parser.get_p1name(), my_parser.get_p2name())) # Decide bet, and place bet 
                 new_match = 1
                 my_socket.find_winstreak = True
                 print(f"Player 1 Rating:   Mu = {p1DB_ratings.mu}  Sigma = {p1DB_ratings.sigma}")
                 print(f"Player 2 Rating:   Mu = {p2DB_ratings.mu}  Sigma = {p2DB_ratings.sigma}")
+                # TODO:  Eventually do something with the Mu and Sigma (and regression of data) to compose bet, and place it below:
+                interactor.place_bet_on_website(bettor.format_bet(gameMode, my_parser.get_p1name(), my_parser.get_p2name())) # Decide bet, and place bet 
                 my_socket.get_tier() # NOTE: Can come back None.  Not encouraged.  Passes through.
         elif (gameState == 'locked'):
             if (first_run == False):

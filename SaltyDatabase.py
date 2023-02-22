@@ -19,6 +19,7 @@ class SaltyRecorder():
                     p1sigma FLOAT,
                     p1tier INT,
                     p1tourney INT,
+                    p1time INT,
                     p2name TEXT,
                     p2odds FLOAT,
                     p2win INT,
@@ -27,7 +28,7 @@ class SaltyRecorder():
                     p2sigma FLOAT,
                     p2tier INT,
                     p2tourney INT,
-                    matchLength INT,
+                    p2time INT,
                     betOutcome INT
                 );
             """)

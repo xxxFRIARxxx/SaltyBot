@@ -90,14 +90,6 @@ while True:
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), gameState)
                     recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, gameTime.snapshot, bettor.outcome, my_parser.is_tourney())
 
-# TODO: 
-                # Traceback (most recent call last):
-                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 62, in <module>
-                #     p1DB_ratings = bettor.get_player_rating(recorder.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
-                #   File "e:\Python Scripts\SaltyBot\SaltyDatabase.py", line 110, in get_ratings_from_DB
-                #     return (player_mu, player_sigma) # Returns either None (if no previous match is in the DB), or the selected player's Mu and Sigma.
-                # UnboundLocalError: local variable 'player_mu' referenced before assignment
-
 # TODO: EXPLOSION:
                 # Traceback (most recent call last):
                 #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 703, in urlopen

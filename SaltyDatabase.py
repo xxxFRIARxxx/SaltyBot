@@ -88,6 +88,7 @@ class SaltyRecorder():
                 print("Successful DB Backup!")
 
         def get_winstreaks_from_DB(self, player_search):
+            db_winstreak = None
             if self.get_most_recent(player_search) == None:
                 db_winstreak = None
             elif self.get_most_recent(player_search)[0]['p1name'] == player_search:

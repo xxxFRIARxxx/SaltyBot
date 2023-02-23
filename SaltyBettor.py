@@ -34,7 +34,7 @@ class SaltyBettor():
             self.outcome = 0
     # TODO: Separate out wager logic into new f(x), and rename predicted_winner to predicted_winner
 
-    def probability_of_p1_win(self, p1mu, p1sigma, p2mu, p2sigma):
+    def probability_of_p1_win(self, p1mu, p1sigma, p2mu, p2sigma): # Uses the cumulative distribution function of a normal distribution to determine probability of p1 winning.
         prob_P1 = None
         deltaMu = (p1mu - p2mu)                   
         sumSigma = (p1sigma**2) + (p2sigma**2)  
@@ -44,7 +44,7 @@ class SaltyBettor():
         print(f"Player 1 has a {100 * prob_P1}% chance of winning.")
         return prob_P1
 
-    def predicted_winner(self, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak):
+    def predicted_winner(self, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner first through probability of winning,  then through streaks (simple).
         self.predicted_w = None
         player1_dict = {p1_json:'player1'}
         player2_dict = {p2_json:'player2'}

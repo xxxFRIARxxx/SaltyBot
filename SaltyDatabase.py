@@ -45,7 +45,7 @@ class SaltyRecorder():
                         self.con.commit()
                         print(str(data) + f"\nThe record above has been added to the DB. There are now {self.num_from_db()} records in the database.")
                         self.make_backup()
-                        self.get_win_avg()
+                        # self.get_win_avg()
                 except sqlite3.IntegrityError:
                     print("This match already exists in the DB.")               
             else:
@@ -61,7 +61,7 @@ class SaltyRecorder():
                 self.con.execute("DELETE from SBMATCHES where ID <= 1000;")
                 print("Total number of rows deleted:", self.con.total_changes)
 
-        def get_win_avg(self):
+        def get_win_avg(self): # Gets the average percentage of bets you've won.  (NOTE:  Actual probability betting started at match ID 250.)
             with self.con:
                 data = self.con.execute("""SELECT avg(betOutcome) FROM SBMATCHES;""")
                 avg_bet = data.fetchall()

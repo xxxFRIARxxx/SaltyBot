@@ -1,6 +1,10 @@
 import random
-from trueskill import Rating, rate_1vs1, quality_1vs1
+from trueskill import Rating, TrueSkill, rate_1vs1, global_env
 import webbrowser
+from math import sqrt
+from statistics import NormalDist
+import itertools
+import math
 
 class SaltyBettor():
     def __init__(self):
@@ -30,52 +34,78 @@ class SaltyBettor():
             self.outcome = 0
     # TODO: Separate out wager logic into new f(x), and rename predicted_winner to predicted_winner
 
-    def suggested_wager(self):
-        if self.predicted_winner() is not None:
-            pass
+    def probability_of_p1_win(self, p1mu, p1sigma, p2mu, p2sigma):
+        prob_P1 = None
+        deltaMu = (p1mu - p2mu)                   
+        sumSigma = (p1sigma**2) + (p2sigma**2)  
+        playerCount = 2                                               
+        denominator = math.sqrt(playerCount * (4.166666666666667 * 4.166666666666667) + sumSigma)   
+        prob_P1 = NormalDist().cdf(deltaMu/denominator)
+        print(f"Player 1 has a {100 * prob_P1}% chance of winning.")
+        return prob_P1
 
-    def predicted_winner(self, p1rating, p2rating, p1_json, p2_json, p1DB_streak, p2DB_streak):
+    def predicted_winner(self, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak):
+        self.predicted_w = None
         player1_dict = {p1_json:'player1'}
         player2_dict = {p2_json:'player2'}
-        if p1rating.mu > p2rating.mu:
-            predicted_w = player1_dict[p1_json]
-        elif p2rating.mu > p1rating.mu:
-            predicted_w = player2_dict[p2_json]
-        elif p1rating.mu == p2rating.mu:
+        if p1_probability > .5:
+            self.predicted_w = player1_dict[p1_json]
+        elif p1_probability < .5:
+            self.predicted_w = player2_dict[p2_json]
+        elif p1_probability == .5:
             if (p1DB_streak is not None) or (p2DB_streak is not None): # If either P1streak or P2streak comes back from DB
                 if p1DB_streak > p2DB_streak:
-                    predicted_w = player1_dict[p1_json] 
+                    self.predicted_w = player1_dict[p1_json] 
                 elif p2DB_streak > p1DB_streak:
-                    predicted_w = player2_dict[p2_json]
+                    self.predicted_w = player2_dict[p2_json]
                 else:
-                    predicted_w = None
-            else: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if neither P1streak or P2 streak come back from DB
-                predicted_w = None
-        return predicted_w
+                    self.predicted_w = None
+            else: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if neither P1streak or P2 streak comes back from DB
+                self.predicted_w = None
+        return self.predicted_w
+    
+    
+    def suggested_bet(self, p1_probability, p1DB_streak, p2DB_streak):  # TODO: Maybe add:  (gameMode) here later?
+        suggested_wager = 1
+        if p1_probability == None:
+            suggested_wager = 1
+        elif p1_probability == .5:
+            if (p1DB_streak is not None) or (p2DB_streak is not None): # If probability of P1 and P2 is the same, (thru default ratings, or same ratings found in DB earlier), AND if neither P1streak or P2 streak comes back from DB
+                if p1DB_streak > p2DB_streak:
+                    suggested_wager = 500
+                elif p2DB_streak > p1DB_streak:
+                    suggested_wager = 500
+                else:
+                    suggested_wager = 1
+            else:
+                suggested_wager = 1
+        elif p1_probability != .5:
+            suggested_wager = round((.09 * self.balance) * abs(.5 - p1_probability))
+        else:
+            print("This prints when the suggested wager wasn't set by suggested_wager()")
+            pass
+        return suggested_wager
 
-    def format_bet(self, gameMode, predicted_w):
+    def format_bet(self, predicted_w, suggested_wager, gameMode):
         self.p1name = {'selectedplayer': 'player1'}
         self.p2name = {'selectedplayer': 'player2'}
-        self.wager_amount = 0
-        if predicted_w == None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if neither P1streak or P2 streak come back from DB
+        self.wager_amount = suggested_wager
+        if predicted_w == None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if neither P1streak or P2 streak comes back from DB
             self.suggested_player = random.choice([self.p1name, self.p2name])
-            self.wager_amount = 10
+            self.wager_amount = 1
         elif self.p1name["selectedplayer"] == predicted_w:
             self.suggested_player = self.p1name
-            self.wager_amount = 100
         elif self.p2name["selectedplayer"] == predicted_w:
             self.suggested_player = self.p2name
-            self.wager_amount = 100
                  
         if (gameMode == 'Matchmaking'):
             self.wager = {'wager': self.wager_amount}
             return self.suggested_player | self.wager
         elif (gameMode == 'Tournament'):
-            self.wager = {'wager': (self.wager_amount * 10)}#self.balance} NOTE: CAREFUL WITH THIS VALUE UNTIL LAST-MATCH ISSUE AND SALTY-BET BUG IS FIGURED OUT - MAY BET ENTIRE NORMAL POOL ON TOURNEY.
-            # self.suggested_player, self.wager # TODO: Can I delete this?  Might have put this here on accident way back when.
-            return self.suggested_player | self.wager # Returns the suggested player from the decision-logic (TBD), and suggested wager.  RETURNS IN THE FORMAT NECESSARY FOR BET PLACEMENT ON WEBSITE: {:} | {:}
+            self.wager = {'wager': self.wager_amount}#self.balance} NOTE: CAREFUL WITH THIS VALUE UNTIL LAST-MATCH ISSUE AND SALTY-BET BUG IS FIGURED OUT - MAY BET ENTIRE NORMAL POOL ON TOURNEY.
+            return self.suggested_player | self.wager # RETURNS IN THE FORMAT NECESSARY FOR BET PLACEMENT ON WEBSITE: {:} | {:}
 
-    def get_player_rating(self, db_result):  # Sets player ratings for current match.
+    def set_player_rating(self, db_result):  # Sets player ratings for current match.
         if db_result == None:  
             self.rating = Rating() # TODO:  Eventually (with enough data) update Rating() averages with true averages from DB?  (With original default values as a "floor"?.  IDK wtf I'm talking about probably.)     
         else:
@@ -124,11 +154,8 @@ class SaltyBettor():
 
 # For 1v1 matchup, I believe it should look like this (untested):
 
-# from math import sqrt
-# from trueskill import Rating, TrueSkill, global_env
-
-# def p_win_1v1(p1: Rating,p2: Rating,draw_margin: float,n: int = 2, env: Trueskill = None,) -> float:
+# def p_win_1v1(p1: Rating,p2: Rating,draw_margin: float,n: int = 2, env: TrueSkill = None,) -> float:
 #     """Calculate the probability that p1 wins the game."""
 #     if env is None:
 #         env = global_env()
-#     return 1env.cdf((p1.mu - p2.mu - draw_margin) / sqrt(n * env.beta**2 + p1.sigma**2 + p2.sigma**2))
+#     print(env.cdf((p1.mu - p2.mu - draw_margin) / sqrt(n * env.beta**2 + p1.sigma**2 + p2.sigma**2)))

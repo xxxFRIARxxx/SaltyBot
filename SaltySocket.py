@@ -30,6 +30,7 @@ class SaltySocket():
             self.socket.send(constructor_message.encode('utf-8'))  
         
     def read_message(self):
+        message = None
         try:
             message = self.socket.recv(4096).decode('utf-8')
         except ConnectionAbortedError:
@@ -162,6 +163,8 @@ class SaltySocket():
             if self.adj_p1winstreak < -15:
                 self.adj_p1winstreak = 1
                 self.adj_p1_tier = 3
+        elif self.tier_res_conv == 5:
+            pass
         else:
             print("This prints if P1 tier hasn't been adjusted for some reason.")
             
@@ -189,5 +192,7 @@ class SaltySocket():
             if self.adj_p2winstreak < -15:
                 self.adj_p2winstreak = 1
                 self.adj_p2_tier = 3
+        elif self.tier_res_conv == 5:
+            pass
         else:
             print("This prints if P2 tier hasn't been adjusted for some reason.")

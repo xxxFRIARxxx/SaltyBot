@@ -28,18 +28,51 @@ class SaltyBettor():
         else:
             print('You lost the bet.')
             self.outcome = 0
+    # TODO: Separate out wager logic into new f(x), and rename predicted_winner to predicted_winner
 
-    def format_bet(self, gameMode, p1_json, p2_json): # TODO: Control betting decision-logic in a new f(x)
+    def suggested_wager(self):
+        if self.predicted_winner() is not None:
+            pass
+
+    def predicted_winner(self, p1rating, p2rating, p1_json, p2_json, p1DB_streak, p2DB_streak):
+        player1_dict = {p1_json:'player1'}
+        player2_dict = {p2_json:'player2'}
+        if p1rating.mu > p2rating.mu:
+            predicted_w = player1_dict[p1_json]
+        elif p2rating.mu > p1rating.mu:
+            predicted_w = player2_dict[p2_json]
+        elif p1rating.mu == p2rating.mu:
+            if (p1DB_streak is not None) or (p2DB_streak is not None): # If either P1streak or P2streak comes back from DB
+                if p1DB_streak > p2DB_streak:
+                    predicted_w = player1_dict[p1_json] 
+                elif p2DB_streak > p1DB_streak:
+                    predicted_w = player2_dict[p2_json]
+                else:
+                    predicted_w = None
+            else: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if neither P1streak or P2 streak come back from DB
+                predicted_w = None
+        return predicted_w
+
+    def format_bet(self, gameMode, predicted_w):
         self.p1name = {'selectedplayer': 'player1'}
         self.p2name = {'selectedplayer': 'player2'}
-        self.wager = 0
-        self.suggested_player = random.choice([self.p1name,self.p2name])             
+        self.wager_amount = 0
+        if predicted_w == None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if neither P1streak or P2 streak come back from DB
+            self.suggested_player = random.choice([self.p1name, self.p2name])
+            self.wager_amount = 10
+        elif self.p1name["selectedplayer"] == predicted_w:
+            self.suggested_player = self.p1name
+            self.wager_amount = 100
+        elif self.p2name["selectedplayer"] == predicted_w:
+            self.suggested_player = self.p2name
+            self.wager_amount = 100
+                 
         if (gameMode == 'Matchmaking'):
-            self.wager = {'wager': 1}
+            self.wager = {'wager': self.wager_amount}
             return self.suggested_player | self.wager
         elif (gameMode == 'Tournament'):
-            self.wager = {'wager': 1}#self.balance} NOTE: CAREFUL WITH THIS VALUE UNTIL LAST-MATCH ISSUE AND SALTY-BET BUG IS FIGURED OUT - MAY BET ENTIRE NORMAL POOL ON TOURNEY.
-            self.suggested_player, self.wager
+            self.wager = {'wager': (self.wager_amount * 10)}#self.balance} NOTE: CAREFUL WITH THIS VALUE UNTIL LAST-MATCH ISSUE AND SALTY-BET BUG IS FIGURED OUT - MAY BET ENTIRE NORMAL POOL ON TOURNEY.
+            # self.suggested_player, self.wager # TODO: Can I delete this?  Might have put this here on accident way back when.
             return self.suggested_player | self.wager # Returns the suggested player from the decision-logic (TBD), and suggested wager.  RETURNS IN THE FORMAT NECESSARY FOR BET PLACEMENT ON WEBSITE: {:} | {:}
 
     def get_player_rating(self, db_result):  # Sets player ratings for current match.

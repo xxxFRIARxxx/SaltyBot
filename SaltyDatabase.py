@@ -2,7 +2,6 @@ import sqlite3
 from SaltyParser import SaltyJsonParser
 from SaltySocket import SaltySocket
 
-
 class SaltyRecorder(): 
         def __init__(self):
             self.match_count = 0
@@ -46,6 +45,7 @@ class SaltyRecorder():
                         self.con.commit()
                         print(str(data) + f"\nThe record above has been added to the DB. There are now {self.num_from_db()} records in the database.")
                         self.make_backup()
+                        self.get_win_avg()
                 except sqlite3.IntegrityError:
                     print("This match already exists in the DB.")               
             else:
@@ -61,6 +61,13 @@ class SaltyRecorder():
                 self.con.execute("DELETE from SBMATCHES where ID <= 1000;")
                 print("Total number of rows deleted:", self.con.total_changes)
 
+        def get_win_avg(self):
+            with self.con:
+                data = self.con.execute("""SELECT avg(betOutcome) FROM SBMATCHES;""")
+                avg_bet = data.fetchall()
+            print(avg_bet[0][0])
+
+
         def print_db(self):  # Selects and prints out entire table
             with self.con:
                 data = self.con.execute("SELECT * from SBMATCHES")
@@ -70,8 +77,8 @@ class SaltyRecorder():
         def num_from_db(self):  # Selects and prints out number of records in DB.
             with self.con:
                 data = self.con.execute(f"""SELECT max(id) FROM SBMATCHES;""")
-                most_recent = data.fetchall()
-            return most_recent[0][0]          
+                maxID = data.fetchall()
+            return maxID[0][0]          
 
         def make_backup(self):
             self.match_count += 1
@@ -79,8 +86,19 @@ class SaltyRecorder():
                 with self.backup_con:
                     self.con.backup(self.backup_con)              
                 print("Successful DB Backup!")
-              
-        def get_ratings_from_DB(self, player_search):  # Gets the Mu and Sigma from the latest match, if a match exists.  # NOTE:  Can return None. (None = Default Ratings will be assigned from Bettor.)
+
+        def get_winstreaks_from_DB(self, player_search):
+            if self.get_most_recent(player_search) == None:
+                db_winstreak = None
+            elif self.get_most_recent(player_search)[0]['p1name'] == player_search:
+                db_winstreak = self.get_most_recent(player_search)[0]['p1streak']
+            elif self.get_most_recent(player_search)[0]['p2name'] == player_search:
+                db_winstreak = self.get_most_recent(player_search)[0]['p2streak']
+            return db_winstreak
+                    
+        def get_ratings_from_DB(self, player_search):  # Gets the Mu and Sigma from the latest match, if a match exists.  # NOTE:  Can return None. (None = Default Ratings will be assigned from Bettor later.)
+            player_mu = None
+            player_sigma = None
             if self.get_most_recent(player_search) == None:
                 player_mu = None
                 player_sigma = None

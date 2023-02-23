@@ -33,8 +33,8 @@ first_run = True
 previousGameMode = None
 gameStateLies = False
 previousGameState = None
-p1DB_ratings = None
-p2DB_ratings = None
+p1DB_streak = None
+p2DB_streak = None
 
 while True:
     the_json = my_thing.get_json()
@@ -61,13 +61,17 @@ while True:
                 bettor.set_balance(balance) # Sets and displays current balance of your account.
                 p1DB_ratings = bettor.get_player_rating(recorder.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 p2DB_ratings = bettor.get_player_rating(recorder.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
+                p1DB_streak = recorder.get_winstreaks_from_DB(my_parser.get_p1name())
+                p2DB_streak = recorder.get_winstreaks_from_DB(my_parser.get_p2name())
                 new_match = 1
                 my_socket.find_winstreak = True
                 print(f"Player 1 Rating:   Mu = {p1DB_ratings.mu}  Sigma = {p1DB_ratings.sigma}")
                 print(f"Player 2 Rating:   Mu = {p2DB_ratings.mu}  Sigma = {p2DB_ratings.sigma}")
                 # TODO:  Eventually do something with the Mu and Sigma (and regression of data) to compose bet, and place it below:
-                interactor.place_bet_on_website(bettor.format_bet(gameMode, my_parser.get_p1name(), my_parser.get_p2name())) # Decide bet, and place bet 
-                my_socket.get_tier() # NOTE: Can come back None.  Not encouraged.  Passes through.
+                # bettor.predicted_winner(p1DB_ratings, p2DB_ratings, my_parser.get_p1name(), my_parser.get_p2name())
+
+                interactor.place_bet_on_website(bettor.format_bet(gameMode, bettor.predicted_winner(p1DB_ratings, p2DB_ratings, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak))) # Decide bet, and place bet 
+                my_socket.get_tier() # NOTE: Can come back None.  Not encouraged.  Passes through for socket.recv while loop break.
         elif (gameState == 'locked'):
             if (first_run == False):
                 if (new_match == 1):
@@ -86,7 +90,13 @@ while True:
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), gameState)
                     recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, gameTime.snapshot, bettor.outcome, my_parser.is_tourney())
 
-# TODO: WINSTREAKS CAN BE 0!  Maybe fixed?  Make sure to check this when a streak comes back 0.
+# TODO: 
+                # Traceback (most recent call last):
+                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 62, in <module>
+                #     p1DB_ratings = bettor.get_player_rating(recorder.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
+                #   File "e:\Python Scripts\SaltyBot\SaltyDatabase.py", line 110, in get_ratings_from_DB
+                #     return (player_mu, player_sigma) # Returns either None (if no previous match is in the DB), or the selected player's Mu and Sigma.
+                # UnboundLocalError: local variable 'player_mu' referenced before assignment
 
 # TODO: EXPLOSION:
                 # Traceback (most recent call last):

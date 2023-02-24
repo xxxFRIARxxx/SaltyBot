@@ -1,6 +1,4 @@
 import sqlite3
-from SaltyParser import SaltyJsonParser
-from SaltySocket import SaltySocket
 
 class SaltyRecorder(): 
         def __init__(self):
@@ -67,7 +65,6 @@ class SaltyRecorder():
                 avg_bet = data.fetchall()
             print(avg_bet[0][0])
 
-
         def print_db(self):  # Selects and prints out entire table
             with self.con:
                 data = self.con.execute("SELECT * from SBMATCHES")
@@ -125,5 +122,5 @@ class SaltyRecorder():
         def get_player_matches(self, player_search):  # Gathers ALL games of a selected player from the DB .  
             with self.con:
                 data = self.con.execute(f"""SELECT * FROM SBMATCHES WHERE p1name = ("{player_search}") OR p2name = ("{player_search}");""")
-                all_games= data.fetchall()  # Replace the single quotes, and double quotes, with escaped quotes:  ex:  player_search.replace('"', '\"')}")
+                all_games= data.fetchall()  # TODO: Maybe replace the single quotes, and double quotes, with escaped quotes:  ex:  player_search.replace('"', '\"')}")
                 return all_games # Returns either an empty list, or a list of tuples of all matches, with each tuple containing 1 match.

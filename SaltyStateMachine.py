@@ -7,6 +7,7 @@ from SaltySocket import SaltySocket
 from SaltyTimer import SaltyTimer
 from SaltyWebInteractant import SaltyWebInteractant
 from SaltyBettor import SaltyBettor
+from SaltyReceiver import CustomThread
 
 clear = lambda: os.system('cls')
 
@@ -25,9 +26,7 @@ my_socket = SaltySocket()
 gameTime = SaltyTimer()
 bettor = SaltyBettor()
 interactor = SaltyWebInteractant()
-
-my_socket.open_socket()
-my_socket.send_ping()
+thread = CustomThread()
 
 first_run = True
 previousGameMode = None
@@ -35,6 +34,8 @@ gameStateLies = False
 previousGameState = None
 p1DB_streak = None
 p2DB_streak = None
+
+thread.start() 
 
 while True:
     the_json = my_thing.get_json()
@@ -51,9 +52,6 @@ while True:
         gameStateLies = False
     previousGameState = gameState
     
-    # TODO: SaltySocket should call readmessag here
-    # my_socket.read_message()
-
     if ((gameMode != 'Exhibition') and (gameStateLies == False)):
         if (gameState == 'open'):
             if (new_match == 0):
@@ -72,24 +70,37 @@ while True:
                 # TODO:  Include data regression to help compose bet here.
 
                 interactor.place_bet_on_website(bettor.format_bet(bettor.predicted_winner(p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), bettor.suggested_bet(p1_probability, p1DB_streak, p2DB_streak), gameMode)) # Decide bet, and place bet 
-                my_socket.get_tier() # NOTE: Can come back None.  Not encouraged/yes-accepted.  Passes through for socket.recv while loop break.
+                # my_socket.get_tier() 
         elif (gameState == 'locked'):
             if (first_run == False):
                 if (new_match == 1):
                     new_match = 2
                     gameTime.timer_start()
-                    my_socket.get_winstreaks()  # NOTE: Can come back None.  Encouraged/accepted.  If so, sets winstreaks to None.
-                    print(f'Winstreaks are: {my_socket.p1winstreak, my_socket.p2winstreak}')
         elif (gameState == '1') or ((gameState == '2')): 
             if (first_run == False):
                 if (new_match == 2):
                     new_match = 0
                     gameTime.timer_snapshot()
                     ratings_to_db = bettor.update_ranking_after(gameState, p1DB_ratings, p2DB_ratings) # Updates ratings after the match.
-                    my_socket.adjust_winstreak(my_parser.set_p1winstatus(), my_parser.set_p2winstatus())
-                    my_socket.adjust_tier()
+                    my_socket.adjust_winstreak(my_parser.set_p1winstatus(), my_parser.set_p2winstatus(), thread.value1, thread.value2)
+                    my_socket.adjust_tier(thread.value3)
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), gameState)
                     recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, gameTime.snapshot, bettor.outcome, my_parser.is_tourney())
+
+# TODO:
+                # Exception in thread Thread-1:
+                # Traceback (most recent call last):
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\threading.py", line 1016, in _bootstrap_inner
+                #     self.run()
+                #   File "e:\Python Scripts\SaltyBot\SaltyReceiver.py", line 25, in run
+                #     run_message = self.sock.read_message() # While called, read twitch socket.  (NEEDS to BREAK out of loop - Socket open 24/7.)
+                #   File "e:\Python Scripts\SaltyBot\SaltySocket.py", line 44, in read_message
+                #     self.is_ping(message)
+                #   File "e:\Python Scripts\SaltyBot\SaltySocket.py", line 48, in is_ping
+                # AttributeError: 'NoneType' object has no attribute 'startswith'
+
+# TODO: Does it freeze last match of MM before tourney?
+
 # TODO: Last match of tourney still doesn't record:
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.

@@ -1,9 +1,8 @@
 import random
-from trueskill import Rating, TrueSkill, rate_1vs1, global_env
+from trueskill import Rating, rate_1vs1
 import webbrowser
 from math import sqrt
 from statistics import NormalDist
-import itertools
 import math
 
 class SaltyBettor():
@@ -32,7 +31,6 @@ class SaltyBettor():
         else:
             print('You lost the bet.')
             self.outcome = 0
-    # TODO: Separate out wager logic into new f(x), and rename predicted_winner to predicted_winner
 
     def probability_of_p1_win(self, p1mu, p1sigma, p2mu, p2sigma): # Uses the cumulative distribution function of a normal distribution to determine probability of p1 winning.
         prob_P1 = None
@@ -72,9 +70,9 @@ class SaltyBettor():
         elif p1_probability == .5:
             if (p1DB_streak is not None) or (p2DB_streak is not None): # If probability of P1 and P2 is the same, (thru default ratings, or same ratings found in DB earlier), AND if neither P1streak or P2 streak comes back from DB
                 if p1DB_streak > p2DB_streak:
-                    suggested_wager = 500
+                    suggested_wager = 100
                 elif p2DB_streak > p1DB_streak:
-                    suggested_wager = 500
+                    suggested_wager = 100
                 else:
                     suggested_wager = 1
             else:
@@ -100,7 +98,7 @@ class SaltyBettor():
         if (gameMode == 'Matchmaking'):
             self.wager = {'wager': self.wager_amount}
             return self.suggested_player | self.wager
-        elif (gameMode == 'Tournament'):
+        elif (gameMode == 'Tournament') and (self.balance < 100000):
             self.wager = {'wager': self.balance}#self.wager_amount}NOTE: CAREFUL WITH THIS VALUE UNTIL LAST-MATCH ISSUE AND SALTY-BET BUG IS FIGURED OUT - MAY BET ENTIRE NORMAL POOL ON TOURNEY.
             return self.suggested_player | self.wager # RETURNS IN THE FORMAT NECESSARY FOR BET PLACEMENT ON WEBSITE: {:} | {:}
 
@@ -119,42 +117,3 @@ class SaltyBettor():
             p2final, p1final = rate_1vs1(p2finalinput, p1finalinput)
             print("Player 2 wins!")
         return p1final, p2final # Returns final Ratings objects of each player from the current match after completion.  Ratings objects contain updated Mu and Sigma values.  
-    
-
-
-
-
-
-
-
-#Anyway, if you need to calculate a win probability between only 2 teams, this code snippet will help you:
-
-# import itertools
-# import math
-
-# def win_probability(team1, team2):
-#     delta_mu = sum(r.mu for r in team1) - sum(r.mu for r in team2)
-#     sum_sigma = sum(r.sigma ** 2 for r in itertools.chain(team1, team2))
-#     size = len(team1) + len(team2)
-#     denom = math.sqrt(size * (BETA * BETA) + sum_sigma)
-#     ts = trueskill.global_env()
-#     return ts.cdf(delta_mu / denom)
-
-
-# The following seems to produce good results. (It's Jeff Moser's suggestion in the comments of http://www.moserware.com/2010/03/computing-your-skill.html, translated to Python).
-
-# def win_probability(a, b):                                                      
-#     deltaMu = sum([x.mu for x in a]) - sum([x.mu for x in b])                   
-#     sumSigma = sum([x.sigma ** 2 for x in a]) + sum([x.sigma ** 2 for x in b])  
-#     playerCount = len(a) + len(b)                                               
-#     denominator = math.sqrt(playerCount * (BETA * BETA) + sumSigma)             
-#     return cdf(deltaMu / denominator)  
-
-
-# For 1v1 matchup, I believe it should look like this (untested):
-
-# def p_win_1v1(p1: Rating,p2: Rating,draw_margin: float,n: int = 2, env: TrueSkill = None,) -> float:
-#     """Calculate the probability that p1 wins the game."""
-#     if env is None:
-#         env = global_env()
-#     print(env.cdf((p1.mu - p2.mu - draw_margin) / sqrt(n * env.beta**2 + p1.sigma**2 + p2.sigma**2)))

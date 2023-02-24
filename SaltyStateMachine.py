@@ -72,13 +72,13 @@ while True:
                 # TODO:  Include data regression to help compose bet here.
 
                 interactor.place_bet_on_website(bettor.format_bet(bettor.predicted_winner(p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), bettor.suggested_bet(p1_probability, p1DB_streak, p2DB_streak), gameMode)) # Decide bet, and place bet 
-                my_socket.get_tier() # NOTE: Can come back None.  Not encouraged.  Passes through for socket.recv while loop break.
+                my_socket.get_tier() # NOTE: Can come back None.  Not encouraged/yes-accepted.  Passes through for socket.recv while loop break.
         elif (gameState == 'locked'):
             if (first_run == False):
                 if (new_match == 1):
                     new_match = 2
                     gameTime.timer_start()
-                    my_socket.get_winstreaks()  # NOTE: Can come back None.  Encouraged.  If so, sets winstreaks to None.
+                    my_socket.get_winstreaks()  # NOTE: Can come back None.  Encouraged/accepted.  If so, sets winstreaks to None.
                     print(f'Winstreaks are: {my_socket.p1winstreak, my_socket.p2winstreak}')
         elif (gameState == '1') or ((gameState == '2')): 
             if (first_run == False):

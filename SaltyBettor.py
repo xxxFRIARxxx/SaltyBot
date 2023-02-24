@@ -41,7 +41,7 @@ class SaltyBettor():
         playerCount = 2                                               
         denominator = math.sqrt(playerCount * (4.166666666666667 * 4.166666666666667) + sumSigma)   
         prob_P1 = NormalDist().cdf(deltaMu/denominator)
-        print(f"Player 1 has a {100 * prob_P1}% chance of winning.")
+        print(f"Player 1 has a {round(100 * prob_P1, 2)}% chance of winning.")
         return prob_P1
 
     def predicted_winner(self, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner first through probability of winning,  then through streaks (simple).
@@ -80,10 +80,9 @@ class SaltyBettor():
             else:
                 suggested_wager = 1
         elif p1_probability != .5:
-            suggested_wager = round((.09 * self.balance) * abs(.5 - p1_probability))
+            suggested_wager = round((.05 * self.balance) * abs(.5 - p1_probability))
         else:
             print("This prints when the suggested wager wasn't set by suggested_wager()")
-            pass
         return suggested_wager
 
     def format_bet(self, predicted_w, suggested_wager, gameMode):
@@ -102,12 +101,12 @@ class SaltyBettor():
             self.wager = {'wager': self.wager_amount}
             return self.suggested_player | self.wager
         elif (gameMode == 'Tournament'):
-            self.wager = {'wager': self.wager_amount}#self.balance} NOTE: CAREFUL WITH THIS VALUE UNTIL LAST-MATCH ISSUE AND SALTY-BET BUG IS FIGURED OUT - MAY BET ENTIRE NORMAL POOL ON TOURNEY.
+            self.wager = {'wager': self.balance}#self.wager_amount}NOTE: CAREFUL WITH THIS VALUE UNTIL LAST-MATCH ISSUE AND SALTY-BET BUG IS FIGURED OUT - MAY BET ENTIRE NORMAL POOL ON TOURNEY.
             return self.suggested_player | self.wager # RETURNS IN THE FORMAT NECESSARY FOR BET PLACEMENT ON WEBSITE: {:} | {:}
 
     def set_player_rating(self, db_result):  # Sets player ratings for current match.
         if db_result == None:  
-            self.rating = Rating() # TODO:  Eventually (with enough data) update Rating() averages with true averages from DB?  (With original default values as a "floor"?.  IDK wtf I'm talking about probably.)     
+            self.rating = Rating()
         else:
             self.rating = Rating(db_result[0],db_result[1])
         return self.rating # Returns either the default rating if none is found in the DB, or the rating of the selected player from their Mu and Sigma pulled from the DB.

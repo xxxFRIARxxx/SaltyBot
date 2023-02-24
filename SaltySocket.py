@@ -36,6 +36,9 @@ class SaltySocket():
         except ConnectionAbortedError:
             time.sleep(3)
             self.open_socket()
+        except ConnectionResetError:
+            time.sleep(3)
+            self.open_socket()
         self.is_ping(message)
         return message
 

@@ -56,17 +56,16 @@ while True:
         if (gameState == 'open'):
             if (new_match == 0):
                 first_run = False
-                bettor.set_balance(balance) # Sets and displays current balance of your account.
                 p1DB_ratings = bettor.set_player_rating(recorder.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 p2DB_ratings = bettor.set_player_rating(recorder.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 p1DB_streak = recorder.get_winstreaks_from_DB(my_parser.get_p1name())
                 p2DB_streak = recorder.get_winstreaks_from_DB(my_parser.get_p2name())
-                print(f"Player 1 Rating:   Mu = {p1DB_ratings.mu}  Sigma = {p1DB_ratings.sigma}")
-                print(f"Player 2 Rating:   Mu = {p2DB_ratings.mu}  Sigma = {p2DB_ratings.sigma}")
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
                 new_match = 1
                 my_socket.find_winstreak = True
-
+                bettor.set_balance(balance) # Sets and displays current balance of your account.
+                print(f"Player 1 Rating:   Mu = {p1DB_ratings.mu}  Sigma = {p1DB_ratings.sigma}")
+                print(f"Player 2 Rating:   Mu = {p2DB_ratings.mu}  Sigma = {p2DB_ratings.sigma}")
                 # TODO:  Include data regression to help compose bet here.
                 interactor.place_bet_on_website(bettor.format_bet(bettor.predicted_winner(p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), bettor.suggested_bet(p1_probability, p1DB_streak, p2DB_streak), gameMode)) # Decide bet, and place bet 
         elif (gameState == 'locked'):

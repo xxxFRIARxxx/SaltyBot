@@ -51,14 +51,14 @@ class SaltyBettor():
         elif p1_probability < .5:
             self.predicted_w = player2_dict[p2_json]
         elif p1_probability == .5:
-            if (p1DB_streak is not None) or (p2DB_streak is not None): # If either P1streak or P2streak comes back from DB
+            if (p1DB_streak is not None) or (p2DB_streak is not None): # If EITHER P1streak or P2streak comes back from DB
                 if p1DB_streak > p2DB_streak:
                     self.predicted_w = player1_dict[p1_json] 
                 elif p2DB_streak > p1DB_streak:
                     self.predicted_w = player2_dict[p2_json]
                 else:
                     self.predicted_w = None
-            else: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if neither P1streak or P2 streak comes back from DB
+            else: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if NEITHER P1streak or P2 streak comes back from DB
                 self.predicted_w = None
         return self.predicted_w
     
@@ -68,39 +68,38 @@ class SaltyBettor():
         if p1_probability == None:
             suggested_wager = 1
         elif p1_probability == .5:
-            if (p1DB_streak is not None) or (p2DB_streak is not None): # If probability of P1 and P2 is the same, (thru default ratings, or same ratings found in DB earlier), AND if neither P1streak or P2 streak comes back from DB
+            if (p1DB_streak is not None) or (p2DB_streak is not None): # If probability of P1 and P2 is the same, (thru default ratings, or same ratings found in DB earlier), AND if EITHER P1streak or P2streak comes back from DB
                 if p1DB_streak > p2DB_streak:
-                    suggested_wager = 100
+                    suggested_wager = round((.01*self.balance) + ((.01*self.balance) * (.1*(p1DB_streak-p2DB_streak))))
                 elif p2DB_streak > p1DB_streak:
-                    suggested_wager = 100
+                    suggested_wager = round((.01*self.balance) + ((.01*self.balance) * (.1*(p2DB_streak-p1DB_streak))))
                 else:
                     suggested_wager = 1
             else:
                 suggested_wager = 1
         elif p1_probability != .5:
-            suggested_wager = round((.05 * self.balance) * abs(.5 - p1_probability))
+            suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
         else:
             print("This prints when the suggested wager wasn't set by suggested_wager()")
         return suggested_wager
 
     def format_bet(self, predicted_w, suggested_wager, gameMode):
         self.p1name = {'selectedplayer': 'player1'}
-        self.p2name = {'selectedplayer': 'player2'}
-        self.wager_amount = suggested_wager
-        if predicted_w == None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if neither P1streak or P2 streak comes back from DB
+        self.p2name = {'selectedplayer': 'player2'}   
+        self.wager = {'wager': suggested_wager}
+        if predicted_w == None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND if NEITHER P1streak or P2 streak comes back from DB
             self.suggested_player = random.choice([self.p1name, self.p2name])
-            self.wager_amount = 1
         elif self.p1name["selectedplayer"] == predicted_w:
             self.suggested_player = self.p1name
         elif self.p2name["selectedplayer"] == predicted_w:
             self.suggested_player = self.p2name
-                 
-        if (gameMode == 'Matchmaking'):
-            self.wager = {'wager': self.wager_amount}
-            return self.suggested_player | self.wager
-        elif (gameMode == 'Tournament') and (self.balance < 100000):
-            self.wager = {'wager': self.balance}#self.wager_amount}NOTE: CAREFUL WITH THIS VALUE UNTIL LAST-MATCH ISSUE AND SALTY-BET BUG IS FIGURED OUT - MAY BET ENTIRE NORMAL POOL ON TOURNEY.
-            return self.suggested_player | self.wager # RETURNS IN THE FORMAT NECESSARY FOR BET PLACEMENT ON WEBSITE: {:} | {:}
+
+        if (gameMode == 'Tournament'):
+            if self.balance < 40000:
+                self.wager = {'wager': self.balance}
+            else:
+                self.wager = {'wager': suggested_wager}
+        return self.suggested_player | self.wager # RETURNS IN THE FORMAT NECESSARY FOR BET PLACEMENT ON WEBSITE: {:} | {:}
 
     def set_player_rating(self, db_result):  # Sets player ratings for current match.
         if db_result == None:  

@@ -34,18 +34,21 @@ class SaltySocket():
         try:
             message = self.socket.recv(4096).decode('utf-8')
         except ConnectionAbortedError:
-            time.sleep(3)
+            time.sleep(2)
             self.open_socket()
         except ConnectionResetError:
-            time.sleep(3)
+            time.sleep(2)
             self.open_socket()
         self.is_ping(message)
         return message
 
     def is_ping(self, ping_message=''):
-        if ping_message.startswith("PING"):
-            self.send_message("PONG :tmi.twitch.tv\r\n")
-    
+        try:
+            if ping_message.startswith("PING"):
+                self.send_message("PONG :tmi.twitch.tv\r\n")
+        except AttributeError:
+            time.sleep(2)
+            self.is_ping()
     def send_ping(self):
         try:
             self.socket.send("PING :tmi.twitch.tv\r\n".encode('utf-8'))

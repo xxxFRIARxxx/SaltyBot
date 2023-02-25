@@ -68,9 +68,7 @@ while True:
                 my_socket.find_winstreak = True
 
                 # TODO:  Include data regression to help compose bet here.
-
                 interactor.place_bet_on_website(bettor.format_bet(bettor.predicted_winner(p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), bettor.suggested_bet(p1_probability, p1DB_streak, p2DB_streak), gameMode)) # Decide bet, and place bet 
-                # my_socket.get_tier() 
         elif (gameState == 'locked'):
             if (first_run == False):
                 if (new_match == 1):
@@ -86,18 +84,6 @@ while True:
                     my_socket.adjust_tier(thread.value3)
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), gameState)
                     recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, gameTime.snapshot, bettor.outcome, my_parser.is_tourney())
-
-# TODO:
-                # Exception in thread Thread-1:
-                # Traceback (most recent call last):
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\threading.py", line 1016, in _bootstrap_inner
-                #     self.run()
-                #   File "e:\Python Scripts\SaltyBot\SaltyReceiver.py", line 25, in run
-                #     run_message = self.sock.read_message() # While called, read twitch socket.  (NEEDS to BREAK out of loop - Socket open 24/7.)
-                #   File "e:\Python Scripts\SaltyBot\SaltySocket.py", line 44, in read_message
-                #     self.is_ping(message)
-                #   File "e:\Python Scripts\SaltyBot\SaltySocket.py", line 48, in is_ping
-                # AttributeError: 'NoneType' object has no attribute 'startswith'
 
 # TODO: Does it freeze last match of MM before tourney?
 
@@ -125,9 +111,7 @@ while True:
 
 # NOTE: GENERAL QUESTIONS / THINGS.
 # TODO: Make a winstreak-difference function?  (From where their winstreak was before the match, to where it is after the match: the difference)
-# TODO: Any way to make it so that for any general explosions, to kill and restart the process?
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for matchTime:
 #       SaltyBet: Exhibitions will start shortly. Thanks for watching!
-# TODO: Eventually make it so we can read twitch chat continously at the same time my program runs (C: please god help me)
 # TODO: Make a requirements and a readme?
         

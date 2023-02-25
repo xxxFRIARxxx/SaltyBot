@@ -31,17 +31,19 @@ class CustomThread(threading.Thread):
                 elif (run_message.find("Bets are OPEN")) != -1: 
                     response_message = re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', run_message)[0]  # Find the message from waifu
                     tier_res = re.findall(r"\((.){1} Tier\)", response_message)  # Parse the message from waifu in to tier
-                    if tier_res[0] == "P":
-                        self.value3 = 1
-                    elif tier_res[0] == "B":
-                        self.value3 = 2
-                    elif tier_res[0] == "A":
-                        self.value3 = 3
-                    elif tier_res[0] == "S":
-                        self.value3 = 4
-                    elif tier_res[0] == "X":
-                        self.value3 = 5
-                    else:
-                        print(tier_res[0])
-                        self.value3 = None            
+                    try:
+                        if tier_res[0] == "P":
+                            self.value3 = 1
+                        elif tier_res[0] == "B":
+                            self.value3 = 2
+                        elif tier_res[0] == "A":
+                            self.value3 = 3
+                        elif tier_res[0] == "S":
+                            self.value3 = 4
+                        elif tier_res[0] == "X":
+                            self.value3 = 5
+                        else:
+                            self.value3 = None
+                    except IndexError:
+                        self.value3 = None
                     print(f"Current Tier is: {self.value3}")

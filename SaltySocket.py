@@ -15,20 +15,28 @@ class SaltySocket():
         self.p1winstreak = None
         self.p2winstreak = None
         self.tier_res_conv = None
+        
 
     def open_socket(self):  
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((connection_data[0], connection_data[1]))
-        self.send_message(f"PASS {token}\r\n")
-        self.send_message(f"NICK {user}\r\n")
-        self.send_message(f"JOIN {channel}\r\n")
+        # self.send_message(f"PASS {token}\r\n")
+        # self.send_message(f"NICK {user}\r\n")
+        # self.send_message(f"JOIN {self.channel}\r\n")
+        self.socket.send(f"PASS {token}\r\n".encode("utf-8"))
+        self.socket.send(f"NICK {user}\r\n".encode("utf-8"))
+        self.socket.send(f"JOIN {channel}\r\n".encode("utf-8"))
+
 
     def close_socket(self):
         self.socket.close()
 
-    def send_message(self, constructor_message=''):
-            self.socket.send(constructor_message.encode('utf-8'))  
+    def send_message(self, constructor_message: str):
+        self.socket.send((constructor_message).encode('utf-8')) 
         
+    def send_twitch_chat(self, message: str):
+        self.socket.send(f"PRIVMSG {channel} :{message}\n".encode('utf-8'))
+                   
     def read_message(self):
         message = None
         try:
@@ -46,6 +54,7 @@ class SaltySocket():
         try:
             if ping_message.startswith("PING"):
                 self.send_message("PONG :tmi.twitch.tv\r\n")
+
         except AttributeError:
             time.sleep(2)
             self.is_ping()

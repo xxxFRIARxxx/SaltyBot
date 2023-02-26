@@ -36,7 +36,7 @@ class SaltyRecorder():
             (p1name, p1odds, p1winstatus, adj_p1winstreak, p1mu, p1sigma, adj_p1_tier, is_tourney, matchTime, p2name, p2odds, p2winstatus, adj_p2winstreak, p2mu, p2sigma, adj_p2_tier, is_tourney, matchTime, betOutcome,)
             ]
             
-            if all(variables is not None for variables in [adj_p1winstreak, adj_p2winstreak, adj_p1_tier, adj_p2_tier]): # If both player-winstreaks and tier come back successfully, record the match.
+            if all(variables is not None for variables in [adj_p1winstreak, adj_p2winstreak, adj_p1_tier, adj_p2_tier]): # If both adjusted-player-winstreaks and adjusted-tier come back successfully, record the match.
                 try:
                     with self.con:
                         self.con.executemany(sql, data)

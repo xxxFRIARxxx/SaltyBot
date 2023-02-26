@@ -18,4 +18,7 @@ class CustomThread(threading.Thread):
             run_message = self.sock.read_message() 
             print(run_message)
 
-CustomThread.start()
+test = CustomThread()
+
+test.start()
+

@@ -1,7 +1,7 @@
 from SaltySocket import SaltySocket
 import re
 import threading
-
+import random
 class CustomThread(threading.Thread):
 
     def __init__(self):
@@ -15,7 +15,7 @@ class CustomThread(threading.Thread):
         self.sock.open_socket() 
         self.sock.send_ping()  
         while True:
-            run_message = self.sock.read_message() 
+            run_message = self.sock.read_message()
             if (run_message.startswith(":waifu4u!")): 
                 if (run_message.find('Bets are locked.')) != -1:
                     response_message = re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', run_message)[0]  # Find the message from waifu
@@ -47,3 +47,17 @@ class CustomThread(threading.Thread):
                     except IndexError:
                         self.value3 = None
                     print(f"Current Tier is: {self.value3}")
+                # elif (run_message.find("Payout")) != -1:
+                #     self.sock.send_twitch_chat("This is a test of the Emergency Broadcast System")
+
+            # set timer snapshot here, and set all proper flags to move to recording, and the next stage.
+            
+            # elif (run_message.startswith(":saltybet!")):
+            #     if (run_message.find("Exhibitions will start shortly.") != -1):
+            #         response_message = re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', run_message)[0]  # Find the message from SaltyBet
+
+
+
+                
+
+            

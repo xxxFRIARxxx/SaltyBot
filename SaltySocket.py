@@ -20,13 +20,9 @@ class SaltySocket():
     def open_socket(self):  
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((connection_data[0], connection_data[1]))
-        # self.send_message(f"PASS {token}\r\n")
-        # self.send_message(f"NICK {user}\r\n")
-        # self.send_message(f"JOIN {self.channel}\r\n")
-        self.socket.send(f"PASS {token}\r\n".encode("utf-8"))
-        self.socket.send(f"NICK {user}\r\n".encode("utf-8"))
-        self.socket.send(f"JOIN {channel}\r\n".encode("utf-8"))
-
+        self.send_message(f"PASS {token}\r\n")
+        self.send_message(f"NICK {user}\r\n")
+        self.send_message(f"JOIN {channel}\r\n")
 
     def close_socket(self):
         self.socket.close()

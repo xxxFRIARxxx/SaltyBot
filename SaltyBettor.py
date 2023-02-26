@@ -63,9 +63,9 @@ class SaltyBettor():
         return self.predicted_w
     
     
-    def suggested_bet(self, p1_probability, p1DB_streak, p2DB_streak, gameMode):  # TODO: Winstreaks first?
+    def suggested_bet(self, p1_probability, p1DB_streak, p2DB_streak, game_mode):  # TODO: Winstreaks first?
         suggested_wager = 1
-        if (gameMode == 'Tournament') and (self.balance < 30000):
+        if (game_mode == 'Tournament') and (self.balance < 30000):
             suggested_wager = self.balance
         elif p1_probability == None:
             suggested_wager = 1
@@ -104,11 +104,11 @@ class SaltyBettor():
             self.rating = Rating(db_result[0],db_result[1])
         return self.rating # Returns either the default rating if none is found in the DB, or the rating of the selected player from their Mu and Sigma pulled from the DB.
     
-    def update_ranking_after(self, gameState, p1finalinput, p2finalinput):  # Updates rankings of both players after current match is over.
-        if gameState == "1":
+    def update_ranking_after(self, game_state, p1finalinput, p2finalinput):  # Updates rankings of both players after current match is over.
+        if game_state == "1":
             p1final, p2final = rate_1vs1(p1finalinput, p2finalinput)
             print("Player 1 wins!")
-        elif gameState == "2":
+        elif game_state == "2":
             p2final, p1final = rate_1vs1(p2finalinput, p1finalinput)
             print("Player 2 wins!")
         return p1final, p2final # Returns final Ratings objects of each player from the current match after completion.  Ratings objects contain updated Mu and Sigma values.  

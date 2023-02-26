@@ -26,14 +26,14 @@ class SaltyRecorder():
                     p2tier INT,
                     p2tourney INT,
                     p2time INT,
-                    betOutcome INT
+                    bet_outcome INT
                 );
             """)
                
-        def record_match(self, p1name, p1odds, p1winstatus, p2name, p2odds, p2winstatus, adj_p1winstreak, adj_p2winstreak, adj_p1_tier, adj_p2_tier, p1mu, p1sigma, p2mu, p2sigma, matchTime, betOutcome, is_tourney):  
+        def record_match(self, p1name, p1odds, p1winstatus, p2name, p2odds, p2winstatus, adj_p1winstreak, adj_p2winstreak, adj_p1_tier, adj_p2_tier, p1mu, p1sigma, p2mu, p2sigma, match_time, bet_outcome, is_tourney):  
             sql = 'INSERT INTO SBMATCHES (p1name, p1odds, p1win, p1streak, p1mu, p1sigma, p1tier, p1tourney, p1time, p2name, p2odds, p2win, p2streak, p2mu, p2sigma, p2tier, p2tourney, p2time, betOutcome) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             data = [
-            (p1name, p1odds, p1winstatus, adj_p1winstreak, p1mu, p1sigma, adj_p1_tier, is_tourney, matchTime, p2name, p2odds, p2winstatus, adj_p2winstreak, p2mu, p2sigma, adj_p2_tier, is_tourney, matchTime, betOutcome,)
+            (p1name, p1odds, p1winstatus, adj_p1winstreak, p1mu, p1sigma, adj_p1_tier, is_tourney, match_time, p2name, p2odds, p2winstatus, adj_p2winstreak, p2mu, p2sigma, adj_p2_tier, is_tourney, match_time, bet_outcome,)
             ]
             
             if all(variables is not None for variables in [adj_p1winstreak, adj_p2winstreak, adj_p1_tier, adj_p2_tier]): # If both adjusted-player-winstreaks and adjusted-tier come back successfully, record the match.
@@ -61,7 +61,7 @@ class SaltyRecorder():
 
         def get_win_avg(self): # Gets the average percentage of bets you've won.  (NOTE:  Actual probability betting started at match ID 250.)
             with self.con:
-                data = self.con.execute("""SELECT avg(betOutcome) FROM SBMATCHES;""")
+                data = self.con.execute("""SELECT avg(bet_outcome) FROM SBMATCHES;""")
                 avg_bet = data.fetchall()
             print(avg_bet[0][0])
 
@@ -113,7 +113,7 @@ class SaltyRecorder():
                 with self.con:
                     data = self.con.execute(f"""SELECT *, max(id) as latest FROM SBMATCHES WHERE p1name = ("{player_search}") OR p2name = ("{player_search}");""")
                     most_recent = data.fetchall()
-                keys = ["id", "p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "matchLength", "betOutcome", "tier", "tourneyFlag"]
+                keys = ["id", "p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "matchLength", "bet_outcome", "tier", "tourneyFlag"]
                 dict_list = []
                 for i in range(len(most_recent)):
                     dict_list.append(dict(zip(keys, most_recent[i])))

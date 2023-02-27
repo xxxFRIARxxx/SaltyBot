@@ -12,3 +12,6 @@ class SaltyJson():
         except requests.exceptions.ConnectionError:
             self.session = requests.Session()
             self.get_json()
+        except requests.exceptions.JSONDecodeError:
+            self.session = requests.Session()
+            self.get_json()

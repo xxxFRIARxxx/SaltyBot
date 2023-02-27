@@ -83,7 +83,7 @@ while True:
     elif game_mode == "Exhibition":
         if (first_run == False):
             if (new_match == 2):
-                if (my_parser.get_matchesremaining() == 25) and (game_state in [1,2]):
+                if (my_parser.get_matches_remaining() == 25) and (game_state in [1,2]):
                     new_match = 0
                     game_time.timer_snapshot() # TODO: Instead of calling snapshot here, get flag from SaltyBet in Twitch chat.
                     ratings_to_db = bettor.update_ranking_after(game_state, p1DB_ratings, p2DB_ratings) # Updates ratings after the match.

@@ -60,15 +60,15 @@ class SaltyJsonParser():
             return 0
         
     def get_tourney_remaining(self):
-        if self.get_matchesremaining() != 1:
-            self.tourney_remaining = self.get_matchesremaining() - 1
-        elif self.get_matchesremaining() == 1:
-            self.tourney_remaining = self.get_matchesremaining()
+        if self.get_matches_remaining() != 1:
+            self.tourney_remaining = self.get_matches_remaining() - 1
+        elif self.get_matches_remaining() == 1:
+            self.tourney_remaining = self.get_matches_remaining()
         else:
             self.tourney_remaining = 0
         return self.tourney_remaining 
 
-    def get_matchesremaining(self):
+    def get_matches_remaining(self):
         remaining_value = self.json_dict["remaining"].split(' ', 1)[0]
         if (remaining_value.isdigit()):
             return int(remaining_value)
@@ -90,7 +90,7 @@ class SaltyJsonParser():
     def get_gameMode(self):
         if self.is_exhib() is True:
             game_mode = 'Exhibition'
-            print(f"Currently in {game_mode} with {self.get_matchesremaining()} matches remaining.  No bets are placed and nothing is recorded.  Game state is {self.get_gamestate()}.  ")
+            print(f"Currently in {game_mode} with {self.get_matches_remaining()} matches remaining.  No bets are placed and nothing is recorded.  Game state is {self.get_gamestate()}.  ")
             return game_mode
         elif (self.is_tourney() == 1):
             game_mode = 'Tournament'
@@ -98,7 +98,7 @@ class SaltyJsonParser():
             return game_mode
         elif (self.is_exhib() is False) and (self.is_tourney() == 0):
             game_mode = 'Matchmaking'
-            print(f"Currently in {game_mode} with {self.get_matchesremaining()} matches remaining.  Game state is {self.get_gamestate()}.")  
+            print(f"Currently in {game_mode} with {self.get_matches_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")  
             return game_mode
         else:
             print("SaltyBet probably broke.  This means that it's not MM, Exhib, OR a Tourney.")

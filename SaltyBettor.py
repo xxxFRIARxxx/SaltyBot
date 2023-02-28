@@ -1,9 +1,8 @@
 import random
-from trueskill import Rating, rate_1vs1
 import webbrowser
-from math import sqrt
-from statistics import NormalDist
 import math
+from trueskill import Rating, rate_1vs1
+from statistics import NormalDist
 
 class SaltyBettor():
     def __init__(self):

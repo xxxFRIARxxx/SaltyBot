@@ -1,7 +1,6 @@
 from SaltySocket import SaltySocket
 import re
 import threading
-import random
 class CustomThread(threading.Thread):
 
     def __init__(self):

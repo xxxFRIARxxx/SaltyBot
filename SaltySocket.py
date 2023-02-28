@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 connection_data = ('irc.chat.twitch.tv', 6667)
-readbuffer = ""
+channel = "#saltybet"
 
 class SaltySocket():
     def __init__(self):
@@ -20,7 +20,7 @@ class SaltySocket():
         self.socket.connect((connection_data[0], connection_data[1]))
         self.send_message(f"PASS {os.getenv('token')}\r\n")
         self.send_message(f"NICK {os.getenv('user')}\r\n")
-        self.send_message(f"JOIN {os.getenv('channel')}\r\n")
+        self.send_message(f"JOIN {channel}\r\n")
 
     def close_socket(self):
         self.socket.close()
@@ -29,7 +29,7 @@ class SaltySocket():
         self.socket.send((constructor_message).encode('utf-8')) 
         
     def send_twitch_chat(self, message: str):
-        self.socket.send(f"PRIVMSG {os.getenv('channel')} :{message}\n".encode('utf-8'))
+        self.socket.send(f"PRIVMSG {channel} :{message}\n".encode('utf-8'))
                    
     def read_message(self):
         message = None

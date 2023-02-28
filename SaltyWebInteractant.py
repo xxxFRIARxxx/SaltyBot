@@ -38,7 +38,7 @@ class SaltyWebInteractant():
         self.login()
 
     def login(self):
-        login_data = {'email': os.getenv('EMAIL'), 'pword': os.getenv('PASSWORD'), 'authenticate': 'signin'}
+        login_data = {'email': os.getenv('email'), 'pword': os.getenv('password'), 'authenticate': 'signin'}
         response = self.session.post(URL_SIGNIN, data=login_data)
         if ( response.url != "https://www.saltybet.com/" and response.url != "http://www.saltybet.com/" ):
             raise RuntimeError("Error: Wrong URL: " + response.url)

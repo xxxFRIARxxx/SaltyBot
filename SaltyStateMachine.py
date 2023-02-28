@@ -82,7 +82,6 @@ while True:
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), game_state)
                     recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())
 
-
     # elif game_mode == "Exhibition":
     #     if (first_run == False):
     #         if (new_match == 2):
@@ -94,68 +93,6 @@ while True:
                 #     my_socket.adjust_tier(thread.value3)
                 #     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), game_state)
                 #     recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())
-# TODO: EXPLOSION 2:
-
-                # Exception in thread Thread-1:
-                # Traceback (most recent call last):
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\threading.py", line 1016, in _bootstrap_inner
-                #     self.run()
-                #   File "e:\Python Scripts\SaltyBot\SaltyReceiver.py", line 19, in run
-                #     if (run_message.startswith(":waifu4u!")):
-                # AttributeError: 'NoneType' object has no attribute 'startswith'
-# TODO: EXPLOSION:
-                # Traceback (most recent call last):
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 703, in urlopen
-                #     httplib_response = self._make_request(
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 386, in _make_request
-                #     self._validate_conn(conn)
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 1042, in _validate_conn
-                #     conn.connect()
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connection.py", line 414, in connect
-                #     self.sock = ssl_wrap_socket(
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\util\ssl_.py", line 449, in ssl_wrap_socket  
-                #     ssl_sock = _ssl_wrap_socket_impl(
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\util\ssl_.py", line 493, in _ssl_wrap_socket_impl
-                #     return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\ssl.py", line 513, in wrap_socket
-                #     return self.sslsocket_class._create(
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\ssl.py", line 1071, in _create
-                #     self.do_handshake()
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\ssl.py", line 1342, in do_handshake
-                #     self._sslobj.do_handshake()
-                # ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:997)
-
-                # During handling of the above exception, another exception occurred:
-
-                # Traceback (most recent call last):
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\adapters.py", line 489, in send
-                #     resp = conn.urlopen(
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\connectionpool.py", line 787, in urlopen     
-                #     retries = retries.increment(
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\urllib3\util\retry.py", line 592, in increment       
-                #     raise MaxRetryError(_pool, url, error or ResponseError(cause))
-                # urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='www.saltybet.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 
-                # alert handshake failure (_ssl.c:997)')))
-
-                # During handling of the above exception, another exception occurred:
-
-                # Traceback (most recent call last):
-                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 40, in <module>
-                #     balance = interactor.get_balance()
-                #   File "e:\Python Scripts\SaltyBot\SaltyWebInteractant.py", line 51, in get_balance
-                #     response = requests.get('https://www.saltybet.com/', cookies=cookies, headers=headers)
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\api.py", line 73, in get
-                #     return request("get", url, params=params, **kwargs)
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\api.py", line 59, in request
-                #     return session.request(method=method, url=url, **kwargs)
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\sessions.py", line 587, in request
-                #     resp = self.send(prep, **send_kwargs)
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\sessions.py", line 701, in send
-                #     r = adapter.send(request, **kwargs)
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\adapters.py", line 563, in send
-                #     raise SSLError(e, request=request)
-                # requests.exceptions.SSLError: HTTPSConnectionPool(host='www.saltybet.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:997)')))
-
 
 # TODO: Last match of tourney still doesn't record:
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.

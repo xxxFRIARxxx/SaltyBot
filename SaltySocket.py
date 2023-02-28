@@ -72,9 +72,9 @@ class SaltySocket():
             self.adj_p1winstreak = 1
         elif (self.adj_p1winstreak <= 0) and (p1win_status == 0):
             self.adj_p1winstreak = (self.adj_p1winstreak - 1)  
-        elif (self.adj_p1winstreak >= 0) and (p1win_status == 1):
+        elif (self.adj_p1winstreak > 0) and (p1win_status == 1):
             self.adj_p1winstreak = (self.adj_p1winstreak + 1) 
-        elif (self.adj_p1winstreak >= 0) and (p1win_status == 0):
+        elif (self.adj_p1winstreak > 0) and (p1win_status == 0):
             self.adj_p1winstreak = -1
         else:
             print("This prints if P1 winstreak hasn't been adjusted for some reason.")
@@ -85,9 +85,9 @@ class SaltySocket():
             self.adj_p2winstreak = 1
         elif (self.adj_p2winstreak <= 0) and (p2win_status == 0):
             self.adj_p2winstreak = (self.adj_p2winstreak - 1)       
-        elif (self.adj_p2winstreak >= 0) and (p2win_status == 1):
+        elif (self.adj_p2winstreak > 0) and (p2win_status == 1):
             self.adj_p2winstreak = (self.adj_p2winstreak + 1) 
-        elif (self.adj_p2winstreak >= 0) and (p2win_status == 0):
+        elif (self.adj_p2winstreak > 0) and (p2win_status == 0):
             self.adj_p2winstreak = -1
         else:
             print("This prints if P2 winstreak hasn't been adjusted for some reason.")

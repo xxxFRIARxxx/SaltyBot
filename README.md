@@ -22,9 +22,9 @@ user = ""
 Where:
 -----
 
-EMAIL = Your email to login to SaltyBet.com
+email = Your email to login to SaltyBet.com
 
-PASSWORD = Your password to login to SaltyBet.com
+password = Your password to login to SaltyBet.com
 
 token = Your personal oauth token to login to Twitch (Get one here:  https://twitchapps.com/tmi/)
 

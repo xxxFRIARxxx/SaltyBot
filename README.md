@@ -1,9 +1,22 @@
 # SaltyBot - A bot for SaltyBet.com.
 
-Data collection - In progress (ETA: 4/1)
+This bot records its own database, and bets automatically based off of your balance (and whether it's a tournament or not).
 
-Betting strategies - In progress (Continual reworks until roughly 5/1)
+Only ever bets max 1/2 your balance in MM. (Rare:  When the best player recorded in DB plays against the worst player recorded in DB)
+Bets smaller amounts once balance is over 20k in Tournaments.  (for now)
 
-Minor edge cases - Mostly done!
+Steps for use:
+-----
+Create a file called just ".env".  In this .env file, include your personal strings for the following variables:
 
-Regressions (if needed) - Start date ~ 4/7
+email = ""
+password = ""
+token = ""
+user = ""
+
+Where:
+
+EMAIL = Your email to login to SaltyBet.com
+PASSWORD = Your password to login to SaltyBet.com
+token = Your personal oauth token to login to Twitch (Get one here:  https://twitchapps.com/tmi/)
+user = Your username for Twitch

@@ -48,16 +48,20 @@ class SaltyWebInteractant():
         return response
 
     def get_balance(self):
-        response = requests.get('https://www.saltybet.com/', cookies=cookies, headers=headers)
-        response.raise_for_status()
         try:
+            response = requests.get('https://www.saltybet.com/', cookies=cookies, headers=headers)
             soup_parser = BeautifulSoup(response.content, "html.parser")
             balance = int(soup_parser.find(id="balance").string.replace(',',''))
             return balance
         except requests.exceptions.HTTPError:
+            time.sleep(2)
             self.login()
             self.get_balance()
-            
+        except requests.exceptions.SSLError:
+            time.sleep(2)
+            self.login()
+            self.get_balance()
+
     def place_bet_on_website(self, bet_data):
         self.session.post(URL_BET, cookies = cookies, headers = headers, data = bet_data)
         print("Bet placed of $" + str(bet_data['wager']) + " on " + str(bet_data['selectedplayer']))

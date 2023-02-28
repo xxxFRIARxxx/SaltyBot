@@ -48,11 +48,10 @@ class CustomThread(threading.Thread):
                         self.value3 = None
                     print(f"Current Tier is: {self.value3}")
                 # elif (run_message.find("Payout")) != -1:
-
-                    # self.sock.send_twitch_chat("This is a test of the Emergency Broadcast System")
+                #     self.sock.send_twitch_chat("This is a test of the Emergency Broadcast System")
 
             # set timer snapshot here, and set all proper flags to move to recording, and the next stage.
-
+            
             # elif (run_message.startswith(":saltybet!")):
             #     if (run_message.find("Exhibitions will start shortly.") != -1):
             #         response_message = re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', run_message)[0]  # Find the message from SaltyBet

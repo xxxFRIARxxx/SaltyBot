@@ -31,6 +31,9 @@ class SaltyRecorder():
             """)
                
         def record_match(self, p1name, p1odds, p1winstatus, p2name, p2odds, p2winstatus, adj_p1winstreak, adj_p2winstreak, adj_p1_tier, adj_p2_tier, p1mu, p1sigma, p2mu, p2sigma, match_time, bet_outcome, is_tourney):  
+            
+            # NOTE: *******DO NOT FORGET TO ALSO CHANGE get_most_recent() WITH UPDATED KEYS YOU ADD/REMOVE FROM THE LIST ON THE LINE BELOW THIS ONE:*******
+            
             sql = 'INSERT INTO SBMATCHES (p1name, p1odds, p1win, p1streak, p1mu, p1sigma, p1tier, p1tourney, p1time, p2name, p2odds, p2win, p2streak, p2mu, p2sigma, p2tier, p2tourney, p2time, betOutcome) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             data = [
             (p1name, p1odds, p1winstatus, adj_p1winstreak, p1mu, p1sigma, adj_p1_tier, is_tourney, match_time, p2name, p2odds, p2winstatus, adj_p2winstreak, p2mu, p2sigma, adj_p2_tier, is_tourney, match_time, bet_outcome,)
@@ -97,7 +100,7 @@ class SaltyRecorder():
         def get_ratings_from_DB(self, player_search):  # Gets the Mu and Sigma from the latest match, if a match exists.  # NOTE:  Can return None. (None = Default Ratings will be assigned from Bettor later.)
             player_mu = None
             player_sigma = None
-            if self.get_most_recent(player_search) == None:
+            if (self.get_most_recent(player_search) == []) or (self.get_most_recent(player_search) == None):
                 player_mu = None
                 player_sigma = None
             elif self.get_most_recent(player_search)[0]['p1name'] == player_search:
@@ -112,8 +115,8 @@ class SaltyRecorder():
             if self.get_player_matches(player_search) != []:  # If a match exists previously in the DB for the selected player.
                 with self.con:
                     data = self.con.execute(f"""SELECT *, max(id) as latest FROM SBMATCHES WHERE p1name = ("{player_search}") OR p2name = ("{player_search}");""")
-                    most_recent = data.fetchall()
-                keys = ["id", "p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "matchLength", "bet_outcome", "tier", "tourneyFlag"]
+                    most_recent = data.fetchall()                                
+                keys = ["id", "p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p1tier", "p1tourney", "p1time", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "p2tier", "p2tourney", "p2time", "bet_outcome"]
                 dict_list = []
                 for i in range(len(most_recent)):
                     dict_list.append(dict(zip(keys, most_recent[i])))

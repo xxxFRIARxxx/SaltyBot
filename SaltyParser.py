@@ -90,15 +90,19 @@ class SaltyJsonParser():
     def get_gameMode(self):
         if self.is_exhib() is True:
             game_mode = 'Exhibition'
-            print(f"Currently in {game_mode} with {self.get_matches_remaining()} matches remaining.  No bets are placed and nothing is recorded.  Game state is {self.get_gamestate()}.  ")
             return game_mode
         elif (self.is_tourney() == 1):
             game_mode = 'Tournament'
-            print(f"Currently in {game_mode} with {self.get_tourney_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")
             return game_mode
         elif (self.is_exhib() is False) and (self.is_tourney() == 0):
-            game_mode = 'Matchmaking'
-            print(f"Currently in {game_mode} with {self.get_matches_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")  
+            game_mode = 'Matchmaking' 
             return game_mode
         else:
             print("SaltyBet probably broke.  This means that it's not MM, Exhib, OR a Tourney.")
+    def gameMode_printer(self):
+        if (self.get_gameMode() == "Tournament"):
+            print(f"Currently in {self.get_gameMode()} with {self.get_tourney_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")
+        elif (self.get_gameMode() == "Matchmaking"):
+            print(f"Currently in {self.get_gameMode()} with {self.get_matches_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")
+        elif (self.get_gameMode() == "Exhibition"):
+            print(f"Currently in {self.get_gameMode()} with {self.get_matches_remaining()} matches remaining.  No bets are placed and nothing is recorded.  Game state is {self.get_gamestate()}.")

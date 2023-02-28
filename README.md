@@ -12,22 +12,10 @@ Steps for use:
 -----
 Create a file called just ".env".  In this .env file, include your personal strings for the following variables:
 
-email = ""
+email = "Your email to login to SaltyBet.com"
 
-password = ""
+password = "Your password to login to SaltyBet.com"
 
-token = ""
+token = "Your personal oauth token to login to Twitch (Get one here:  https://twitchapps.com/tmi/)"
 
-user = ""
-
-
-Where:
------
-
-email = Your email to login to SaltyBet.com
-
-password = Your password to login to SaltyBet.com
-
-token = Your personal oauth token to login to Twitch (Get one here:  https://twitchapps.com/tmi/)
-
-user = Your username for Twitch
+user = "Your username for Twitch"

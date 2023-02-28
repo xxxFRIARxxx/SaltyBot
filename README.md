@@ -7,15 +7,3 @@ It gets better over time.
 Only ever bets max 1/2 your balance in MM. (Rare:  When the best player recorded in DB plays against the worst player recorded in DB)
 
 Bets smaller amounts once balance is over 20k in Tournaments.  (for now)
-
-Steps for use:
------
-Create a file called just ".env".  In this .env file, include your personal strings for the following variables:
-
-email = "Your email to login to SaltyBet.com"
-
-password = "Your password to login to SaltyBet.com"
-
-token = "Your personal oauth token to login to Twitch (Get one here:  https://twitchapps.com/tmi/)"
-
-user = "Your username for Twitch"

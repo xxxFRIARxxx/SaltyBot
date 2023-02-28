@@ -61,9 +61,19 @@ class SaltyWebInteractant():
             time.sleep(2)
             self.login()
             self.get_balance()
+        except requests.exceptions.ConnectionError:
+            time.sleep(2)
+            self.login()
+            self.get_balance()
 
     def place_bet_on_website(self, bet_data):
-        self.session.post(URL_BET, cookies = cookies, headers = headers, data = bet_data)
-        print("Bet placed of $" + str(bet_data['wager']) + " on " + str(bet_data['selectedplayer']))
+        try:
+            self.session.post(URL_BET, cookies = cookies, headers = headers, data = bet_data)
+            print("Bet placed of $" + str(bet_data['wager']) + " on " + str(bet_data['selectedplayer']))
+        except requests.exceptions.ConnectionError:
+            time.sleep(2)
+            self.login()
+            self.place_bet_on_website()
+
 
 

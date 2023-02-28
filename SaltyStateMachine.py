@@ -61,6 +61,7 @@ while True:
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
                 new_match = 1
                 my_socket.find_winstreak = True
+                # TODO:  bettor.set_balance(interactor.get_balance()) makes this program go into hyperdrive
                 bettor.set_balance(balance) # Sets and displays current balance of your account.
                 print(f"Player 1:   Mu = {p1DB_ratings.mu}  Sigma = {p1DB_ratings.sigma}  Winstreak from DB = {p1DB_streak}")
                 print(f"Player 2:   Mu = {p2DB_ratings.mu}  Sigma = {p2DB_ratings.sigma}  Winstreak from DB = {p2DB_streak}")
@@ -93,6 +94,18 @@ while True:
                 #     my_socket.adjust_tier(thread.value3)
                 #     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), game_state)
                 #     recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())
+
+
+# TODO: EXPLOSION:
+                # Traceback (most recent call last):
+                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 41, in <module>
+                #     game_mode = my_parser.get_gameMode()
+                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 91, in get_gameMode
+                #     if self.is_exhib() is True:
+                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 46, in is_exhib
+                #     exhib_split = self.json_dict["remaining"].split(' ')[1]
+                # TypeError: 'NoneType' object is not subscriptable
+
 
 # TODO: Last match of tourney still doesn't record:
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.

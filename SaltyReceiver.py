@@ -14,7 +14,7 @@ class CustomThread(threading.Thread):
     def run(self):
         self.sock.open_socket() 
         self.sock.send_ping()
-        with alive_bar(spinner=None,enrich_print=False, length=55, unknown="brackets", stats=False, elapsed=False, monitor=False) as bar:  
+        with alive_bar(spinner=None,enrich_print=False, length=72, unknown="brackets", stats=False, elapsed=False, monitor=False):  
             while True:
                 run_message = self.sock.read_message()
                 if run_message != None:

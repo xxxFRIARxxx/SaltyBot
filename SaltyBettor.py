@@ -59,33 +59,6 @@ class SaltyBettor():
             else:
                 self.predicted_w = None
         return self.predicted_w
-
-    # Streaks first:
-                
-    # def suggested_bet(self, p1_probability, p1DB_streak, p2DB_streak, game_mode):
-    #     suggested_wager = 1
-    #     if (game_mode == 'Tournament') and (self.balance < 20000):
-    #         suggested_wager = self.balance
-    #     elif (p1DB_streak == None) or (p2DB_streak == None): # If either streak comes back None, use probability
-    #         if p1_probability == None: 
-    #             suggested_wager = 1
-    #         elif p1_probability == .5:
-    #             suggested_wager = 1
-    #         else:
-    #             suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
-
-    #     elif p1DB_streak != p2DB_streak:
-    #         suggested_wager = round((.01*self.balance) + ((.01*self.balance) * (.1*abs((p1DB_streak-p2DB_streak)))))
-    #     elif p1_probability == None:
-    #         suggested_wager = 1
-    #     elif p1_probability == .5:
-    #         suggested_wager = 1
-    #     else:
-    #         suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
-    #     return suggested_wager            
-    
-
-    # Probabilities first:
               
     def suggested_bet(self, p1_probability, p1DB_streak, p2DB_streak, game_mode):
         suggested_wager = 1

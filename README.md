@@ -53,11 +53,15 @@ Since TrueSkill uses the Bayesian inference algorithm, I use the cumulative dist
 
 ## How does betting work in Matchmaking?
 
-If the probability of winning != 50%, this bot bets an amount based off of the difference in win-probability against 50%.  The amount wagered in this comparison is NEVER LARGER than 1/2 your balance (Even THIS is still very rare:  when the best player ever recorded in DB plays against the worst player ever recorded in DB).  
+**If the probability of winning != 50%:**  
+
+This bot bets an amount based off of the difference in win-probability against 50%.  The amount wagered in this comparison is NEVER LARGER than 1/2 your balance (Even THIS is still very rare:  when the best player ever recorded in DB plays against the worst player ever recorded in DB).  
 
 * Typical wager amounts in this comparison are around 1/300th of your balance during early stages of database building.
 
-If the probability of winning == 50% (both new players to the DB, or both with the same rating pulled from the DB), it looks at winstreaks found in the database.  If they've been found, it bets an amount NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  (Even THIS is very rare:  when the winstreak difference is 100).  
+**If the probability of winning == 50%** (both new players to the DB, or both with the same rating pulled from the DB):
+
+This bot then looks at winstreaks found in the database.  If they've been found, it bets an amount ALMOST NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  (Even THIS is very rare:  when the winstreak difference is 100.  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
 
 * Typical wager amounts in this comparison are a little higher than based off of probability, at roughly 1/100th of your balance during ANY time this condition hits.  (Will probably be reworked later) 
 

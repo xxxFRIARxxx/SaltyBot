@@ -75,7 +75,8 @@ In Tournaments, this bot wagers your entire tournament-balance up to $20,000 eve
 
 ## How does betting or match-recording work in Exhibitions?
 
-It doesn't, lol.  Exhibitions are so fucking wacky, that for right now, I'm just ignoring them completely.  No bets, no database recording, no nothing. I have the ability to do this, I just haven't implemented it yet.
+It doesn't, lol.  Exhibitions are so fucking wacky, that for right now, I'm just ignoring them completely.  
+No bets, no database recording, no nothing. I have the ability to do this, I just haven't implemented it yet.
 
 ## Important note - PATIENCE IS A VIRTUE!
 

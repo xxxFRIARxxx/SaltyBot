@@ -1,10 +1,10 @@
 # SaltyBot - A bot for SaltyBet.com.
 
-Completion Date ETA: 4/1/23
-
 Current state:  Working!
 
-Working on:  Trimming the fat.  Collecting a DB to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23
+Working on:  
+* Trimming the fat  
+* Collecting a DB to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23
 
 ## What This Bot Does:
 

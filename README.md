@@ -1,5 +1,7 @@
 # SaltyBot - A bot for SaltyBet.com.
 
+Completion Date ETA: 4/1
+
 This bot records its own database, and bets automatically based off of your balance (and whether it's a tournament or not).  
 
 It gets better over time.

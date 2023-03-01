@@ -77,4 +77,4 @@ It doesn't, lol.  Exhibitions are so fucking wacky, that for right now, I'm just
 
 Because of the way this bot assigns ratings and probabilities of winning, ratings gain confidence with time.  You'll find the most success of this bot once your database reaches ~20,000+ entries (roughly 30 days straight of logging).  I know...I know...but k'mon, you're building your own database of ongoing fights!  It'll take a bit!  
 
-Realistically, it'll probably wager $1 on all bets up to ~1000 entries in the DB, then you'll probably come out 50:50 until about ~3000 entries, then it'll only get better from there.
+Realistically, it'll probably wager $1 on all bets up to ~1000 entries in the DB, you'll probably come out a little <50% on bets from about 1000-3000 entries (due to it betting on a ranked fighter when it finds them, against a new fighter with an assigned default ranking), then it'll only get better from there.

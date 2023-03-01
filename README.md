@@ -59,7 +59,7 @@ In Matchmaking, if the probability of winning ISN'T 50%, this bot bets an amount
 
 Still in Matchmaking, if the probability of winning IS 50% (both new players to the DB, or both with the same rating pulled from the DB), it looks at winstreaks found in the database.  If they've been found, it bets an amount NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  (Even THIS is very rare:  when the winstreak difference is 100).  
 
-* Typical wager amounts in this comparison are a little higher than based off of probability, at roughly 1/100th of your balance during ANY portion of building your database.  (Will probably be reworked later) 
+* Typical wager amounts in this comparison are a little higher than based off of probability, at roughly 1/100th of your balance during ANY time this condition hits.  (Will probably be reworked later) 
 
 ## What happens when ratings or winstreaks haven't been found in the DB?
 

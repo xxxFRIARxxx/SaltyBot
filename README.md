@@ -1,10 +1,10 @@
 # SaltyBot - A bot for SaltyBet.com.
 
-Completion Date ETA: 4/1
+Completion Date ETA: 4/1/23
 
 Current state:  Working!
 
-Working on:  Trimming the fat.  Collecting a DB to test out betting patterns and accuracy of win-probability.  ETA = 3/15
+Working on:  Trimming the fat.  Collecting a DB to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23
 
 ## What This Bot Does:
 
@@ -37,7 +37,10 @@ TrueSkill:
 
 ## Step 1:  Smash that like button!
 
-Double click "SaltyStateMachine.py" to run the program until the heat-death of the universe, or the SaltyBet JSON/Twitch servers shut down.
+Run "SaltyStateMachine.py" to run the program until:
+* The heat-death of the universe
+* Your power supply/internet connection fails
+* Or the SaltyBet JSON/Twitch servers shut down
 
 # Details on betting and rankings
 

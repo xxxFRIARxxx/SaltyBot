@@ -61,7 +61,7 @@ This bot bets an amount based off of the difference in win-probability against 5
 
 **If the probability of winning == 50%** (both new players to the DB, or both with the same rating pulled from the DB):
 
-This bot then looks at winstreaks found in the database.  If they've been found, it bets an amount ALMOST NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  (Even THIS is very rare:  when the winstreak difference is 100.  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
+This bot then looks at winstreaks found in the database.  If they've been found, it bets an amount ALMOST NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  (Even THIS is very rare:  when the winstreak difference is 100 (insanity).  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
 
 * Typical wager amounts in this comparison are a little higher than based off of probability, at roughly 1/100th of your balance during ANY time this condition hits.  (Will probably be reworked later) 
 

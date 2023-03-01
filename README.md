@@ -17,7 +17,7 @@ Working on:
 
 ## Step 0:  Login and Python Prerequisites
 
-**Login Prerequisites**
+**Login Prerequisites:**
 
 Create a file called just ".env" in the working-directory of SaltyBot (without quotes).  In this .env file, include your personal strings for the following variables (INCLUDE QUOTES):
 
@@ -26,7 +26,7 @@ password = "your_saltyBet.com_password_here"
 token = "your_Twitch_oauth_token_here" (Get one here: https://twitchapps.com/tmi/)  
 user = "your_Twitch_username_here"
 
-**Python Prerequisites**
+**Python Prerequisites:**
 
 DotEnv:  
 `pip install python-dotenv`   

@@ -1,4 +1,5 @@
 import requests
+import os
 from SaltyJson import SaltyJson
 from SaltyParser import SaltyJsonParser
 from SaltyDatabase import SaltyRecorder
@@ -52,6 +53,7 @@ while True:
     if ((game_mode != 'Exhibition') and (game_state_lies == False)):
         if (game_state == 'open'):
             if (new_match == 0):
+                os.system('cls')
                 first_run = False
                 p1DB_ratings = bettor.set_player_rating(recorder.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 p2DB_ratings = bettor.set_player_rating(recorder.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
@@ -87,6 +89,7 @@ while True:
     elif game_mode == "Exhibition":
         if (game_state == "open"):
             if (new_match == 0):
+                os.system('cls')
                 my_parser.gameMode_printer()
                 new_match = 1
         elif (game_state == "locked"):

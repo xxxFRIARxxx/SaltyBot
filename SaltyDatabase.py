@@ -44,7 +44,7 @@ class SaltyRecorder():
                     with self.con:
                         self.con.executemany(sql, data)
                         self.con.commit()
-                        print(str(data) + f"\nThe record above has been added to the DB. There are now {self.num_from_db()} records in the database.")
+                        print(f"This match has been added to the DB. There are now {self.num_from_db()} records in the database.")
                         self.make_backup()
                         # self.get_win_avg()
                 except sqlite3.IntegrityError:

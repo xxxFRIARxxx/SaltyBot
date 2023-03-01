@@ -35,12 +35,12 @@ Beautiful Soup:
 TrueSkill:  
 `pip install TrueSkill`
 
-## Step 1:  Smash that like button!
+## Step 1:  GOGOGOGOGOGOGO
 
 Run "SaltyStateMachine.py" to run the program until:
 * The heat-death of the universe
 * Your power supply/internet connection fails
-* Or the SaltyBet JSON/Twitch servers shut down
+* The SaltyBet JSON/Twitch servers shut down
 
 # Details on betting and rankings
 

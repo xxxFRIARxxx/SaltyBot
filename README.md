@@ -33,7 +33,9 @@ DotEnv:
 Beautiful Soup:  
 `pip install beautifulsoup4`   
 TrueSkill:  
-`pip install TrueSkill`
+`pip install TrueSkill`  
+Alive Progress  
+`pip install alive-progress`
 
 ## Step 1:  GOGOGOGOGOGOGO
 

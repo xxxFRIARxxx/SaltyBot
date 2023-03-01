@@ -2,7 +2,6 @@ import socket
 import threading
 import time
 import os
-from dotenv import load_dotenv
 
 connection_data = ('irc.chat.twitch.tv', 6667)
 channel = "#saltybet"
@@ -99,25 +98,25 @@ class SaltySocket():
             pass    
         elif tier == 1:
             if self.adj_p1winstreak > 15:
-                self.adj_p1winstreak == 1
+                self.adj_p1winstreak == 0
                 self.adj_p1_tier = 2
         elif tier == 2:
             if self.adj_p1winstreak < -15:
-                self.adj_p1winstreak = 1
+                self.adj_p1winstreak = 0
                 self.adj_p1_tier = 1
             elif self.adj_p1winstreak > 15:
-                self.adj_p1winstreak = 1
+                self.adj_p1winstreak = 0
                 self.adj_p1_tier = 3
         elif tier == 3:
             if self.adj_p1winstreak < -15:
-                self.adj_p1winstreak = 1
+                self.adj_p1winstreak = 0
                 self.adj_p1_tier = 2
             elif self.adj_p1winstreak > 15:
-                self.adj_p1winstreak = 1
+                self.adj_p1winstreak = 0
                 self.adj_p1_tier = 4
         elif tier == 4:
             if self.adj_p1winstreak < -15:
-                self.adj_p1winstreak = 1
+                self.adj_p1winstreak = 0
                 self.adj_p1_tier = 3
         elif tier == 5:
             pass
@@ -128,25 +127,25 @@ class SaltySocket():
             pass       
         elif tier == 1:
             if self.adj_p2winstreak > 15:
-                self.adj_p2winstreak == 1
+                self.adj_p2winstreak == 0
                 self.adj_p2_tier = 2
         elif tier == 2:
             if self.adj_p2winstreak < -15:
-                self.adj_p2winstreak = 1
+                self.adj_p2winstreak = 0
                 self.adj_p2_tier = 1
             elif self.adj_p2winstreak > 15:
-                self.adj_p2winstreak = 1
+                self.adj_p2winstreak = 0
                 self.adj_p2_tier = 3
         elif tier == 3:
             if self.adj_p2winstreak < -15:
-                self.adj_p2winstreak = 1
+                self.adj_p2winstreak = 0
                 self.adj_p2_tier = 2
             elif self.adj_p2winstreak > 15:
-                self.adj_p2winstreak = 1
+                self.adj_p2winstreak = 0
                 self.adj_p2_tier = 4
         elif tier == 4:
             if self.adj_p2winstreak < -15:
-                self.adj_p2winstreak = 1
+                self.adj_p2winstreak = 0
                 self.adj_p2_tier = 3
         elif tier == 5:
             pass

@@ -4,7 +4,7 @@ from SaltyParser import SaltyJsonParser
 from SaltyDatabase import SaltyRecorder
 from SaltySocket import SaltySocket
 from SaltyTimer import SaltyTimer
-from SaltyWebInteractant import SaltyWebInteractant
+from SaltyWebInteractor import SaltyWebInteractor
 from SaltyBettor import SaltyBettor
 from SaltyReceiver import CustomThread
 
@@ -22,7 +22,7 @@ recorder = SaltyRecorder()
 my_socket = SaltySocket()
 game_time = SaltyTimer()
 bettor = SaltyBettor()
-interactor = SaltyWebInteractant()
+interactor = SaltyWebInteractor()
 thread = CustomThread()
 
 first_run = True

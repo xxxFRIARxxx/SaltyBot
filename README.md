@@ -47,7 +47,7 @@ Run "SaltyStateMachine.py" to run the program until:
 
 ## How are rankings assigned, and how do I get the probability of a winner?
 
-Using the Xbox Live Matchmaking system (MS TrueSkill), ratings are assigned to each new player the database hasn't found.  If they've been found, it uses their latest record/ratings, and "updates" them based off of the result of the current match.
+Using the Xbox Live Matchmaking system (MS TrueSkill), ratings are assigned to each new player the database hasn't found.  If they've been found, it uses their latest record/ratings, and "updates" them based off of the result of the current match. (Yet, still records it as a new match).
 
 Since TrueSkill uses the Bayesian inference algorithm, I use the cumulative distribution function of this normalized distribution to give me a probability of player 1 winning the current match.
 

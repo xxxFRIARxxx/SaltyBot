@@ -40,8 +40,9 @@ TrueSkill:
 Run "SaltyStateMachine.py" to run the program until:
 * The heat-death of the universe
 * Your power supply/internet connection fails
-* The SaltyBet JSON/Twitch servers shut down
-
+* The SaltyBet JSON/Twitch servers shut down  
+  
+  
 # Details on betting and rankings
 
 ## How are rankings assigned, and how do I get the probability of a winner?

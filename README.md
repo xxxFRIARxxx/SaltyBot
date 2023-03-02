@@ -1,12 +1,11 @@
 # SaltyBot - A bot for SaltyBet.com.
 
-Current state:  Working!
+#### Current state - 3/1/23:  Everything works! 
+#### Currently Working On:  
+* Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23
+* Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23
 
-Working on:  
-* Trimming the fat  
-* Collecting a DB to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23
-
-## What This Bot Does:
+#### What This Bot Does:
 
 * Records its own database  
 * Pulls records from the database  
@@ -15,9 +14,9 @@ Working on:
 
 # Instructions for use
 
-## Step 0:  Login and Python Prerequisites
+### Step 0:  Login and Python Prerequisites
 
-**Login Prerequisites:**
+### **Login Prerequisites:**
 
 Create a file called just ".env" in the working-directory of SaltyBot (without quotes).  In this .env file, include your personal strings for the following variables (INCLUDE QUOTES):
 
@@ -26,7 +25,9 @@ password = "your_saltyBet.com_password_here"
 token = "your_Twitch_oauth_token_here" (Get one here: https://twitchapps.com/tmi/)  
 user = "your_Twitch_username_here"
 
-**Python Prerequisites:**  
+
+### **Python Prerequisites:**  
+
 To install: `pip install -r requirements.txt`
 
 Alive Progress  
@@ -43,7 +44,8 @@ Run "SaltyStateMachine.py" to run the program until:
 * Your power supply/internet connection fails
 * The SaltyBet JSON/Twitch servers shut down  
   
-  
+---
+
 # Details on betting and rankings
 
 ## How are rankings assigned, and how do I get the probability of a winner?

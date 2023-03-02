@@ -1,16 +1,20 @@
 # SaltyBot - A bot for SaltyBet.com.
 
-#### Current state - 3/1/23:  Everything works! 
+#### Current state - 3/1/23:  Everything works!  :heavy_check_mark:
 #### Currently Working On:  
-* Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23
-* Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23
+:white_square_button: Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
+:white_square_button: Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23  
+:x: Bug:  Last match of tournaments doesn't record still  
+:x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)
 
 #### What This Bot Does:
 
 * Records its own database  
 * Pulls records from the database  
 * Assigns its own ratings to players (via Microsoft TrueSkill)  
-* Bets automatically (via probability of a win and the amount of salt in your balance)  
+* Bets automatically (via probability of a win and the amount of salt in your balance)
+
+**Special Thanks:  DukeOfEarl for teaching me everything I know, and some coding help with this program.**
 
 # Instructions for use
 

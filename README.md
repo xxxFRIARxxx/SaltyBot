@@ -1,12 +1,11 @@
 # SaltyBot - A bot for SaltyBet.com.
 
-Current state:  Working!
+#### Current state - 3/1/23:  Everything works! 
+#### Currently Working On:  
+* Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23
+* Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23
 
-Working on:  
-* Trimming the fat  
-* Collecting a DB to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23
-
-## What This Bot Does:
+#### What This Bot Does:
 
 * Records its own database  
 * Pulls records from the database  
@@ -17,7 +16,7 @@ Working on:
 
 ## Step 0:  Login and Python Prerequisites
 
-**Login Prerequisites:**
+### **Login Prerequisites:**
 
 Create a file called just ".env" in the working-directory of SaltyBot (without quotes).  In this .env file, include your personal strings for the following variables (INCLUDE QUOTES):
 
@@ -26,16 +25,17 @@ password = "your_saltyBet.com_password_here"
 token = "your_Twitch_oauth_token_here" (Get one here: https://twitchapps.com/tmi/)  
 user = "your_Twitch_username_here"
 
-**Python Prerequisites:**
 
-DotEnv:  
-`pip install python-dotenv`   
-Beautiful Soup:  
-`pip install beautifulsoup4`   
-TrueSkill:  
-`pip install TrueSkill`  
-Alive Progress:  
-`pip install alive-progress`
+### **Python Prerequisites:**  
+
+To install: `pip install -r requirements.txt`
+
+Alive Progress  
+Beautiful Soup  
+Dot Env  
+TrueSkill  
+Requests  
+Urllib3
 
 ## Step 1:  GOGOGOGOGOGOGO
 
@@ -44,7 +44,8 @@ Run "SaltyStateMachine.py" to run the program until:
 * Your power supply/internet connection fails
 * The SaltyBet JSON/Twitch servers shut down  
   
-  
+---
+
 # Details on betting and rankings
 
 ## How are rankings assigned, and how do I get the probability of a winner?
@@ -69,11 +70,11 @@ This bot then looks at winstreaks found in the database.  If they've been found,
 
 ## What happens when ratings or winstreaks haven't been found in the DB?
 
-In both Matchmaking and Tournaments, if ratings or winstreaks haven't been found in the database, or are all equal to one another, it wagers $1.
+In both Matchmaking and Tournaments, if ratings or winstreaks haven't been found in the database, or are all equal to one another, it wagers $1 on a randomly-selected fighter.
 
 ## How does betting work in Tournaments?
 
-In Tournaments, this bot wagers your entire tournament-balance up to $20,000 every round through the same logic that MM does.  Once $20,000 is hit, the betting-system will limit wagers based on rankings or winstreaks like in MM (to ensure keeping of at least roughly $20,000).
+In Tournaments, this bot wagers your entire tournament-balance up to $20,000 every round through the same logic that MM does.  Once $20,000 is hit, the betting-system will limit wagers based on rankings or winstreaks (instead of entire balance) like in MM (to ensure keeping of at least roughly $20,000).
 
 ## How does betting or match-recording work in Exhibitions?
 

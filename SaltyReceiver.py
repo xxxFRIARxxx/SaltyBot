@@ -2,6 +2,7 @@ from SaltySocket import SaltySocket
 import re
 import threading
 from alive_progress import alive_bar
+
 class CustomThread(threading.Thread):
 
     def __init__(self):

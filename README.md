@@ -14,7 +14,7 @@
 
 # Instructions for use
 
-### Step 0:  Login and Python Prerequisites
+## Step 0:  Login and Python Prerequisites
 
 ### **Login Prerequisites:**
 

@@ -34,7 +34,7 @@ Beautiful Soup:
 `pip install beautifulsoup4`   
 TrueSkill:  
 `pip install TrueSkill`  
-Alive Progress  
+Alive Progress:  
 `pip install alive-progress`
 
 ## Step 1:  GOGOGOGOGOGOGO

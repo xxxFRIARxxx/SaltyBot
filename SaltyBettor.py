@@ -11,7 +11,6 @@ class SaltyBettor():
 
     def set_balance(self, balance_value):
         self.balance = balance_value
-        print(f"Balance is: {self.balance}")
 
     def bet_outcome(self, p1_json, p2_json, game_state):
         player1_dict = {p1_json:'player1'}
@@ -25,7 +24,7 @@ class SaltyBettor():
             print(game_state)
             print('This prints when no player has won the match.  (Draw?) This message comes from bettor -> bet_outcome')       
         if self.suggested_player['selectedplayer'] == winner:
-            print('YOU WON THE BET')
+            print('YOU WON THE BET!')
             self.outcome = 1
         else:
             print('You lost the bet.')
@@ -38,7 +37,6 @@ class SaltyBettor():
         playerCount = 2                                               
         denominator = math.sqrt(playerCount * (4.166666666666667 * 4.166666666666667) + sumSigma)   
         prob_P1 = NormalDist().cdf(deltaMu/denominator)
-        print(f"Player 1 has a {round(100 * prob_P1, 2)}% chance of winning.")
         return prob_P1
 
     def predicted_winner(self, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner first through probability of winning,  then through streaks (simple).

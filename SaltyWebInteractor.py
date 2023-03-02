@@ -54,24 +54,24 @@ class SaltyWebInteractor():
             balance = int(soup_parser.find(id="balance").string.replace(',',''))
             return balance
         except requests.exceptions.HTTPError:
-            time.sleep(2)
+            time.sleep(.25)
             self.login()
             self.get_balance()
         except requests.exceptions.SSLError:
-            time.sleep(2)
+            time.sleep(.25)
             self.login()
             self.get_balance()
         except requests.exceptions.ConnectionError:
-            time.sleep(2)
+            time.sleep(.25)
             self.login()
             self.get_balance()
 
     def place_bet_on_website(self, bet_data):
         try:
             self.session.post(URL_BET, cookies = cookies, headers = headers, data = bet_data)
-            print("Bet placed of $" + str(bet_data['wager']) + " on " + str(bet_data['selectedplayer']))
+            print("Bet placed: $" + str(bet_data['wager']) + " on " + str(bet_data['selectedplayer']))
         except requests.exceptions.ConnectionError:
-            time.sleep(2)
+            time.sleep(.25)
             self.login()
             self.place_bet_on_website()
 

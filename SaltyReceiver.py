@@ -30,7 +30,7 @@ class CustomThread(threading.Thread):
                             except:
                                 self.value1 = None
                                 self.value2 = None
-                            print(f"Winstreaks are: {self.value1, self.value2}")
+                            print(f"True Winstreaks are: {self.value1, self.value2}")
                         elif (run_message.find("Bets are OPEN")) != -1: 
                             response_message = re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', run_message)[0]  # Find the message from waifu
                             tier_res = re.findall(r"\((.){1} Tier\)", response_message)  # Parse the message from waifu in to tier
@@ -51,7 +51,7 @@ class CustomThread(threading.Thread):
                                 self.value3 = None
                             print(f"Current Tier is: {self.value3}")
                         # elif (run_message.find("Payout")) != -1:
-                        #     self.sock.send_twitch_chat("Good morning chat!")
+                        #     self.sock.send_twitch_chat("Good afternoon chat!")
 
                 # set timer snapshot here, and set all proper flags to move to recording, and the next stage.
                 

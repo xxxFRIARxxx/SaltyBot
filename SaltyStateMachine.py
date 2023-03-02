@@ -63,9 +63,7 @@ while True:
                 new_match = 1
                 my_socket.find_winstreak = True
                 bettor.set_balance(interactor.get_balance()) 
-                my_parser.gameMode_printer()
-                print(f"Player 1:   Mu = {p1DB_ratings.mu}  Sigma = {p1DB_ratings.sigma}  Winstreak from DB = {p1DB_streak}")
-                print(f"Player 2:   Mu = {p2DB_ratings.mu}  Sigma = {p2DB_ratings.sigma}  Winstreak from DB = {p2DB_streak}")
+                my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 # TODO:  Include data regression to help compose bet here.
                 interactor.place_bet_on_website(bettor.format_bet(bettor.predicted_winner(p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), bettor.suggested_bet(p1_probability, p1DB_streak, p2DB_streak, game_mode))) # Decide bet, and place bet               
         elif (game_state == 'locked'):
@@ -73,13 +71,13 @@ while True:
                 if (new_match == 1):
                     new_match = 2
                     game_time.timer_start()
-                    my_parser.gameMode_printer()
+                    my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
         elif (game_state == '1') or (game_state == '2'): 
             if (first_run == False):
                 if (new_match == 2):
                     new_match = 0
                     game_time.timer_snapshot()
-                    my_parser.gameMode_printer()
+                    my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                     ratings_to_db = bettor.update_ranking_after(game_state, p1DB_ratings, p2DB_ratings) # Updates ratings after the match.
                     my_socket.adjust_winstreak(my_parser.set_p1winstatus(), my_parser.set_p2winstatus(), thread.value1, thread.value2)
                     my_socket.adjust_tier(thread.value3)
@@ -89,28 +87,17 @@ while True:
         if (game_state == "open"):
             if (new_match == 0):
                 os.system('cls')
-                my_parser.gameMode_printer()
+                my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 new_match = 1
         elif (game_state == "locked"):
             if (new_match == 1):
-                my_parser.gameMode_printer()
+                my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 new_match = 2
         elif (game_state == "1") or (game_state == "2"):
             if (new_match == 2):
-                my_parser.gameMode_printer()
+                my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 new_match = 0
         
-    #     if (first_run == False):
-    #         if (new_match == 2):
-                # if (my_parser.get_matches_remaining() == 25) and (game_state in [1,2]):
-                #     new_match = 0
-                #     game_time.timer_snapshot() # TODO: Instead of calling snapshot here, get flag from SaltyBet in Twitch chat.
-                #     ratings_to_db = bettor.update_ranking_after(game_state, p1DB_ratings, p2DB_ratings) # Updates ratings after the match.
-                #     my_socket.adjust_winstreak(my_parser.set_p1winstatus(), my_parser.set_p2winstatus(), thread.value1, thread.value2)
-                #     my_socket.adjust_tier(thread.value3)
-                #     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), game_state)
-                #     recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())
-
 # TODO: Last match of tourney still doesn't record:
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.

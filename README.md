@@ -74,7 +74,7 @@ In both Matchmaking and Tournaments, if ratings or winstreaks haven't been found
 
 ## How does betting work in Tournaments?
 
-In Tournaments, this bot wagers your entire tournament-balance up to $20,000 every round through the same logic that MM does.  Once $20,000 is hit, the betting-system will limit wagers based on rankings or winstreaks like in MM (to ensure keeping of at least roughly $20,000).
+In Tournaments, this bot wagers your entire tournament-balance up to $20,000 every round through the same logic that MM does.  Once $20,000 is hit, the betting-system will limit wagers based on rankings or winstreaks (instead of entire balance) like in MM (to ensure keeping of at least roughly $20,000).
 
 ## How does betting or match-recording work in Exhibitions?
 

@@ -18,7 +18,7 @@ new_match = 0
 match_start_time = 0
 total_match_time_sec = 0
 
-my_thing = SaltyJson()
+my_json = SaltyJson()
 recorder = SaltyRecorder()
 my_socket = SaltySocket()
 game_time = SaltyTimer()
@@ -36,7 +36,7 @@ p2DB_streak = None
 thread.start() 
 
 while True:
-    the_json = my_thing.get_json()
+    the_json = my_json.get_json()
     my_parser = SaltyJsonParser(the_json)
     game_mode = my_parser.get_gameMode()
     game_state = my_parser.get_gamestate()

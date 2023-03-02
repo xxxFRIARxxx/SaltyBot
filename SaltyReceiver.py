@@ -51,7 +51,7 @@ class CustomThread(threading.Thread):
                                 self.value3 = None
                             print(f"Current Tier is: {self.value3}")
                         # elif (run_message.find("Payout")) != -1:
-                        # self.sock.send_twitch_chat("This is a test of the Emergency Broadcast System")
+                        #     self.sock.send_twitch_chat("Good morning chat!")
 
                 # set timer snapshot here, and set all proper flags to move to recording, and the next stage.
                 

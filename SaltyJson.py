@@ -1,5 +1,4 @@
 import requests
-import time
 
 class SaltyJson():
     def __init__(self):
@@ -9,17 +8,13 @@ class SaltyJson():
     def get_json(self):
         try:
             self.response = self.session.get(self.url, headers={"User-Agent": "Mozilla/5.0"})
-            if self.response == None:
-                self.get_json()
+            if self.response.status_code != 200:
+                self.get_json()       
             else:
-                return self.response.json()
+                return self.response.json()                
         except requests.exceptions.ConnectionError:
-            self.session = requests.Session()
             self.get_json()
         except requests.exceptions.JSONDecodeError:
-            self.session = requests.Session()
             self.get_json()
-        # except Exception:
-        #     self.session = requests.Session()
-        #     self.get_json()
+
 

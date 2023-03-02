@@ -50,19 +50,19 @@ Run "SaltyStateMachine.py" to run the program until:
 
 ## How are rankings assigned, and how do I get the probability of a winner?
 
-Using the Xbox Live Matchmaking system (MS TrueSkill), ratings are assigned to each new player the database hasn't found.  If they've been found, it uses their latest record/ratings, and "updates" them based off of the result of the current match. (Yet, still records it as a new match).
+Using the Xbox Live Matchmaking system (MS TrueSkill), default ratings are assigned to each new player the database hasn't found.  If they've been found, it uses their latest record/ratings, and "updates" them based off of the result of their upcoming match.
 
 Since TrueSkill uses the Bayesian inference algorithm, I use the cumulative distribution function of this normalized distribution to give me a probability of player 1 winning the current match.
 
 ## How does betting work in Matchmaking?
 
-**If the probability of winning != 50%:**  
+#### If the probability of winning != 50%:  
 
 This bot bets an amount based off of the difference in win-probability against 50%.  The amount wagered in this comparison is NEVER LARGER than 1/2 your balance (Even THIS is still very rare:  when the best player ever recorded in DB plays against the worst player ever recorded in DB).  
 
 * Typical wager amounts in this comparison are around 1/300th of your balance during early stages of database building.
 
-**If the probability of winning == 50%** (both new players to the DB, or both with the same rating pulled from the DB):
+#### If the probability of winning == 50% (both new players to the DB, or both with the same rating pulled from the DB):
 
 This bot then looks at winstreaks found in the database.  If they've been found, it bets an amount ALMOST NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  (Even THIS is very rare:  when the winstreak difference is 100 (insanity).  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
 
@@ -78,8 +78,10 @@ In Tournaments, this bot wagers your entire tournament-balance up to $20,000 eve
 
 ## How does betting or match-recording work in Exhibitions?
 
-It doesn't, lol.  Exhibitions are so fucking wacky, that for right now, I'm just ignoring them completely.  
-No bets, no database recording, no nothing. I have the ability to do this, I just haven't implemented it yet.
+It doesn't, lol.
+
+Exhibitions are so fucking wacky, that for right now, I'm just ignoring them completely.  
+No bets, no database recording, no nothing. I have the ability to do this, I just haven't implemented it, and don't know if I will.
 
 ## Important note - PATIENCE IS A VIRTUE!
 

@@ -26,16 +26,14 @@ password = "your_saltyBet.com_password_here"
 token = "your_Twitch_oauth_token_here" (Get one here: https://twitchapps.com/tmi/)  
 user = "your_Twitch_username_here"
 
-**Python Prerequisites:**
+**Python Prerequisites:**  
+To install: `pip install -r requirements.txt`
 
-DotEnv:  
-`pip install python-dotenv`   
-Beautiful Soup:  
-`pip install beautifulsoup4`   
-TrueSkill:  
-`pip install TrueSkill`  
-Alive Progress:  
-`pip install alive-progress`
+DotEnv  
+Beautiful Soup   
+TrueSkill  
+Alive Progress  
+
 
 ## Step 1:  GOGOGOGOGOGOGO
 

@@ -29,11 +29,12 @@ user = "your_Twitch_username_here"
 **Python Prerequisites:**  
 To install: `pip install -r requirements.txt`
 
-DotEnv  
-Beautiful Soup   
-TrueSkill  
 Alive Progress  
-
+Beautiful Soup  
+Dot Env  
+TrueSkill  
+Requests  
+Urllib3
 
 ## Step 1:  GOGOGOGOGOGOGO
 

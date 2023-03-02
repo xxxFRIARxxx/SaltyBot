@@ -5,7 +5,7 @@
 :white_square_button: Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
 :white_square_button: Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23  
 :x: Bug:  Last match of tournaments doesn't record still  
-:x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or Exhib)
+:x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)
 
 #### What This Bot Does:
 

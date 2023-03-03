@@ -53,6 +53,16 @@ class CustomThread(threading.Thread):
                         # elif (run_message.find("Payout")) != -1:
                         #     self.sock.send_twitch_chat("Good afternoon chat!")
 
+            # TODO:  WHY DOESN'T THE FOLLOWING WORK:
+                            # for index, item in enumerate(["P","B","A","S","X"], 1):
+                            #     if tier_res[0] in item:
+                            #         self.value3 = index
+                                                              
+                            #     else:
+                            #         self.value3 = None
+                            #     print(f"Current Tier is: {self.value3}")
+        
+
                 # set timer snapshot here, and set all proper flags to move to recording, and the next stage.
                 
                 # elif (run_message.startswith(":saltybet!")):

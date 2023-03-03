@@ -65,7 +65,7 @@ while True:
                 bettor.set_balance(interactor.get_balance()) 
                 my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 # TODO:  Include data regression to help compose bet here.
-                interactor.place_bet_on_website(bettor.format_bet(bettor.predicted_winner(p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), bettor.suggested_bet(p1_probability, p1DB_streak, p2DB_streak, game_mode))) # Decide bet, and place bet               
+                interactor.place_bet_on_website(bettor.format_bet(bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), bettor.suggested_bet(p1_probability, p1DB_streak, p2DB_streak, game_mode))) # Decide bet, and place bet               
         elif (game_state == 'locked'):
             if (first_run == False):
                 if (new_match == 1):
@@ -87,15 +87,15 @@ while True:
         if (game_state == "open"):
             if (new_match == 0):
                 os.system('cls')
-                my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                my_parser.gameMode_printer(game_state, (0,0), (0,0), None, None, None, bettor.balance)
                 new_match = 1
         elif (game_state == "locked"):
             if (new_match == 1):
-                my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                my_parser.gameMode_printer(game_state, (0,0), (0,0), None, None, None, bettor.balance)
                 new_match = 2
         elif (game_state == "1") or (game_state == "2"):
             if (new_match == 2):
-                my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                my_parser.gameMode_printer(game_state, (0,0), (0,0), None, None, None, bettor.balance)
                 new_match = 0
         
 # TODO: Last match of tourney still doesn't record:

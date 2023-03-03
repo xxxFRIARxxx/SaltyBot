@@ -41,6 +41,7 @@ Dot Env
 TrueSkill  
 Requests  
 Urllib3
+Tabulate
 
 ## Step 1:  GOGOGOGOGOGOGO
 

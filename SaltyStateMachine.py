@@ -86,17 +86,20 @@ while True:
     elif game_mode == "Exhibition":
         if (game_state == "open"):
             if (new_match == 0):
+                first_run = False
                 os.system('cls')
-                my_parser.gameMode_printer(game_state, (0,0), (0,0), None, None, None, bettor.balance)
                 new_match = 1
+                print(f"Currently in Exhibitions.  No bets are placed, and nothing is recorded.  Game state is {game_state}")
         elif (game_state == "locked"):
-            if (new_match == 1):
-                my_parser.gameMode_printer(game_state, (0,0), (0,0), None, None, None, bettor.balance)
-                new_match = 2
+            if (first_run == False):
+                if (new_match == 1):
+                    new_match = 2
+                    print(f"Currently in Exhibitions.  No bets are placed, and nothing is recorded.  Game state is {game_state}")
         elif (game_state == "1") or (game_state == "2"):
-            if (new_match == 2):
-                my_parser.gameMode_printer(game_state, (0,0), (0,0), None, None, None, bettor.balance)
-                new_match = 0
+            if (first_run == False):
+                if (new_match == 2):
+                    new_match = 0
+                    print(f"Currently in Exhibitions.  No bets are placed, and nothing is recorded.  Game state is {game_state}")
         
 # TODO: Last match of tourney still doesn't record:
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.

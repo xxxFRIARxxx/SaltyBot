@@ -1,4 +1,5 @@
 import webbrowser
+from tabulate import tabulate
 
 class SaltyJsonParser():
     def __init__(self, json_dict):
@@ -100,19 +101,16 @@ class SaltyJsonParser():
             print("SaltyBet probably broke.  This means that it's not MM, Exhib, OR a Tourney.")
             
     def gameMode_printer(self, game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, balance):
+        table = [["Player 1:", p1DB_ratings.mu, p1DB_ratings.sigma, p1DB_streak], ["Player 2:", p2DB_ratings.mu, p2DB_ratings.sigma, p2DB_streak]]
         if (self.get_gameMode() == "Tournament"):
             print(f"Currently in {self.get_gameMode()} with {self.get_tourney_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")
             if game_state == "open":
-                print(f"Player 1:  Mu = {p1DB_ratings.mu}  Sigma = {p1DB_ratings.sigma}  Winstreak from DB = {p1DB_streak}")
-                print(f"Player 2:  Mu = {p2DB_ratings.mu}  Sigma = {p2DB_ratings.sigma}  Winstreak from DB = {p2DB_streak}")
+                print(tabulate(table, headers=["Fighter","Skill","Variation","Streak"], tablefmt="grid", stralign="center", numalign="decimal"))
                 print(f"Player 1 chance to win: {round(100 * p1_probability, 2)}%")
                 print(f"Current Balance is: {balance}")    
         elif (self.get_gameMode() == "Matchmaking"):
             print(f"Currently in {self.get_gameMode()} with {self.get_matches_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")
             if game_state == "open":
-                print(f"Player 1:  Mu = {p1DB_ratings.mu}  Sigma = {p1DB_ratings.sigma}  Winstreak from DB = {p1DB_streak}")
-                print(f"Player 2:  Mu = {p2DB_ratings.mu}  Sigma = {p2DB_ratings.sigma}  Winstreak from DB = {p2DB_streak}")
+                print(tabulate(table, headers=["Fighter","Skill","Variation","Streak"], tablefmt="grid", stralign="center", numalign="decimal"))
                 print(f"Player 1 chance to win: {round(100 * p1_probability, 2)}%")
-                print(f"Current Balance is: {balance}")    
-        elif (self.get_gameMode() == "Exhibition"):
-            print(f"Currently in {self.get_gameMode()} with {self.get_matches_remaining()} matches remaining.  No bets are placed and nothing is recorded.  Game state is {self.get_gamestate()}.")
+                print(f"Current Balance is: {balance}")

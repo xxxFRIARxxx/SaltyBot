@@ -2,7 +2,7 @@
 
 #### Current state - 3/1/23:  Everything works!  :heavy_check_mark:
 #### Currently Working On:  
-:white_square_button: Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
+:heavy_check_mark: Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
 :heavy_check_mark: Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = Ongoing, mostly done!  
 :x: Bug:  Last match of tournaments doesn't record still  
 :x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)
@@ -40,7 +40,7 @@ Beautiful Soup
 Dot Env  
 TrueSkill  
 Requests  
-Urllib3
+Urllib3  
 Tabulate
 
 ## Step 1:  GOGOGOGOGOGOGO

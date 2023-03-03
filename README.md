@@ -3,7 +3,7 @@
 #### Current state - 3/1/23:  Everything works!  :heavy_check_mark:
 #### Currently Working On:  
 :white_square_button: Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
-:white_square_button: Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = 3/15/23  
+:heavy_check_mark: Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = Ongoing, mostly done!  
 :x: Bug:  Last match of tournaments doesn't record still  
 :x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)
 
@@ -15,7 +15,7 @@
 * Gathers a suggested winner (via probability of a win, difference in skill variance, and winstreaks)
 * Bets automatically (via probability of a win, difference in winstreaks, and the amount of salt in your balance)
 
-**Special Thanks:  DukeOfEarl for teaching me everything I know, and some coding help with this program.**
+**Special Thanks:  DukeOfEarl for teaching me everything I know about programming, and some coding help with this program.**
 
 # Instructions for use
 
@@ -67,17 +67,23 @@ The suggested winner is the fighter with the lower rating variation.
 * Lastly, if the variations are both the same, this bot looks at the fighters' winstreaks.  
 The suggested winner is the fighter with the higher winstreak.
 
-## How does betting work in Matchmaking?
+## How does betting work in Matchmaking?  
+
+In MM, if your balance is < 10,000, this bot will wager the entire balance.  It takes money to make money, heh. :slightly_smiling_face:
+
+If your balance is > 10,000 in MM:
 
 ### If the probability of winning != 50%:  
 
-This bot bets an amount based off of the difference in win-probability against 50%.  The amount wagered in this comparison is NEVER LARGER than 1/2 your balance (Even THIS is still very rare:  when the best player ever recorded in DB plays against the worst player ever recorded in DB).  
+This bot bets an amount based off of the difference in win-probability against 50%.  The amount wagered in this comparison is NEVER LARGER than 1/2 your balance.  
+(This is very rare:  when the best player ever recorded in DB plays against the worst player ever recorded in DB).  
 
 * Typical wager amounts in this comparison are around 1/300th of your balance during early stages of database building.
 
 ### If the probability of winning == 50% (both new players, or both with the same rating pulled from the DB):
 
-This bot then looks at winstreaks found in the database.  If they've been found, it bets an amount ALMOST NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  (Even THIS is very rare:  when the winstreak difference is 100 (insanity).  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
+This bot then looks at winstreaks found in the database.  If they've been found, it bets an amount ALMOST NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  
+(This is still very rare:  when the winstreak difference is 100 (insanity).  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
 
 * Typical wager amounts in this comparison are a little higher than based off of probability, at roughly 1/100th of your balance during ANY time this condition hits.  (Will probably be reworked later) 
 
@@ -87,7 +93,7 @@ In both Matchmaking and Tournaments, if ratings or winstreaks haven't been found
 
 ## How does betting work in Tournaments?
 
-In Tournaments, this bot wagers your entire tournament-balance up to $20,000 every round through the same logic that MM does.  Once $20,000 is hit, the betting-system will limit wagers based on rankings or winstreaks (instead of entire balance) like in MM (to ensure keeping of at least roughly $20,000).
+In Tournaments, this bot wagers your entire tournament-balance up to $20,000 every round through the same probability logic that MM does.  Once $20,000 is hit, the betting-system will limit wagers based on rankings or winstreaks (instead of entire balance) like in MM (to ensure keeping of at least roughly $20,000).
 
 ## How does betting or match-recording work in Exhibitions?
 

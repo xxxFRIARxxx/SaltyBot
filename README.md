@@ -11,8 +11,9 @@
 
 * Records its own database  
 * Pulls records from the database  
-* Assigns its own ratings to players (via Microsoft TrueSkill)  
-* Bets automatically (via probability of a win and the amount of salt in your balance)
+* Assigns its own ratings to players (via Microsoft TrueSkill)
+* Gathers a suggested winner (via probability of a win, difference in skill variance, and winstreaks)
+* Bets automatically (via probability of a win, difference in winstreaks, and the amount of salt in your balance)
 
 **Special Thanks:  DukeOfEarl for teaching me everything I know, and some coding help with this program.**
 
@@ -56,17 +57,25 @@ Run "SaltyStateMachine.py" to run the program until:
 
 Using the Xbox Live Matchmaking system (MS TrueSkill), default ratings are assigned to each new player the database hasn't found.  If they've been found, it uses their latest record/ratings, and "updates" them based off of the result of their upcoming match.
 
-Since TrueSkill uses the Bayesian inference algorithm, I use the cumulative distribution function of this normalized distribution to give me a probability of player 1 winning the current match.
+Since TrueSkill uses the Bayesian inference algorithm, I use the cumulative distribution function of this normalized Gaussian distribution to give me a probability of player 1 winning the current match.  
+
+* The suggested winner is the fighter with the higher probability of winning.
+
+* If the probability of winning is 50%, this bot then looks at difference in rating variation.  
+The suggested winner is the fighter with the lower rating variation.
+
+* Lastly, if the variations are both the same, this bot looks at the fighters' winstreaks.  
+The suggested winner is the fighter with the higher winstreak.
 
 ## How does betting work in Matchmaking?
 
-#### If the probability of winning != 50%:  
+### If the probability of winning != 50%:  
 
 This bot bets an amount based off of the difference in win-probability against 50%.  The amount wagered in this comparison is NEVER LARGER than 1/2 your balance (Even THIS is still very rare:  when the best player ever recorded in DB plays against the worst player ever recorded in DB).  
 
 * Typical wager amounts in this comparison are around 1/300th of your balance during early stages of database building.
 
-#### If the probability of winning == 50% (both new players to the DB, or both with the same rating pulled from the DB):
+### If the probability of winning == 50% (both new players, or both with the same rating pulled from the DB):
 
 This bot then looks at winstreaks found in the database.  If they've been found, it bets an amount ALMOST NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  (Even THIS is very rare:  when the winstreak difference is 100 (insanity).  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
 

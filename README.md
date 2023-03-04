@@ -3,7 +3,8 @@
 #### Current state - 3/1/23:  Everything works!  :heavy_check_mark:
 #### Currently Working On:  
 * Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
-* Collecting a DB sizable enough to test out betting patterns and accuracy.  ETA = Ongoing, mostly done!  
+* Collecting a DB sizable enough to test out betting patterns and accuracy.  ETA for significant bet confidence: 4/1   
+
 :x: Bug:  Last match of tournaments doesn't record still  
 :x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)
 

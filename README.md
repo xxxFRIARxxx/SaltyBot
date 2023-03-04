@@ -2,7 +2,7 @@
 
 #### Current state - 3/1/23:  Everything works!  :heavy_check_mark:
 #### Currently Working On:  
-:white_square_button: Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
+:heavy_check_mark: Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
 :heavy_check_mark: Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = Ongoing, mostly done!  
 :x: Bug:  Last match of tournaments doesn't record still  
 :x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)
@@ -40,7 +40,7 @@ Beautiful Soup
 Dot Env  
 TrueSkill  
 Requests  
-Urllib3
+Urllib3  
 Tabulate
 
 ## Step 1:  GOGOGOGOGOGOGO
@@ -84,7 +84,7 @@ This bot bets an amount based off of the difference in win-probability against 5
 ### If the probability of winning == 50% (both new players, or both with the same rating pulled from the DB):
 
 This bot then looks at winstreaks found in the database.  If they've been found, it bets an amount ALMOST NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  
-(This is still very rare:  when the winstreak difference is 100 (insanity).  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
+(This is very rare:  when the winstreak difference is 100 (insanity).  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
 
 * Typical wager amounts in this comparison are a little higher than based off of probability, at roughly 1/100th of your balance during ANY time this condition hits.  (Will probably be reworked later) 
 

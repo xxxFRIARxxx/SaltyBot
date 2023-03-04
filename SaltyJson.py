@@ -9,6 +9,8 @@ class SaltyJson():
         try:
             self.response = self.session.get(self.url, headers={"User-Agent": "Mozilla/5.0"})
             if self.response.status_code != 200:
+                print(self.response.status_code)
+                print(self.response.json())
                 self.get_json()       
             else:
                 return self.response.json()                

@@ -44,6 +44,19 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
+        # if self.json_dict["remaining"] == None:
+        #     self.json_dict["remaining"]
+        # exhib_split = self.json_dict["remaining"].split(' ')[1]
+        # exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
+        # if (exhib_endsin == True) or (exhib_split == "exhibition"):
+        #     return True
+        # else:
+        #     return False
+        
+
+
+
+
         exhib_split = self.json_dict["remaining"].split(' ')[1]
         exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
         if (exhib_endsin == True) or (exhib_split == "exhibition"):
@@ -107,10 +120,10 @@ class SaltyJsonParser():
             if game_state == "open":
                 print(tabulate(table, headers=["Fighter","Skill","Variation","Streak"], tablefmt="grid", stralign="center", numalign="decimal"))
                 print(f"Player 1 chance to win: {round(100 * p1_probability, 2)}%")
-                print(f"Current Balance is: {balance}")    
+                print(f"Current Balance is: ${balance:,}")    
         elif (self.get_gameMode() == "Matchmaking"):
             print(f"Currently in {self.get_gameMode()} with {self.get_matches_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")
             if game_state == "open":
                 print(tabulate(table, headers=["Fighter","Skill","Variation","Streak"], tablefmt="grid", stralign="center", numalign="decimal"))
                 print(f"Player 1 chance to win: {round(100 * p1_probability, 2)}%")
-                print(f"Current Balance is: {balance}")
+                print(f"Current Balance is: ${balance:,}")

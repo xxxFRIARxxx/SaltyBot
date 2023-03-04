@@ -69,7 +69,7 @@ class SaltyWebInteractor():
     def place_bet_on_website(self, bet_data):
         try:
             self.session.post(URL_BET, cookies = cookies, headers = headers, data = bet_data)
-            print("Bet placed: $" + str(bet_data['wager']) + " on " + str(bet_data['selectedplayer']))
+            print(f"Bet placed: ${bet_data['wager']:,} on {bet_data['selectedplayer']}")
         except requests.exceptions.ConnectionError:
             time.sleep(.25)
             self.login()

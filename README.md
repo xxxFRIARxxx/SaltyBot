@@ -113,5 +113,5 @@ Realistically, it'll probably wager $1 on most bets up to ~1000 entries in the D
 
 I believe 95% confidence ratings start appearing after roughly 10-12 matches recorded per-figher.  
 (~30,000 total matches.  Roughly 3 months of recording matches.)  
-This bot will do much better than 50% up until then, but that's when it should rarely bet incorrectly.
+This bot will do much better than a random choice up until then, but that's when it should almost never bet incorrectly.  
 Patience!

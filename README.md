@@ -111,6 +111,7 @@ Because of the way this bot assigns ratings and probabilities of winning, rating
 
 Realistically, it'll probably wager $1 on most bets up to ~1000 entries in the DB, you'll probably come out a little <50% on bets from about 1000-3000 entries (due to it betting on a ranked fighter when it finds them, against a "new" fighter with an assigned default ranking, losing the bet), then it'll only get better from there.
 
-Significant confidence ratings start appearing after roughly 10-12 matches recorded per-figher.  
-(~30,000 total matches.  Roughly 1.5 months of recording matches.)  
+I believe 95% confidence ratings start appearing after roughly 10-12 matches recorded per-figher.  
+(~30,000 total matches.  Roughly 3 months of recording matches.)  
+This bot will do much better than 50% up until then, but that's when it should rarely bet incorrectly.
 Patience!

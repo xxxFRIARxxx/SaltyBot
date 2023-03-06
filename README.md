@@ -1,8 +1,9 @@
 # SaltyBot - A bot for SaltyBet.com.
 
-#### Current state - 3/1/23:  Everything works!  :heavy_check_mark:
+#### Current state - 3/1/23:  Everything works!  :heavy_check_mark:  
+DB error now fixed.  My bad. 
 #### Currently Working On:  
-* Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
+* Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA: 3/15/23  
 * Collecting a DB sizable enough to test out betting patterns and accuracy.  ETA for significant bet confidence: 4/1   
 
 :x: Bug:  Last match of tournaments doesn't record still  

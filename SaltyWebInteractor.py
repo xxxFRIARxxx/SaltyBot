@@ -9,18 +9,20 @@ load_dotenv()
 URL_SIGNIN = 'https://www.saltybet.com/authenticate?signin=1'
 URL_BET = 'https://www.saltybet.com/ajax_place_bet.php'
 
-cookies = {
-    '_ga': 'GA1.2.410504609.1668662511',
-    '_gid': 'GA1.2.1665887669.1675437246',
-    'PHPSESSID': '6ucnbid62ogacdm504l7chioq0',
-}
+# cookies = {
+#     '_ga': 'GA1.2.410504609.1668662511',
+#     '_gid': 'GA1.2.1665887669.1675437246',
+#     # 'PHPSESSID': '6ucnbid62ogacdm504l7chioq0',
+# }
+
+
 
 headers = {
     'authority': 'www.saltybet.com',
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'accept-language': 'en-US,en;q=0.9',
     'cache-control': 'max-age=0',
-    'cookie': '_ga=GA1.2.410504609.1668662511; _gid=GA1.2.1665887669.1675437246; PHPSESSID=6ucnbid62ogacdm504l7chioq0',
+    # 'cookie': 'PHPSESSID=6ucnbid62ogacdm504l7chioq0',
     'sec-ch-ua': '"Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
@@ -38,19 +40,21 @@ class SaltyWebInteractor():
         self.login()
 
     def login(self):
+        self.session.get(URL_SIGNIN)
         login_data = {'email': os.getenv('email'), 'pword': os.getenv('password'), 'authenticate': 'signin'}
         response = self.session.post(URL_SIGNIN, data=login_data)
+
         if ( response.url != "https://www.saltybet.com/" and response.url != "http://www.saltybet.com/" ):
             raise RuntimeError("Error: Wrong URL: " + response.url)
 
     def refresh_session(self):
-        response = requests.get('https://www.saltybet.com/', cookies=cookies, headers=headers)
+        response = requests.get('https://www.saltybet.com/', cookies = self.session.cookies)
         return response
 
     def get_balance(self):
         try:
-            response = requests.get('https://www.saltybet.com/', cookies=cookies, headers=headers)
-            soup_parser = BeautifulSoup(response.content, "html.parser")
+            r = requests.get('https://www.saltybet.com/', cookies = self.session.cookies)
+            soup_parser = BeautifulSoup(r.content, "html.parser")
             balance = int(soup_parser.find(id="balance").string.replace(',',''))
             return balance
         except requests.exceptions.HTTPError:
@@ -68,7 +72,7 @@ class SaltyWebInteractor():
 
     def place_bet_on_website(self, bet_data):
         try:
-            self.session.post(URL_BET, cookies = cookies, headers = headers, data = bet_data)
+            self.session.post(URL_BET, data = bet_data, cookies=self.session.cookies)
             print(f"Bet placed: ${bet_data['wager']:,} on {bet_data['selectedplayer']}")
         except requests.exceptions.ConnectionError:
             time.sleep(.25)

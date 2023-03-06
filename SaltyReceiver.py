@@ -30,7 +30,7 @@ class CustomThread(threading.Thread):
                             except:
                                 self.value1 = None
                                 self.value2 = None
-                            print(f"True Winstreaks are: {self.value1, self.value2}")
+                            print(f"True Streaks are: {self.value1, self.value2}")
                         elif (run_message.find("Bets are OPEN")) != -1: 
                             response_message = re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', run_message)[0]  # Find the message from waifu
                             tier_res = re.findall(r"\((.){1} Tier\)", response_message)  # Parse the message from waifu in to tier

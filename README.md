@@ -1,8 +1,7 @@
 # SaltyBot - A bot for SaltyBet.com.
 
 #### Current state - 3/6/23:  Everything works!  :heavy_check_mark:  
-DB error now fixed.  My bad.  
-Now doesn't attempt to use MY Salty Bet account.  Ugh
+
 #### Currently Working On:  
 * Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA: 3/15/23  
 * Collecting a DB sizable enough to test out betting patterns and accuracy.  ETA for significant bet confidence: 4/1   

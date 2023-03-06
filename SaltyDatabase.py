@@ -115,7 +115,7 @@ class SaltyDatabase():
                 with self.con:
                     data = self.con.execute(f"""SELECT *, max(id) as latest FROM SBMATCHES WHERE p1name = ("{player_search}") OR p2name = ("{player_search}");""")
                     most_recent = data.fetchall()                                
-                keys = ["id", "p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p1tier", "p1tourney", "p1time", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "p2tier", "p2tourney", "p2time", "bet_outcome"]
+                keys = ["id", "p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p1tier", "p1tourney", "p1time", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "p2tier", "p2tourney", "p2time", "betOutcome"]
                 dict_list = []
                 for i in range(len(most_recent)):
                     dict_list.append(dict(zip(keys, most_recent[i])))

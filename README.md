@@ -7,7 +7,8 @@ DB error now fixed.  My bad.
 * Collecting a DB sizable enough to test out betting patterns and accuracy.  ETA for significant bet confidence: 4/1   
 
 :x: Bug:  Last match of tournaments doesn't record still  
-:x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)
+:x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)  
+:x: Bug:  Exhib or Tourney parsing error still occurs.  Fix sometime this week?  3/6/23
 
 #### What This Bot Does:
 

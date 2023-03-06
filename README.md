@@ -94,7 +94,8 @@ This bot then looks at winstreaks found in the database.  If they've been found,
 
 ## What happens when ratings or winstreaks haven't been found in the DB?
 
-In both Matchmaking and Tournaments, if ratings or winstreaks haven't been found in the database, or are all equal to one another, it wagers $1 on a randomly-selected fighter.  If Tier or True Streaks aren't pulled from Twitch, it will not record that match.  
+In both Matchmaking and Tournaments, if ratings or winstreaks haven't been found in the database, or are all equal to one another, it wagers $1 on a randomly-selected fighter.  
+If Tier or True Streaks aren't pulled from Twitch, it will not record that match.  
 
 ## How does betting work in Tournaments?
 

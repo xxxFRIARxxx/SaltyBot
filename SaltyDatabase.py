@@ -1,6 +1,6 @@
 import sqlite3
 
-class SaltyRecorder(): 
+class SaltyDatabase(): 
         def __init__(self):
             self.match_count = 0
             self.con = sqlite3.connect('SaltDatabase.db')
@@ -26,7 +26,7 @@ class SaltyRecorder():
                     p2tier INT,
                     p2tourney INT,
                     p2time INT,
-                    bet_outcome INT
+                    betOutcome INT
                 );
             """)
                
@@ -68,11 +68,12 @@ class SaltyRecorder():
                 avg_bet = data.fetchall()
             print(avg_bet[0][0])
 
-        def print_db(self):  # Selects and prints out entire table
+        def db_for_pandas(self):  # Selects and prints out entire table
             with self.con:
                 data = self.con.execute("SELECT * from SBMATCHES")
                 for row in data:
-                    print(row)
+                    # print(row)
+                    yield row
 
         def num_from_db(self):  # Selects and prints out number of records in DB.
             with self.con:

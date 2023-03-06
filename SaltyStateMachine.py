@@ -2,7 +2,7 @@ import requests
 import os
 from SaltyJson import SaltyJson
 from SaltyParser import SaltyJsonParser
-from SaltyDatabase import SaltyRecorder
+from SaltyDatabase import SaltyDatabase
 from SaltySocket import SaltySocket
 from SaltyTimer import SaltyTimer
 from SaltyWebInteractor import SaltyWebInteractor
@@ -19,7 +19,7 @@ match_start_time = 0
 total_match_time_sec = 0
 
 my_json = SaltyJson()
-recorder = SaltyRecorder()
+database = SaltyDatabase()
 my_socket = SaltySocket()
 game_time = SaltyTimer()
 bettor = SaltyBettor()
@@ -55,15 +55,15 @@ while True:
             if (new_match == 0):
                 os.system('cls')
                 first_run = False
-                p1DB_ratings = bettor.set_player_rating(recorder.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
-                p2DB_ratings = bettor.set_player_rating(recorder.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
-                p1DB_streak = recorder.get_winstreaks_from_DB(my_parser.get_p1name())
-                p2DB_streak = recorder.get_winstreaks_from_DB(my_parser.get_p2name())
+                p1DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
+                p2DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
+                p1DB_streak = database.get_winstreaks_from_DB(my_parser.get_p1name())
+                p2DB_streak = database.get_winstreaks_from_DB(my_parser.get_p2name())
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
                 new_match = 1
                 my_socket.find_winstreak = True
                 bettor.set_balance(interactor.get_balance()) 
-                my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 # TODO:  Include data regression to help compose bet here.
                 interactor.place_bet_on_website(bettor.format_bet(bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), bettor.suggested_bet(p1_probability, p1DB_streak, p2DB_streak, game_mode))) # Decide bet, and place bet               
         elif (game_state == 'locked'):
@@ -71,26 +71,32 @@ while True:
                 if (new_match == 1):
                     new_match = 2
                     game_time.timer_start()
-                    my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                    my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
         elif (game_state == '1') or (game_state == '2'): 
             if (first_run == False):
                 if (new_match == 2):
                     new_match = 0
                     game_time.timer_snapshot()
-                    my_parser.gameMode_printer(game_state, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                    my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                     ratings_to_db = bettor.update_ranking_after(game_state, p1DB_ratings, p2DB_ratings) # Updates ratings after the match.
                     my_socket.adjust_winstreak(my_parser.set_p1winstatus(), my_parser.set_p2winstatus(), thread.value1, thread.value2)
                     my_socket.adjust_tier(thread.value3)
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), game_state)
-                    recorder.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())                    
-    elif game_mode == "Exhibition":
+                    database.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())                    
+    elif ((game_mode == "Exhibition") and (game_state_lies == False)):
         if (game_state == "open"):
+            if (new_match == 0):
                 os.system('cls')
-                print(f"No bets are placed, and nothing is recorded in Exhibitions.  {my_parser.get_matches_remaining()} matches remaining.  Game state is {game_state}")
+                my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                new_match = 1
         elif (game_state == "locked"):
-                    print(f"No bets are placed, and nothing is recorded in Exhibitions.  {my_parser.get_matches_remaining()} matches remaining.  Game state is {game_state}")
+            if (new_match == 1):
+                my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                new_match = 2
         elif (game_state == "1") or (game_state == "2"):
-                    print(f"No bets are placed, and nothing is recorded in Exhibitions.  {my_parser.get_matches_remaining()} matches remaining.  Game state is {game_state}")
+            if (new_match == 2):
+                my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                new_match = 0
 
 # TODO: EXPLOSION:
 
@@ -109,6 +115,55 @@ while True:
                 # True Winstreaks are: (None, None)
                 # Current Tier is: None
                 # True Winstreaks are: (None, None)
+
+# TODO: EXPLOSION 2:
+
+
+                #  bets are placed, and nothing is recorded in Exhibitions.  23 matches remaining.  Game state is locked
+                # No bets are placed, and nothing is recorded in Exhibitions.  23 matches remaining.  Game state is locked
+                # No bets are placed, and nothing is recorded in Exhibitions.  23 matches remaining.  Game state is locked
+                # No bets are placed, and nothing is recorded in Exhibitions.  1 matches remaining.  Game state is open
+                # Current Tier is: None
+                # No bets are placed, and nothing is recorded in Exhibitions.  1 matches remaining.  Game state is locked
+                # True Winstreaks are: (None, None)
+                # Current Tier is: 4
+                # True Winstreaks are: (-2, -1)
+                # Current Tier is: 3
+                # True Winstreaks are: (2, -2)
+                # Current Tier is: 2
+                # True Winstreaks are: (1, 1)
+                # Current Tier is: 3
+                # True Winstreaks are: (-2, -1)
+                # Current Tier is: 4
+                # True Winstreaks are: (-2, 10)
+                # Current Tier is: 3
+                # True Winstreaks are: (-1, 1)
+                # Current Tier is: 2
+                # True Winstreaks are: (6, 3)
+                # Current Tier is: 4
+                # True Winstreaks are: (2, 1)
+                # Current Tier is: 1
+                # True Winstreaks are: (1, 1)
+                # Current Tier is: 3
+                # True Winstreaks are: (-1, 2)
+                # Current Tier is: 3
+                # True Winstreaks are: (1, 6)
+                # Current Tier is: 3
+                # True Winstreaks are: (-1, 3)
+
+# TODO: EXPLOSION 3:
+
+                # Current Balance is: $8,469
+                # Bet placed: $8,469 on player2
+                # Current Tier is: 2
+                # Traceback (most recent call last):
+                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 42, in <module>
+                #     game_mode = my_parser.get_gameMode()
+                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 104, in get_gameMode
+                #     if self.is_exhib() is True:
+                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 60, in is_exhib
+                #     exhib_split = self.json_dict["remaining"].split(' ')[1]
+                # TypeError: 'NoneType' object is not subscriptable
         
 # TODO: Last match of tourney still doesn't record:
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.

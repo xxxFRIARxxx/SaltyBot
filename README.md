@@ -2,8 +2,9 @@
 
 #### Current state - 3/1/23:  Everything works!  :heavy_check_mark:
 #### Currently Working On:  
-:heavy_check_mark: Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
-:heavy_check_mark: Collecting a DB sizable enough to test out betting patterns and accuracy of win-probability.  ETA = Ongoing, mostly done!  
+* Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA = 3/15/23  
+* Collecting a DB sizable enough to test out betting patterns and accuracy.  ETA for significant bet confidence: 4/1   
+
 :x: Bug:  Last match of tournaments doesn't record still  
 :x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)
 
@@ -15,7 +16,8 @@
 * Gathers a suggested winner (via probability of a win, difference in skill variance, and winstreaks)
 * Bets automatically (via probability of a win, difference in winstreaks, and the amount of salt in your balance)
 
-**Special Thanks:  DukeOfEarl for teaching me everything I know about programming, and some coding help with this program.**
+**Special Thanks:  
+DukeOfEarl for teaching me everything I know about programming, and some coding help with this program.**
 
 # Instructions for use
 
@@ -101,12 +103,15 @@ In Tournaments, this bot wagers your entire tournament-balance up to $20,000 eve
 It doesn't, lol.
 
 Exhibitions are so fucking wacky, that for right now, I'm just ignoring them completely.  
-No bets, no database recording, no nothing. I have the ability to do this, I just haven't implemented it, and don't know if I will.
+No bets, no database recording, no nothing. I haven't implemented it, and don't know if I will.
 
 ## Important note - PATIENCE IS A VIRTUE!
 
 Because of the way this bot assigns ratings and probabilities of winning, ratings gain confidence with time.  You'll find the most success of this bot once your database reaches ~20,000+ entries (roughly 30 days straight of logging).  I know...I know...but k'mon, you're building your own database of ongoing fights!  It'll take a bit!  
 
-Realistically, it'll probably wager $1 on all bets up to ~1000 entries in the DB, you'll probably come out a little <50% on bets from about 1000-3000 entries (due to it betting on a ranked fighter when it finds them, against a new fighter with an assigned default ranking), then it'll only get better from there.
+Realistically, it'll probably wager $1 on most bets up to ~1000 entries in the DB, you'll probably come out a little <50% on bets from about 1000-3000 entries (due to it betting on a ranked fighter when it finds them, against a "new" fighter with an assigned default ranking, losing the bet), then it'll only get better from there.
 
-Significant confidence ratings start appearing after roughly 12-15 matches recorded per-figher.  Patience!
+I believe 95% confidence ratings start appearing after roughly 10-12 matches recorded per-figher.  
+(~30,000 total matches.  Roughly 3 months of recording matches.)  
+This bot will do much better than a random choice up until then, but that's when it should almost never bet incorrectly.  
+Patience!

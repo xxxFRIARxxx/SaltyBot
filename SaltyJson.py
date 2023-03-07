@@ -7,16 +7,17 @@ class SaltyJson():
 
     def get_json(self):
         try:
-            self.response = self.session.get(self.url, headers={"User-Agent": "Mozilla/5.0"})
+            self.response = self.session.get(self.url, headers={"User-Agent": "Mozilla/5.0"})               
+        except requests.exceptions.ConnectionError:
+            self.get_json()
+        except requests.exceptions.JSONDecodeError:
+            self.get_json()
+        else:
             if self.response.status_code != 200:
                 print(self.response.status_code)
                 print(self.response.json())
                 self.get_json()       
             else:
-                return self.response.json()                
-        except requests.exceptions.ConnectionError:
-            self.get_json()
-        except requests.exceptions.JSONDecodeError:
-            self.get_json()
+                return self.response.json() 
 
 

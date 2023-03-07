@@ -1,4 +1,3 @@
-import requests
 import os
 from SaltyJson import SaltyJson
 from SaltyParser import SaltyJsonParser
@@ -9,15 +8,6 @@ from SaltyWebInteractor import SaltyWebInteractor
 from SaltyBettor import SaltyBettor
 from SaltyReceiver import CustomThread
 
-json_url = "https://www.saltybet.com/state.json"
-session_obj = requests.Session()
-response = session_obj.get(json_url, headers={"User-Agent": "Mozilla/5.0"})
-jsoninfo = response.json()
-
-new_match = 0
-match_start_time = 0
-total_match_time_sec = 0
-
 my_json = SaltyJson()
 database = SaltyDatabase()
 my_socket = SaltySocket()
@@ -25,6 +15,10 @@ game_time = SaltyTimer()
 bettor = SaltyBettor()
 interactor = SaltyWebInteractor()
 thread = CustomThread()
+
+new_match = 0
+match_start_time = 0
+total_match_time_sec = 0
 
 first_run = True
 previous_game_mode = None
@@ -65,7 +59,7 @@ while True:
                 bettor.set_balance(interactor.get_balance()) 
                 my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 # TODO:  Include data regression to help compose bet here.
-                interactor.place_bet_on_website(bettor.format_bet(bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), bettor.suggested_bet(p1_probability, p1DB_streak, p2DB_streak, game_mode))) # Decide bet, and place bet               
+                interactor.place_bet_on_website(bettor.format_bet(bettor.suggested_bet(bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), p1_probability,p1DB_streak, p2DB_streak, p1DB_ratings.sigma,p2DB_ratings.sigma, game_mode)))
         elif (game_state == 'locked'):
             if (first_run == False):
                 if (new_match == 1):

@@ -75,7 +75,7 @@ class SaltyBettor():
         elif p1_probability == None:
             suggested_wager = 1
         elif (p1_probability == .5):
-            if (p1DB_streak is not None) and (p2DB_streak is not None): # If probability of P1 and P2 is the same, (thru default ratings, or same ratings found in DB earlier), AND if BOTH P1streak or P2streak comes back from DB
+            if (p1DB_streak is not None) and (p2DB_streak is not None): # If probability of P1 and P2 is the same (thru default ratings, or same ratings found in DB earlier), AND if BOTH P1streak and P2streak comes back from DB (not None)
                 if p1DB_streak != p2DB_streak:
                     suggested_wager = round(((.01*self.balance) * (.1*abs(p1DB_streak-p2DB_streak))))
                 else:
@@ -87,31 +87,6 @@ class SaltyBettor():
         else:
             print("This prints when the suggested wager wasn't set by suggested_wager()")
         return suggested_wager
-    
-
-
-
-
-
-        # def suggested_bet(self, p1_probability, p1DB_streak, p2DB_streak, game_mode):
-        # suggested_wager = 1
-        # if (game_mode == 'Tournament') and (self.balance < 20000):
-        #     suggested_wager = self.balance
-        # elif p1_probability == None:
-        #     suggested_wager = 1
-        # elif p1_probability == .5:
-        #     if (p1DB_streak is not None) and (p2DB_streak is not None): # If probability of P1 and P2 is the same, (thru default ratings, or same ratings found in DB earlier), AND if BOTH P1streak or P2streak comes back from DB
-        #         if p1DB_streak != p2DB_streak:
-        #             suggested_wager = round(((.01*self.balance) * (.1*abs(p1DB_streak-p2DB_streak))))
-        #         else:
-        #             suggested_wager = 1
-        #     else:
-        #         suggested_wager = 1
-        # elif p1_probability != .5:
-        #     suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
-        # else:
-        #     print("This prints when the suggested wager wasn't set by suggested_wager()")
-        # return suggested_wager
 
     def format_bet(self, predicted_w, suggested_wager):
         self.p1name = {'selectedplayer': 'player1'}

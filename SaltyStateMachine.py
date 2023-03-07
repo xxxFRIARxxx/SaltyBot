@@ -87,15 +87,15 @@ while True:
         if (game_state == "open"):
             if (new_match == 0):
                 os.system('cls')
-                print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining} matches left.")
+                print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 1
         elif (game_state == "locked"):
             if (new_match == 1):
-                print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining} matches left.")
+                print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 2
         elif (game_state == "1") or (game_state == "2"):
             if (new_match == 2):
-                print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining} matches left.")
+                print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 0
 
 # TODO: EXPLOSION:

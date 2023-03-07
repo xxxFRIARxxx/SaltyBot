@@ -44,25 +44,25 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
-        # if self.json_dict["remaining"] == None:
-        #     self.json_dict["remaining"]
-        # exhib_split = self.json_dict["remaining"].split(' ')[1]
-        # exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
-        # if (exhib_endsin == True) or (exhib_split == "exhibition"):
-        #     return True
-        # else:
-        #     return False
-        
-
-
-
-
+        if self.json_dict["remaining"] == None:
+            self.json_dict["remaining"]
         exhib_split = self.json_dict["remaining"].split(' ')[1]
         exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
         if (exhib_endsin == True) or (exhib_split == "exhibition"):
             return True
         else:
             return False
+        
+
+
+
+
+        # exhib_split = self.json_dict["remaining"].split(' ')[1]
+        # exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
+        # if (exhib_endsin == True) or (exhib_split == "exhibition"):
+        #     return True
+        # else:
+        #     return False
     
     def is_tourney(self):
         reverse_split = self.json_dict["remaining"].rsplit(' ', 1)[-1]

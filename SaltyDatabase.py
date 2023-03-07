@@ -62,7 +62,7 @@ class SaltyDatabase():
                 self.con.execute("DELETE from SBMATCHES where ID <= 1000;")
                 print("Total number of rows deleted:", self.con.total_changes)
 
-        def get_win_avg(self): # Gets the average percentage of bets you've won.  (NOTE:  Actual probability betting started at match ID 250.)
+        def get_win_avg(self): # Gets the average percentage of bets you've won.
             with self.con:
                 data = self.con.execute("""SELECT avg(bet_outcome) FROM SBMATCHES;""")
                 avg_bet = data.fetchall()

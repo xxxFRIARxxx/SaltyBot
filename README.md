@@ -16,7 +16,7 @@
 * Pulls records from the database  
 * Assigns its own ratings to players (via Microsoft TrueSkill)
 * Gathers a suggested winner (via probability of a win, difference in skill variance, and winstreaks)
-* Bets automatically (via probability of a win, difference in winstreaks, and the amount of salt in your balance)
+* Bets automatically (via probability of a win, difference in sigma values and streaks, and the amount of salt in your balance)
 
 **Special Thanks:  
 DukeOfEarl for teaching me everything I know about programming, and some coding help with this program.**

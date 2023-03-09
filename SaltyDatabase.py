@@ -50,7 +50,7 @@ class SaltyDatabase():
                 except sqlite3.IntegrityError:
                     print("This match already exists in the DB.")               
             else:
-                print("Either winstreaks or tier didn't retrieve.  This match wasn't recorded.")
+                print("Either winstreaks or tier didn't retrieve from Twitch.  This match wasn't recorded.")
                       
         def update_match(self):  # Updates a match in the table. 
             with self.con:
@@ -85,9 +85,9 @@ class SaltyDatabase():
             self.match_count += 1
             if self.match_count % 10 == 0:
                 with self.backup_con:
-                    self.con.backup(self.backup_con)              
-                print("Successful DB Backup!")
-
+                    self.con.backup(self.backup_con)
+                    print("Successful DB Backup!")    
+                
         def get_winstreaks_from_DB(self, player_search):
             db_winstreak = None
             if self.get_most_recent(player_search) == None:

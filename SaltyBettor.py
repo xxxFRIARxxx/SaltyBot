@@ -3,6 +3,7 @@ import webbrowser
 import math
 from trueskill import Rating, rate_1vs1
 from statistics import NormalDist
+import decimal
 
 class SaltyBettor():
     def __init__(self):
@@ -40,10 +41,12 @@ class SaltyBettor():
         prob_P1 = NormalDist().cdf(deltaMu/denominator)
         return prob_P1
 
-    def predicted_winner(self, p1sigma, p2sigma, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner through probability of winning, then through difference in Sigma values, then through streaks.
+    def predicted_winner(self, p1mu, p2mu, p1sigma, p2sigma, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner through probability of winning, then through difference in Sigma values, then through streaks.
         self.predicted_w = None
         player1_dict = {p1_json:'player1'}
         player2_dict = {p2_json:'player2'}
+        # if (p1mu == 25) or (p2mu == 25):
+        #     self.predicted_w = None
         if p1_probability > .5:
             self.predicted_w = player1_dict[p1_json]
         elif p1_probability < .5:
@@ -65,6 +68,26 @@ class SaltyBettor():
             else:
                 self.predicted_w = None
         return self.predicted_w
+
+    def kelly_bet(self, p1_probability, balance, predicted_winner, game_mode):
+        q = 1-p1_probability
+        # b = p1_probability/(1-p1_probability)
+        b = 1
+        fraction = p1_probability-(q/b)
+        k_suggest = abs(.05*(fraction*balance))
+        if (game_mode == "Tournament") and (self.balance < 20000):
+            suggested_wager = self.balance
+        elif (game_mode == "Matchmaking") and (self.balance < 10000):
+            suggested_wager = self.balance
+        elif predicted_winner == None:
+            suggested_wager = 1
+        elif predicted_winner != None:
+            if p1_probability != .5:
+                suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
+            elif (p1_probability == .5):
+                suggested_wager = 1              
+        return predicted_winner, suggested_wager
+
 
     def suggested_bet(self, predicted_winner, p1_probability, p1DB_streak, p2DB_streak, p1_sigma, p2_sigma, game_mode):
         suggested_wager = 1

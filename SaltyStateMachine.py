@@ -7,6 +7,7 @@ from SaltyTimer import SaltyTimer
 from SaltyWebInteractor import SaltyWebInteractor
 from SaltyBettor import SaltyBettor
 from SaltyReceiver import CustomThread
+from SaltyPanda import SaltyPanda
 
 my_json = SaltyJson()
 database = SaltyDatabase()
@@ -15,6 +16,7 @@ game_time = SaltyTimer()
 bettor = SaltyBettor()
 interactor = SaltyWebInteractor()
 thread = CustomThread()
+panda = SaltyPanda()
 
 new_match = 0
 match_start_time = 0
@@ -56,10 +58,15 @@ while True:
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
                 new_match = 1
                 my_socket.find_winstreak = True
-                bettor.set_balance(interactor.get_balance()) 
+                bettor.set_balance(interactor.get_balance())
                 my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
-                # TODO:  Include data regression to help compose bet here.
-                interactor.place_bet_on_website(bettor.format_bet(bettor.suggested_bet(bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), p1_probability,p1DB_streak, p2DB_streak, p1DB_ratings.sigma,p2DB_ratings.sigma, game_mode)))
+                # TODO:  Include data regression to help compose bet here?
+
+                kelly = bettor.kelly_bet(p1_probability, bettor.balance, bettor.predicted_winner(p1DB_ratings.mu, p2DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), game_mode)
+                interactor.place_bet_on_website(bettor.format_bet(kelly))
+
+                # my_bet = (bettor.suggested_bet(bettor.predicted_winner(p1DB_ratings.mu, P2DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), p1_probability,p1DB_streak, p2DB_streak, p1DB_ratings.sigma,p2DB_ratings.sigma, game_mode))
+                # interactor.place_bet_on_website(bettor.format_bet(my_bet))
         elif (game_state == 'locked'):
             if (first_run == False):
                 if (new_match == 1):
@@ -77,6 +84,7 @@ while True:
                     my_socket.adjust_tier(thread.value3)
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), game_state)
                     database.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())                    
+                    panda.panda_to_csv(database.db_for_pandas())
     elif ((game_mode == "Exhibition") and (game_state_lies == False)):
         if (game_state == "open"):
             if (new_match == 0):
@@ -91,6 +99,32 @@ while True:
             if (new_match == 2):
                 print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 0
+
+# TODO:  Places bet of $0 when skill (and variation: does it matter?) are the same
+
+# TODO: NEW EXPLOSION:
+                # Traceback (most recent call last):
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 971, in json
+                #     return complexjson.loads(self.text, **kwargs)
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\__init__.py", line 346, in loads
+                #     return _default_decoder.decode(s)
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 337, in decode
+                #     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 355, in raw_decode
+                #     raise JSONDecodeError("Expecting value", s, err.value) from None
+                # json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+                # During handling of the above exception, another exception occurred:
+
+                # Traceback (most recent call last):
+                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 33, in <module>
+                #     the_json = my_json.get_json()
+                #   File "e:\Python Scripts\SaltyBot\SaltyJson.py", line 21, in get_json
+                #     return self.response.json()
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 975, in json
+                #     raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+                # requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
 
 # TODO: EXPLOSION:
 
@@ -109,6 +143,17 @@ while True:
                 # True Winstreaks are: (None, None)
                 # Current Tier is: None
                 # True Winstreaks are: (None, None)
+
+
+# TODO: EXPLOSION INFINITY:
+                # Traceback (most recent call last):
+                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 35, in <module>
+                #     game_mode = my_parser.get_gameMode()
+                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 104, in get_gameMode
+                #     if self.is_exhib() is True:
+                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 47, in is_exhib
+                #     if self.json_dict["remaining"] == None:
+                #   TypeError: 'NoneType' object is not subscriptable
 
 # TODO: EXPLOSION 2:
 

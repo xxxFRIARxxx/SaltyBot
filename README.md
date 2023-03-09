@@ -93,10 +93,6 @@ This bot bets an amount based off of the [Kelly Criterion](https://en.wikipedia.
 
 * This bot wagers $1 on a randomly selected fighter.
 
-## What happens when Tier or True Streaks don't come back from Twitch?
-
-If Tier or True Streaks aren't pulled from Twitch, it will not record that match.
-
 ## How does betting work in Tournaments?
 
 In Tournaments, this bot wagers your entire tournament-balance up to $20,000 every round.  Once $20,000 is hit, the betting-system will limit wagers based on the Kelly Criterion like in MM (instead of entire balance, to ensure keeping of at least roughly $20,000).
@@ -107,6 +103,10 @@ It doesn't, lol.
 
 Exhibitions are so fucking wacky, that for right now, I'm just ignoring them completely.  
 No bets, no database recording, no nothing. I haven't implemented it, and don't know if I will.
+
+## What happens when Tier or True Streaks don't come back from Twitch?
+
+If Tier or True Streaks aren't pulled from Twitch, it will not record that match.
 
 ## Important note - PATIENCE IS A VIRTUE!
 

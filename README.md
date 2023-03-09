@@ -110,11 +110,12 @@ If Tier or True Streaks aren't pulled from Twitch, it will not record that match
 
 ## Important note - PATIENCE IS A VIRTUE!
 
-Because of the way this bot assigns ratings and probabilities of winning, ratings gain confidence with time.  You'll find the most success of this bot once your database reaches ~20,000+ entries (roughly 30 days straight of logging).  I know...I know...but k'mon, you're building your own database of ongoing fights!  It'll take a bit!  
+Because of the way this bot assigns ratings and probabilities of winning, ratings gain confidence with time.  You'll start finding success better than 50% starting ~4000 entries, and you'll find the most success of this bot once your database reaches ~30,000+ entries (roughly 75 days of logging).  
+I know...I know...but k'mon, you're building your own database of ongoing fights!  It'll take a bit!  
 
-Realistically, if you have over $10,000, it'll probably wager $1 on most bets up to ~1500 entries in the DB, you'll probably come out a little <50% on bets from about 1500-3000 entries (due to it betting on a ranked fighter when it finds them, against a "new" fighter with an assigned default ranking, losing the bet), then it'll only get better from there.
+If you have over $10k, realistically, it'll probably wager $1 on most bets up to ~1500 entries in the DB, you'll probably come out a little <50% on bets from about 1500-3000 entries (due to it betting on a ranked fighter when it finds them, against a "new" fighter with an assigned default ranking, losing the bet), then it'll only get better from there.
 
 I believe 95% confidence ratings start appearing after roughly 10-12 matches recorded per-figher.  
-(~30,000 total matches.  Roughly 3 months of recording matches.)  
+(~30,000 total matches.  Roughly 2.5 months of recording matches.)  
 This bot will do much better than a random choice up until then, but that's when it should almost never bet incorrectly.  
 Patience!

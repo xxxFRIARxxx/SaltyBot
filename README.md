@@ -91,8 +91,7 @@ If your balance is > 10,000 in MM:
 
 ### If there isn't a Predicted Winner
 
-This bot then looks at winstreaks found in the database.  If they've been found, it bets an amount ALMOST NEVER LARGER than 10% of your balance based off of the difference in winstreaks found in the DB.  
-(This is very rare:  when the winstreak difference is 100 (insanity).  If we see a winstreak difference > 100 we'll see wagers > 10% of your balance).  
+* This bot wagers $1 on a randomly selected fighter.
 
 ## What happens when Tier or True Streaks don't come back from Twitch?
 

@@ -86,6 +86,7 @@ If your balance is > 10,000 in MM:
 
 ### If there is a Predicted Winner:
 
+This bot bets an amount based off of the [Kelly Criterion](https://en.wikipedia.org/wiki/Kelly_criterion)
 * Typical wager amounts average 2.5% of your balance.  In this comparison, bets are NEVER LARGER than 5% of your entire balance.  
 
 ### If there isn't a Predicted Winner:

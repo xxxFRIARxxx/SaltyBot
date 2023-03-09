@@ -2,6 +2,8 @@
 
 #### Current state - 3/6/23:  Everything works!  :heavy_check_mark:  
 
+:heavy_check_mark: **NEW! 3/9/23  This bot bets an amount based off of the Kelly Criterion.**:heavy_check_mark: 
+
 #### Currently Working On:  
 * Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA: 3/15/23  
 * Collecting a DB sizable enough to test out betting patterns and accuracy.  ETA for significant bet confidence: 4/1   
@@ -73,7 +75,7 @@ The predicted winner is the fighter with the lower rating variation.
 * Lastly, if the variations are both the same, this bot looks at the fighters' streaks.  
 The predicted winner is the fighter with the higher streak.
 
-* If the probabilities are the same, or their variances are the same, or their streaks are the same or come back None:  
+* If the probabilities are the same, or their variances are the same, or their streaks are the same or are None:  
 The predicted winner is None.
 
 ## How does betting work in Matchmaking?  
@@ -84,9 +86,7 @@ If your balance is > 10,000 in MM:
 
 ### If there is a Predicted Winner
 
-NEW! 3/9/23  This bot bets an amount based off of the Kelly Criterion.
-
-* Typical wager amounts average 2.5% of your balanve.  In this comparison, bets are NEVER LARGER than 5% of your entire balance.  
+* Typical wager amounts average 2.5% of your balance.  In this comparison, bets are NEVER LARGER than 5% of your entire balance.  
 (This is extremely rare:  When there's a 100% chance of winning for a player in the fight)
 
 ### If there isn't a Predicted Winner

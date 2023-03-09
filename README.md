@@ -16,9 +16,9 @@
 
 * Records its own database  
 * Pulls records from the database  
-* Assigns its own ratings to players (via Microsoft TrueSkill)
+* Assigns its own ratings to players (via [Microsoft TrueSkill](https://www.microsoft.com/en-us/research/project/trueskill-ranking-system/))
 * Gathers a suggested winner (via probability of a win, difference in skill variance, and winstreaks)
-* Bets automatically (via the Kelly Criterion)
+* Bets automatically (via the [Kelly Criterion](https://en.wikipedia.org/wiki/Kelly_criterion))
 
 **Special Thanks:  
 DukeOfEarl for teaching me everything I know about programming, and some coding help with this program.**

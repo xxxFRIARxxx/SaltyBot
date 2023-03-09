@@ -84,12 +84,11 @@ In MM, if your balance is < 10,000, this bot will wager the entire balance.  It 
 
 If your balance is > 10,000 in MM:
 
-### If there is a Predicted Winner
+### If there is a Predicted Winner:
 
 * Typical wager amounts average 2.5% of your balance.  In this comparison, bets are NEVER LARGER than 5% of your entire balance.  
-(This is extremely rare:  When there's a 100% chance of winning for a player in the fight)
 
-### If there isn't a Predicted Winner
+### If there isn't a Predicted Winner:
 
 * This bot wagers $1 on a randomly selected fighter.
 

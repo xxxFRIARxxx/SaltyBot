@@ -16,24 +16,24 @@ class SaltyWebInteractor():
         self.login()
 
     def check_env_variables(self):
-        # Find the path to the .env file
         dotenv_path = find_dotenv()
-
         if dotenv_path:
-            print("Found .env file at path:", dotenv_path)
             return True
-        else:
-            print("Could not find .env file. Please see README for setup instructions.")
+        else:       
             return False
 
     def login(self):
         self.session.get(URL_SIGNIN)
         if self.check_env_variables():
-            print("Logging in...")
-            login_data = {'email': os.getenv('email'), 'pword': os.getenv('password'), 'authenticate': 'signin'}
-            self.session.post(URL_SIGNIN, data=login_data)
+            try:
+                login_data = {'email': os.getenv('email'), 'pword': os.getenv('password'), 'authenticate': 'signin'}
+                self.session.post(URL_SIGNIN, data=login_data)
+            except:
+                print("Login failed.")
+            else:
+                print("Login success!")
         else:
-            print("Unable to login due to missing .env file")
+            print("Unable to login due to missing .env file.  Please see README for setup instructions.")
 
     def refresh_session(self):
         response = self.session.get('https://www.saltybet.com/')

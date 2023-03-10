@@ -58,9 +58,9 @@ while True:
                 p2DB_streak = database.get_winstreaks_from_DB(my_parser.get_p2name())
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
                 predicted_winner = bettor.predicted_winner(p1DB_ratings.mu, p2DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak)
-                kelly = bettor.kelly_bet(p1_probability, bettor.balance, predicted_winner, game_mode)
+                kelly_bet = bettor.kelly_bet(p1_probability, bettor.balance, predicted_winner, game_mode)
                 my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
-                interactor.place_bet_on_website(bettor.format_bet(kelly))
+                interactor.place_bet_on_website(bettor.format_bet(predicted_winner, kelly_bet))
                 new_match = 1
                 my_socket.find_winstreak = True            
         elif (game_state == 'locked'):
@@ -95,18 +95,7 @@ while True:
             if (new_match == 2):
                 print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 0
-
-# TODO: EXPLOSION INFINITY:
-                # Traceback (most recent call last):
-                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 35, in <module>
-                #     game_mode = my_parser.get_gameMode()
-                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 104, in get_gameMode
-                #     if self.is_exhib() is True:
-                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 47, in is_exhib
-                #     if self.json_dict["remaining"] is None:
-                #   TypeError: 'NoneType' object is not subscriptable
-
-        
+       
 # TODO: Last match of tourney still doesn't record:
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.

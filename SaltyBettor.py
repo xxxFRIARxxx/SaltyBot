@@ -86,47 +86,46 @@ class SaltyBettor():
                 suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
             elif (p1_probability == .5):
                 suggested_wager = 1              
-        return predicted_winner, suggested_wager
+        return suggested_wager
 
-
-    def suggested_bet(self, predicted_winner, p1_probability, p1DB_streak, p2DB_streak, p1_sigma, p2_sigma, game_mode):
-        suggested_wager = 1
-        if (game_mode == "Tournament") and (self.balance < 20000):
-            suggested_wager = self.balance
-        elif (game_mode == "Matchmaking") and (self.balance < 10000):
-            suggested_wager = self.balance
-        elif predicted_winner is None:
-            suggested_wager = 1
-        elif predicted_winner == "player1":
-            if p1_probability != .5:
-                suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
-            elif (p1_probability == .5):
-                if (p1_sigma != p2_sigma):
-                    suggested_wager = round((.05 * self.balance) * (.025*(p1_sigma - p2_sigma)))
-                elif p1_sigma == p2_sigma:
-                    suggested_wager = round(((.01*self.balance) * (.1*abs(p1DB_streak-p2DB_streak))))
+    # def suggested_bet(self, predicted_winner, p1_probability, p1DB_streak, p2DB_streak, p1_sigma, p2_sigma, game_mode):
+    #     suggested_wager = 1
+    #     if (game_mode == "Tournament") and (self.balance < 20000):
+    #         suggested_wager = self.balance
+    #     elif (game_mode == "Matchmaking") and (self.balance < 10000):
+    #         suggested_wager = self.balance
+    #     elif predicted_winner is None:
+    #         suggested_wager = 1
+    #     elif predicted_winner == "player1":
+    #         if p1_probability != .5:
+    #             suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
+    #         elif (p1_probability == .5):
+    #             if (p1_sigma != p2_sigma):
+    #                 suggested_wager = round((.05 * self.balance) * (.025*(p1_sigma - p2_sigma)))
+    #             elif p1_sigma == p2_sigma:
+    #                 suggested_wager = round(((.01*self.balance) * (.1*abs(p1DB_streak-p2DB_streak))))
         
-        elif predicted_winner == "player2":
-            if p1_probability != .5:
-                suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
-            elif (p1_probability == .5):
-                if (p2_sigma != p1_sigma):
-                    suggested_wager = round((.05 * self.balance) * (.025*(p2_sigma - p1_sigma)))
-                elif p2_sigma == p1_sigma:
-                    suggested_wager = round(((.01*self.balance) * (.1*abs(p2DB_streak-p1DB_streak))))
-        else:
-            print("This prints when the suggested wager wasn't set by suggested_bet()")    
-        return predicted_winner, suggested_wager
+    #     elif predicted_winner == "player2":
+    #         if p1_probability != .5:
+    #             suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
+    #         elif (p1_probability == .5):
+    #             if (p2_sigma != p1_sigma):
+    #                 suggested_wager = round((.05 * self.balance) * (.025*(p2_sigma - p1_sigma)))
+    #             elif p2_sigma == p1_sigma:
+    #                 suggested_wager = round(((.01*self.balance) * (.1*abs(p2DB_streak-p1DB_streak))))
+    #     else:
+    #         print("This prints when the suggested wager wasn't set by suggested_bet()")    
+    #     return predicted_winner, suggested_wager
 
-    def format_bet(self, bet_to_format):
+    def format_bet(self, predicted_winner, suggested_bet):
         self.p1name = {'selectedplayer': 'player1'}
         self.p2name = {'selectedplayer': 'player2'}   
-        self.wager = {'wager': bet_to_format[1]}
-        if bet_to_format[0] is None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND their Sigmas are the same (or don't come back), AND if EITHER P1streak or P2 streak DOESN'T come back from DB
-            self.suggested_player = random.choice([self.p1name, self.p2name])
-        elif self.p1name["selectedplayer"] == bet_to_format[0]:
+        self.wager = {'wager': suggested_bet}
+        if predicted_winner is None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND their Sigmas are the same (or don't come back), AND if EITHER P1streak or P2 streak DOESN'T come back from DB OR are the same.
+            self.suggested_player = random.choice([self.p1name, self.p2name]) # TODO:  RED WINS IN A DRAW
+        elif self.p1name["selectedplayer"] == predicted_winner:
             self.suggested_player = self.p1name
-        elif self.p2name["selectedplayer"] == bet_to_format[0]:
+        elif self.p2name["selectedplayer"] == predicted_winner:
             self.suggested_player = self.p2name
         return self.suggested_player | self.wager # Returns in the format neccessary for bet-placement on SaltyBet.com: {:} | {:}
 

@@ -15,16 +15,9 @@ class SaltyWebInteractor():
         self.session = requests.session()
         self.login()
 
-    def check_env_variables(self):
-        dotenv_path = find_dotenv()
-        if dotenv_path:
-            return True
-        else:       
-            return False
-
     def login(self):
         self.session.get(URL_SIGNIN)
-        if self.check_env_variables():
+        if find_dotenv():
             try:
                 login_data = {'email': os.getenv('email'), 'pword': os.getenv('password'), 'authenticate': 'signin'}
                 self.session.post(URL_SIGNIN, data=login_data)

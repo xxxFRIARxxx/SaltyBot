@@ -41,10 +41,49 @@ class SaltyBettor():
         prob_P1 = NormalDist().cdf(deltaMu/denominator)
         return prob_P1
 
+    # def predicted_winner(self, p1mu, p2mu, p1sigma, p2sigma, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner through probability of winning, then through difference in Sigma values, then through streaks.
+    #     self.predicted_w = None
+    #     player1_dict = {p1_json:'player1'}
+    #     player2_dict = {p2_json:'player2'}
+
+        
+    #     # if (p1mu == 25) or (p2mu == 25):
+    #     #     self.predicted_w = None
+        
+    #     if p1_probability > .5:
+    #         if ((p1mu-p1sigma)+2) > ((p2mu+p2sigma)-2):
+    #             self.predicted_w = player1_dict[p1_json]
+    #         elif ((p1mu-p1sigma)+2) < ((p2mu+p2sigma)-2):
+    #             self.predicted_w = None
+            
+    #     elif p1_probability < .5:
+    #         if ((p2mu-p2sigma)+2) > ((p1mu+p1sigma)-2):
+    #             self.predicted_w = player2_dict[p2_json]
+    #         elif ((p2mu-p2sigma)+2) < ((p1mu+p1sigma)-2):
+    #             self.predicted_w = None
+            
+    #     elif p1_probability == .5:
+    #         if p1sigma < p2sigma:
+    #             self.predicted_w = player1_dict[p1_json]
+    #         elif p2sigma < p1sigma:
+    #             self.predicted_w = player2_dict[p2_json]
+    #         elif p1sigma == p2sigma:
+    #             if (p1DB_streak is None) or (p2DB_streak is None): # If either of the streaks come back None once probability is already 50:50 and Sigmas are the same:
+    #                 self.predicted_w = None
+    #             elif p1DB_streak > p2DB_streak:
+    #                 self.predicted_w = player1_dict[p1_json]
+    #             elif p2DB_streak > p1DB_streak:
+    #                 self.predicted_w = player2_dict[p2_json]
+    #             else:
+    #                 self.predicted_w = None  
+    #         else:
+    #             self.predicted_w = None
+    #     return self.predicted_w
+
     def predicted_winner(self, p1mu, p2mu, p1sigma, p2sigma, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner through probability of winning, then through difference in Sigma values, then through streaks.
         self.predicted_w = None
         player1_dict = {p1_json:'player1'}
-        player2_dict = {p2_json:'player2'}
+        player2_dict = {p2_json:'player2'} 
         # if (p1mu == 25) or (p2mu == 25):
         #     self.predicted_w = None
         if p1_probability > .5:

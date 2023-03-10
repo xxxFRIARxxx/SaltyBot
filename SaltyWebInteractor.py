@@ -1,7 +1,7 @@
 import requests
 import os
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import time
 
 load_dotenv()
@@ -9,15 +9,31 @@ load_dotenv()
 URL_SIGNIN = 'https://www.saltybet.com/authenticate?signin=1'
 URL_BET = 'https://www.saltybet.com/ajax_place_bet.php'
 
+
 class SaltyWebInteractor():
     def __init__(self):
         self.session = requests.session()
         self.login()
 
+    def check_env_variables(self):
+        # Find the path to the .env file
+        dotenv_path = find_dotenv()
+
+        if dotenv_path:
+            print("Found .env file at path:", dotenv_path)
+            return True
+        else:
+            print("Could not find .env file. Please see README for setup instructions.")
+            return False
+
     def login(self):
         self.session.get(URL_SIGNIN)
-        login_data = {'email': os.getenv('email'), 'pword': os.getenv('password'), 'authenticate': 'signin'}
-        self.session.post(URL_SIGNIN, data=login_data)
+        if self.check_env_variables():
+            print("Logging in...")
+            login_data = {'email': os.getenv('email'), 'pword': os.getenv('password'), 'authenticate': 'signin'}
+            self.session.post(URL_SIGNIN, data=login_data)
+        else:
+            print("Unable to login due to missing .env file")
 
     def refresh_session(self):
         response = self.session.get('https://www.saltybet.com/')
@@ -27,7 +43,7 @@ class SaltyWebInteractor():
         try:
             bal_req = self.refresh_session()
             soup_parser = BeautifulSoup(bal_req.content, "html.parser")
-            balance = int(soup_parser.find(id="balance").string.replace(',',''))
+            balance = int(soup_parser.find(id="balance").string.replace(',', ''))
         except requests.exceptions.HTTPError:
             time.sleep(.25)
             self.login()
@@ -45,12 +61,9 @@ class SaltyWebInteractor():
 
     def place_bet_on_website(self, bet_data):
         try:
-            self.session.post(URL_BET, data = bet_data)
+            self.session.post(URL_BET, data=bet_data)
             print(f"Bet placed: ${bet_data['wager']:,} on {bet_data['selectedplayer']}")
         except requests.exceptions.ConnectionError:
             time.sleep(.25)
             self.login()
             self.place_bet_on_website()
-
-
-

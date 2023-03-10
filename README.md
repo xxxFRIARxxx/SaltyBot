@@ -1,12 +1,11 @@
-# SaltyBot - A bot for SaltyBet.com.
+# SaltyBot - A bot for SaltyBet.com
 
 #### Current state - 3/6/23:  Everything works!  :heavy_check_mark:  
 
 :heavy_check_mark: **NEW! 3/9/23  This bot bets an amount based off of the Kelly Criterion.**:heavy_check_mark: 
 
 #### Currently Working On:  
-* Trimming the fat of the program (Commented-out code, refactoring, etc.)  ETA: 3/15/23  
-* Collecting a DB sizable enough to test out betting patterns and accuracy.  ETA for significant bet confidence: 4/1   
+* Trimming the fat of the program (Commented-out code, refactoring, last bugs, etc.)  ETA: 3/15/23  
 
 :x: Bug:  Last match of tournaments doesn't record still  
 :x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)  
@@ -17,7 +16,7 @@
 * Records its own database  
 * Pulls records from the database  
 * Assigns its own ratings to players (via [Microsoft TrueSkill](https://www.microsoft.com/en-us/research/project/trueskill-ranking-system/))
-* Gathers a suggested winner (via probability of a win, difference in skill variance, and winstreaks)
+* Gathers a suggested winner (via probability of a win, difference in skill variance, and streaks)
 * Bets automatically (via the [Kelly Criterion](https://en.wikipedia.org/wiki/Kelly_criterion))
 
 **Special Thanks:  
@@ -116,6 +115,6 @@ I know...I know...but k'mon, you're building your own database of ongoing fights
 If you have over $10k, realistically, it'll probably wager $1 on most bets up to ~1500 entries in the DB, you'll probably come out a little <50% on bets from about 1500-3000 entries (due to it betting on a ranked fighter when it finds them, against a "new" fighter with an assigned default ranking, losing the bet), then it'll only get better from there.
 
 I believe 95% confidence ratings start appearing after roughly 10-12 matches recorded per-figher.  
-(~30,000 total matches.  Roughly 2.5 months of recording matches.)  
+(~30,000 total matches.  Roughly 2 months of recording matches.)  
 This bot will do much better than a random choice up until then, but that's when it should almost never bet incorrectly.  
 Patience!

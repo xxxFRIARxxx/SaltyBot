@@ -100,8 +100,6 @@ while True:
                 print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 0
 
-# TODO:  Places bet of $0 when skill (and variation: does it matter?) are the same
-
 # TODO: NEW EXPLOSION:
                 # Traceback (most recent call last):
                 #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 971, in json

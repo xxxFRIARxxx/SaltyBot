@@ -48,6 +48,7 @@ TrueSkill
 Requests  
 Urllib3  
 Tabulate
+Pandas
 
 ## Step 1:  GOGOGOGOGOGOGO
 

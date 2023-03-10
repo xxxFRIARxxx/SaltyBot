@@ -47,7 +47,7 @@ Dot Env
 TrueSkill  
 Requests  
 Urllib3  
-Tabulate
+Tabulate  
 Pandas
 
 ## Step 1:  GOGOGOGOGOGOGO

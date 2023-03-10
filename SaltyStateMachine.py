@@ -46,35 +46,31 @@ while True:
         game_state_lies = False
     previous_game_state = game_state
     
-    if ((game_mode != 'Exhibition') and (game_state_lies == False)):
+    if ((game_mode != 'Exhibition') and (game_state_lies is False)):
         if (game_state == 'open'):
             if (new_match == 0):
                 os.system('cls')
                 first_run = False
+                bettor.set_balance(interactor.get_balance())
                 p1DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 p2DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 p1DB_streak = database.get_winstreaks_from_DB(my_parser.get_p1name())
                 p2DB_streak = database.get_winstreaks_from_DB(my_parser.get_p2name())
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
-                new_match = 1
-                my_socket.find_winstreak = True
-                bettor.set_balance(interactor.get_balance())
+                predicted_winner = bettor.predicted_winner(p1DB_ratings.mu, p2DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak)
+                kelly = bettor.kelly_bet(p1_probability, bettor.balance, predicted_winner, game_mode)
                 my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
-                # TODO:  Include data regression to help compose bet here?
-
-                kelly = bettor.kelly_bet(p1_probability, bettor.balance, bettor.predicted_winner(p1DB_ratings.mu, p2DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), game_mode)
                 interactor.place_bet_on_website(bettor.format_bet(kelly))
-
-                # my_bet = (bettor.suggested_bet(bettor.predicted_winner(p1DB_ratings.mu, P2DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak), p1_probability,p1DB_streak, p2DB_streak, p1DB_ratings.sigma,p2DB_ratings.sigma, game_mode))
-                # interactor.place_bet_on_website(bettor.format_bet(my_bet))
+                new_match = 1
+                my_socket.find_winstreak = True            
         elif (game_state == 'locked'):
-            if (first_run == False):
+            if (first_run is False):
                 if (new_match == 1):
                     new_match = 2
                     game_time.timer_start()
                     my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
         elif (game_state == '1') or (game_state == '2'): 
-            if (first_run == False):
+            if (first_run is False):
                 if (new_match == 2):
                     new_match = 0
                     game_time.timer_snapshot()
@@ -85,7 +81,7 @@ while True:
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), game_state)
                     database.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())                    
                     panda.panda_to_csv(database.db_for_pandas())
-    elif ((game_mode == "Exhibition") and (game_state_lies == False)):
+    elif ((game_mode == "Exhibition") and (game_state_lies is False)):
         if (game_state == "open"):
             if (new_match == 0):
                 os.system('cls')
@@ -100,49 +96,6 @@ while True:
                 print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 0
 
-# TODO: NEW EXPLOSION:
-                # Traceback (most recent call last):
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 971, in json
-                #     return complexjson.loads(self.text, **kwargs)
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\__init__.py", line 346, in loads
-                #     return _default_decoder.decode(s)
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 337, in decode
-                #     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
-                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 355, in raw_decode
-                #     raise JSONDecodeError("Expecting value", s, err.value) from None
-                # json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-
-                # During handling of the above exception, another exception occurred:
-
-                # Traceback (most recent call last):
-                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 33, in <module>
-                #     the_json = my_json.get_json()
-                #   File "e:\Python Scripts\SaltyBot\SaltyJson.py", line 21, in get_json
-                #     return self.response.json()
-                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 975, in json
-                #     raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
-                # requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-
-
-# TODO: EXPLOSION:
-
-                # # Currently in Exhibitions.  No bets are placed, and nothing is recorded.  Game state is open
-                # Current Tier is: 5
-                # Traceback (most recent call last):
-                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 41, in <module>
-                #     game_mode = my_parser.get_gameMode()
-                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 91, in get_gameMode
-                #     if self.is_exhib() is True:
-                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 47, in is_exhib
-                #     exhib_split = self.json_dict["remaining"].split(' ')[1]
-                # TypeError: 'NoneType' object is not subscriptable
-                # True Winstreaks are: (None, None)
-                # Current Tier is: 5
-                # True Winstreaks are: (None, None)
-                # Current Tier is: None
-                # True Winstreaks are: (None, None)
-
-
 # TODO: EXPLOSION INFINITY:
                 # Traceback (most recent call last):
                 #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 35, in <module>
@@ -150,57 +103,9 @@ while True:
                 #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 104, in get_gameMode
                 #     if self.is_exhib() is True:
                 #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 47, in is_exhib
-                #     if self.json_dict["remaining"] == None:
+                #     if self.json_dict["remaining"] is None:
                 #   TypeError: 'NoneType' object is not subscriptable
 
-# TODO: EXPLOSION 2:
-
-
-                #  bets are placed, and nothing is recorded in Exhibitions.  23 matches remaining.  Game state is locked
-                # No bets are placed, and nothing is recorded in Exhibitions.  23 matches remaining.  Game state is locked
-                # No bets are placed, and nothing is recorded in Exhibitions.  23 matches remaining.  Game state is locked
-                # No bets are placed, and nothing is recorded in Exhibitions.  1 matches remaining.  Game state is open
-                # Current Tier is: None
-                # No bets are placed, and nothing is recorded in Exhibitions.  1 matches remaining.  Game state is locked
-                # True Winstreaks are: (None, None)
-                # Current Tier is: 4
-                # True Winstreaks are: (-2, -1)
-                # Current Tier is: 3
-                # True Winstreaks are: (2, -2)
-                # Current Tier is: 2
-                # True Winstreaks are: (1, 1)
-                # Current Tier is: 3
-                # True Winstreaks are: (-2, -1)
-                # Current Tier is: 4
-                # True Winstreaks are: (-2, 10)
-                # Current Tier is: 3
-                # True Winstreaks are: (-1, 1)
-                # Current Tier is: 2
-                # True Winstreaks are: (6, 3)
-                # Current Tier is: 4
-                # True Winstreaks are: (2, 1)
-                # Current Tier is: 1
-                # True Winstreaks are: (1, 1)
-                # Current Tier is: 3
-                # True Winstreaks are: (-1, 2)
-                # Current Tier is: 3
-                # True Winstreaks are: (1, 6)
-                # Current Tier is: 3
-                # True Winstreaks are: (-1, 3)
-
-# TODO: EXPLOSION 3:
-
-                # Current Balance is: $8,469
-                # Bet placed: $8,469 on player2
-                # Current Tier is: 2
-                # Traceback (most recent call last):
-                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 42, in <module>
-                #     game_mode = my_parser.get_gameMode()
-                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 104, in get_gameMode
-                #     if self.is_exhib() is True:
-                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 60, in is_exhib
-                #     exhib_split = self.json_dict["remaining"].split(' ')[1]
-                # TypeError: 'NoneType' object is not subscriptable
         
 # TODO: Last match of tourney still doesn't record:
                 # Currently in Tournament with 1 matches remaining.  Game state is locked.

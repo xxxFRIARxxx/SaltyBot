@@ -90,7 +90,7 @@ class SaltyDatabase():
                 
         def get_winstreaks_from_DB(self, player_search):
             db_winstreak = None
-            if self.get_most_recent(player_search) == None:
+            if self.get_most_recent(player_search) is None:
                 db_winstreak = None
             elif self.get_most_recent(player_search)[0]['p1name'] == player_search:
                 db_winstreak = self.get_most_recent(player_search)[0]['p1streak']
@@ -99,7 +99,7 @@ class SaltyDatabase():
             return db_winstreak
                     
         def get_ratings_from_DB(self, player_search):  # Gets the Mu and Sigma from the latest match, if a match exists.  # NOTE:  Can return None. (None = Default Ratings will be assigned from Bettor later.)
-            if (self.get_most_recent(player_search) == []) or (self.get_most_recent(player_search) == None):
+            if (self.get_most_recent(player_search) == []) or (self.get_most_recent(player_search) is None):
                 player_mu = None
                 player_sigma = None
             elif self.get_most_recent(player_search)[0]['p1name'] == player_search:

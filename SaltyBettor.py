@@ -57,7 +57,7 @@ class SaltyBettor():
             elif p2sigma < p1sigma:
                 self.predicted_w = player2_dict[p2_json]
             elif p1sigma == p2sigma:
-                if (p1DB_streak == None) or (p2DB_streak == None): # If either of the streaks come back None once probability is already 50:50 and Sigmas are the same:
+                if (p1DB_streak is None) or (p2DB_streak is None): # If either of the streaks come back None once probability is already 50:50 and Sigmas are the same:
                     self.predicted_w = None
                 elif p1DB_streak > p2DB_streak:
                     self.predicted_w = player1_dict[p1_json]
@@ -79,7 +79,7 @@ class SaltyBettor():
             suggested_wager = self.balance
         elif (game_mode == "Matchmaking") and (self.balance < 10000):
             suggested_wager = self.balance
-        elif predicted_winner == None:
+        elif predicted_winner is None:
             suggested_wager = 1
         elif predicted_winner != None:
             if p1_probability != .5:
@@ -95,7 +95,7 @@ class SaltyBettor():
             suggested_wager = self.balance
         elif (game_mode == "Matchmaking") and (self.balance < 10000):
             suggested_wager = self.balance
-        elif predicted_winner == None:
+        elif predicted_winner is None:
             suggested_wager = 1
         elif predicted_winner == "player1":
             if p1_probability != .5:
@@ -122,7 +122,7 @@ class SaltyBettor():
         self.p1name = {'selectedplayer': 'player1'}
         self.p2name = {'selectedplayer': 'player2'}   
         self.wager = {'wager': bet_to_format[1]}
-        if bet_to_format[0] == None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND their Sigmas are the same (or don't come back), AND if EITHER P1streak or P2 streak DOESN'T come back from DB
+        if bet_to_format[0] is None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND their Sigmas are the same (or don't come back), AND if EITHER P1streak or P2 streak DOESN'T come back from DB
             self.suggested_player = random.choice([self.p1name, self.p2name])
         elif self.p1name["selectedplayer"] == bet_to_format[0]:
             self.suggested_player = self.p1name
@@ -131,7 +131,7 @@ class SaltyBettor():
         return self.suggested_player | self.wager # Returns in the format neccessary for bet-placement on SaltyBet.com: {:} | {:}
 
     def set_player_rating(self, db_result):  # Sets player ratings for current match.
-        if db_result == None:  
+        if db_result is None:  
             self.rating = Rating()
         else:
             self.rating = Rating(db_result[0],db_result[1])

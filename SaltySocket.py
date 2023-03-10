@@ -65,7 +65,7 @@ class SaltySocket():
     def adjust_winstreak(self, p1win_status, p2win_status, p1winstreak, p2winstreak):
         self.adj_p1winstreak = p1winstreak
         self.adj_p2winstreak = p2winstreak
-        if (self.adj_p1winstreak == None) or (self.adj_p2winstreak == None):
+        if (self.adj_p1winstreak is None) or (self.adj_p2winstreak is None):
             pass
         elif (self.adj_p1winstreak <= 0) and (p1win_status == 1):
             self.adj_p1winstreak = 1
@@ -78,7 +78,7 @@ class SaltySocket():
         else:
             print("This prints if P1 winstreak hasn't been adjusted for some reason.")
 
-        if (self.adj_p1winstreak == None) or (self.adj_p2winstreak == None):
+        if (self.adj_p1winstreak is None) or (self.adj_p2winstreak is None):
             pass
         elif (self.adj_p2winstreak <= 0) and (p2win_status == 1):
             self.adj_p2winstreak = 1
@@ -94,7 +94,7 @@ class SaltySocket():
     def adjust_tier(self, tier):
         self.adj_p1_tier = tier
         self.adj_p2_tier = tier
-        if (self.adj_p1winstreak == None) or (self.adj_p1_tier == None):
+        if (self.adj_p1winstreak is None) or (self.adj_p1_tier is None):
             pass    
         elif tier == 1:
             if self.adj_p1winstreak > 15:
@@ -123,7 +123,7 @@ class SaltySocket():
         else:
             print("This prints if P1 tier hasn't been adjusted for some reason.")
             
-        if (self.adj_p2winstreak == None) or (self.adj_p2_tier == None):
+        if (self.adj_p2winstreak is None) or (self.adj_p2_tier is None):
             pass       
         elif tier == 1:
             if self.adj_p2winstreak > 15:

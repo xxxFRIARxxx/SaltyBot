@@ -44,11 +44,11 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
-        if self.json_dict["remaining"] == None:
+        if self.json_dict["remaining"] is None:
             self.json_dict["remaining"]
         exhib_split = self.json_dict["remaining"].split(' ')[1]
         exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
-        if (exhib_endsin == True) or (exhib_split == "exhibition"):
+        if (exhib_endsin) or (exhib_split == "exhibition"):
             return True
         else:
             return False

@@ -124,5 +124,5 @@ class SaltyDatabase():
         def get_player_matches(self, player_search):  # Gathers ALL games of a selected player from the DB .  
             with self.con:
                 data = self.con.execute(f"""SELECT * FROM SBMATCHES WHERE p1name = ("{player_search}") OR p2name = ("{player_search}");""")
-                all_games= data.fetchall()  # TODO: Maybe replace the single quotes, and double quotes, with escaped quotes:  ex:  player_search.replace('"', '\"')}")
+                all_games= data.fetchall()
                 return all_games # Returns either an empty list, or a list of tuples of all matches, with each tuple containing 1 match.

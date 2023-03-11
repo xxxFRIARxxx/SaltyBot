@@ -22,3 +22,4 @@ class SaltyPanda():
     def print_pandas(self):
         print(self.db_list) 
         print(self.data_frame) 
+        

@@ -21,9 +21,6 @@ class SaltySocket():
         self.send_message(f"NICK {os.getenv('user')}\r\n")
         self.send_message(f"JOIN {channel}\r\n")
 
-    def close_socket(self):
-        self.socket.close()
-
     def send_message(self, constructor_message: str):
         self.socket.send((constructor_message).encode('utf-8')) 
         
@@ -36,30 +33,31 @@ class SaltySocket():
             message = self.socket.recv(4096).decode('utf-8')
         except ConnectionAbortedError:
             time.sleep(2)
-            self.open_socket()
+            return self.open_socket()
         except ConnectionResetError:
             time.sleep(2)
-            self.open_socket()
-        self.is_ping(message)
+            return self.open_socket()
+        else:
+            self.is_ping(message)
         return message
 
     def is_ping(self, ping_message=''):
         try:
             if ping_message.startswith("PING"):
                 self.send_message("PONG :tmi.twitch.tv\r\n")
-
         except AttributeError:
             time.sleep(2)
-            self.is_ping()
+            return self.is_ping()
+
     def send_ping(self):
         try:
             self.socket.send("PING :tmi.twitch.tv\r\n".encode('utf-8'))
         except ConnectionResetError:
             time.sleep(3)
-            self.open_socket()
+            return self.open_socket()
         except ConnectionAbortedError:
             time.sleep(3)
-            self.open_socket()
+            return self.open_socket()
         threading.Timer(20, self.send_ping).start()
     
     def adjust_winstreak(self, p1win_status, p2win_status, p1winstreak, p2winstreak):

@@ -16,3 +16,4 @@ class SaltyJson():
             return self.get_json()
         else:
             return self.response.json()
+        

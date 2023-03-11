@@ -9,7 +9,6 @@ load_dotenv()
 URL_SIGNIN = 'https://www.saltybet.com/authenticate?signin=1'
 URL_BET = 'https://www.saltybet.com/ajax_place_bet.php'
 
-
 class SaltyWebInteractor():
     def __init__(self):
         self.session = requests.session()

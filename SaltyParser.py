@@ -27,7 +27,7 @@ class SaltyJsonParser():
             return json_status
         else:
              webbrowser.open("https://www.saltybet.com/state.json")
-             print(f"Traditional gamestate not found.  Gamestate = {json_status}. Betting isn't open, betting isn't closed, or Player 1 or Player 2 didn't win.  Did a tie occur?")
+             print(f"Traditional gamestate not found.  Gamestate = {json_status}. Betting isn't open, betting isn't closed, or Player 1 or Player 2 didn't win.  Did SB break?")
              print(json_status)
              return json_status
 
@@ -44,25 +44,12 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
-        if self.json_dict["remaining"] is None:
-            self.json_dict["remaining"]
         exhib_split = self.json_dict["remaining"].split(' ')[1]
         exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
         if (exhib_endsin) or (exhib_split == "exhibition"):
             return True
         else:
             return False
-        
-
-
-
-
-        # exhib_split = self.json_dict["remaining"].split(' ')[1]
-        # exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
-        # if (exhib_endsin == True) or (exhib_split == "exhibition"):
-        #     return True
-        # else:
-        #     return False
     
     def is_tourney(self):
         reverse_split = self.json_dict["remaining"].rsplit(' ', 1)[-1]

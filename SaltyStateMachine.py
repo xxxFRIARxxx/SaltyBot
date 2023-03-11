@@ -39,7 +39,6 @@ while True:
     game_mode = my_parser.get_gameMode()
     game_state = my_parser.get_gamestate()
 
-    # TODO:  Are the below 2 blocks doing what they're supposed to?  Last tourney isn't recording still.
     if (game_mode != previous_game_mode):
         game_state_lies = True
     previous_game_mode = game_mode
@@ -60,7 +59,7 @@ while True:
                 p1DB_streak = database.get_winstreaks_from_DB(my_parser.get_p1name())
                 p2DB_streak = database.get_winstreaks_from_DB(my_parser.get_p2name())
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
-                predicted_winner = bettor.predicted_winner(p1DB_ratings.mu, p2DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak)
+                predicted_winner = bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak)
                 kelly_bet = bettor.kelly_bet(p1_probability, bettor.balance, predicted_winner, game_mode)
                 my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 bettor.bet_outcome_amount()
@@ -80,8 +79,8 @@ while True:
                     game_time.timer_snapshot()
                     my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                     ratings_to_db = bettor.update_ranking_after(game_state, p1DB_ratings, p2DB_ratings) # Updates ratings after the match.
-                    my_socket.adjust_winstreak(my_parser.set_p1winstatus(), my_parser.set_p2winstatus(), thread.value1, thread.value2)
-                    my_socket.adjust_tier(thread.value3)
+                    my_socket.adjust_winstreak(my_parser.set_p1winstatus(), my_parser.set_p2winstatus(), thread.true_p1_streak, thread.true_p2_streak)
+                    my_socket.adjust_tier(thread.true_tier)
                     bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), game_state)
                     database.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())                    
                     panda.panda_to_csv(database.db_for_pandas())
@@ -102,20 +101,7 @@ while True:
                     exiting_tourney = False
                 print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 0
-       
-# TODO: Last match of tourney still doesn't record:
-                # Currently in Tournament with 1 matches remaining.  Game state is locked.
-                # Currently in Tournament with 1 matches remaining.  Game state is locked.
-                # Currently in Tournament with 1 matches remaining.  Game state is locked.
-                # Currently in Tournament with 1 matches remaining.  Game state is locked.
-                # Currently in Tournament with 1 matches remaining.  Game state is locked.
-                # Currently in Exhibition with 25 matches remaining.  No bets are placed and nothing is recorded.  Game state is 2.  
-                # Currently in Exhibition with 25 matches remaining.  No bets are placed and nothing is recorded.  Game state is 2.  
-                # Currently in Exhibition with 25 matches remaining.  No bets are placed and nothing is recorded.  Game state is 2.  
-                # Currently in Exhibition with 25 matches remaining.  No bets are placed and nothing is recorded.  Game state is 2.  
-                # Currently in Exhibition with 25 matches remaining.  No bets are placed and nothing is recorded.  Game state is 2.  
 
 # NOTE: GENERAL QUESTIONS / THINGS.
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for match_time:
-#       SaltyBet: Exhibitions will start shortly. Thanks for watching!
-        
+#       SaltyBet: Exhibitions will start shortly. Thanks for watching!        

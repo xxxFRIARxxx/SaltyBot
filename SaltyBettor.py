@@ -1,10 +1,8 @@
-import random
 import webbrowser
 import math
 from trueskill import Rating, rate_1vs1
 from statistics import NormalDist
 import decimal
-
 
 class SaltyBettor():
     def __init__(self):
@@ -21,11 +19,11 @@ class SaltyBettor():
         elif (self.old_balance < self.balance):
             balance_diff = self.balance - self.old_balance
             self.old_balance = self.balance
-            print(f"Last bet: you won ${balance_diff:,}.")
+            print(f"Last bet: You won ${balance_diff:,}")
         elif (self.old_balance > self.balance):
             balance_diff = self.old_balance - self.balance
             self.old_balance = self.balance
-            print(f"Last bet: you lost ${balance_diff:,}.")
+            print(f"Last bet: You lost ${balance_diff:,}")
 
     def bet_outcome(self, p1_json, p2_json, game_state):
         player1_dict = {p1_json:'player1'}
@@ -55,51 +53,10 @@ class SaltyBettor():
         prob_P1 = NormalDist().cdf(deltaMu/denominator)
         return prob_P1
 
-    # def predicted_winner(self, p1mu, p2mu, p1sigma, p2sigma, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner through probability of winning, then through difference in Sigma values, then through streaks.
-    #     self.predicted_w = None
-    #     player1_dict = {p1_json:'player1'}
-    #     player2_dict = {p2_json:'player2'}
-
-        
-    #     # if (p1mu == 25) or (p2mu == 25):
-    #     #     self.predicted_w = None
-        
-    #     if p1_probability > .5:
-    #         if ((p1mu-p1sigma)+2) > ((p2mu+p2sigma)-2):
-    #             self.predicted_w = player1_dict[p1_json]
-    #         elif ((p1mu-p1sigma)+2) < ((p2mu+p2sigma)-2):
-    #             self.predicted_w = None
-            
-    #     elif p1_probability < .5:
-    #         if ((p2mu-p2sigma)+2) > ((p1mu+p1sigma)-2):
-    #             self.predicted_w = player2_dict[p2_json]
-    #         elif ((p2mu-p2sigma)+2) < ((p1mu+p1sigma)-2):
-    #             self.predicted_w = None
-            
-    #     elif p1_probability == .5:
-    #         if p1sigma < p2sigma:
-    #             self.predicted_w = player1_dict[p1_json]
-    #         elif p2sigma < p1sigma:
-    #             self.predicted_w = player2_dict[p2_json]
-    #         elif p1sigma == p2sigma:
-    #             if (p1DB_streak is None) or (p2DB_streak is None): # If either of the streaks come back None once probability is already 50:50 and Sigmas are the same:
-    #                 self.predicted_w = None
-    #             elif p1DB_streak > p2DB_streak:
-    #                 self.predicted_w = player1_dict[p1_json]
-    #             elif p2DB_streak > p1DB_streak:
-    #                 self.predicted_w = player2_dict[p2_json]
-    #             else:
-    #                 self.predicted_w = None  
-    #         else:
-    #             self.predicted_w = None
-    #     return self.predicted_w
-
-    def predicted_winner(self, p1mu, p2mu, p1sigma, p2sigma, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner through probability of winning, then through difference in Sigma values, then through streaks.
+    def predicted_winner(self, p1sigma, p2sigma, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak): # Predicts winner through probability of winning, then through difference in Sigma values, then through streaks.
         self.predicted_w = None
         player1_dict = {p1_json:'player1'}
         player2_dict = {p2_json:'player2'} 
-        # if (p1mu == 25) or (p2mu == 25):
-        #     self.predicted_w = None
         if p1_probability > .5:
             self.predicted_w = player1_dict[p1_json]
         elif p1_probability < .5:
@@ -141,41 +98,12 @@ class SaltyBettor():
                 suggested_wager = 1              
         return suggested_wager
 
-    # def suggested_bet(self, predicted_winner, p1_probability, p1DB_streak, p2DB_streak, p1_sigma, p2_sigma, game_mode):
-    #     suggested_wager = 1
-    #     if (game_mode == "Tournament") and (self.balance < 20000):
-    #         suggested_wager = self.balance
-    #     elif (game_mode == "Matchmaking") and (self.balance < 10000):
-    #         suggested_wager = self.balance
-    #     elif predicted_winner is None:
-    #         suggested_wager = 1
-    #     elif predicted_winner == "player1":
-    #         if p1_probability != .5:
-    #             suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
-    #         elif (p1_probability == .5):
-    #             if (p1_sigma != p2_sigma):
-    #                 suggested_wager = round((.05 * self.balance) * (.025*(p1_sigma - p2_sigma)))
-    #             elif p1_sigma == p2_sigma:
-    #                 suggested_wager = round(((.01*self.balance) * (.1*abs(p1DB_streak-p2DB_streak))))
-        
-    #     elif predicted_winner == "player2":
-    #         if p1_probability != .5:
-    #             suggested_wager = round((.01 * self.balance) * abs(.5 - p1_probability))
-    #         elif (p1_probability == .5):
-    #             if (p2_sigma != p1_sigma):
-    #                 suggested_wager = round((.05 * self.balance) * (.025*(p2_sigma - p1_sigma)))
-    #             elif p2_sigma == p1_sigma:
-    #                 suggested_wager = round(((.01*self.balance) * (.1*abs(p2DB_streak-p1DB_streak))))
-    #     else:
-    #         print("This prints when the suggested wager wasn't set by suggested_bet()")    
-    #     return predicted_winner, suggested_wager
-
     def format_bet(self, predicted_winner, suggested_bet):
         self.p1name = {'selectedplayer': 'player1'}
         self.p2name = {'selectedplayer': 'player2'}   
         self.wager = {'wager': suggested_bet}
         if predicted_winner is None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND their Sigmas are the same (or don't come back), AND if EITHER P1streak or P2 streak DOESN'T come back from DB OR are the same.
-            self.suggested_player = random.choice([self.p1name, self.p2name]) # TODO:  RED WINS IN A DRAW
+            self.suggested_player = self.p1name # Red wins in a draw, so this provides a miniscule advantage over random choice of a suggested winner.
         elif self.p1name["selectedplayer"] == predicted_winner:
             self.suggested_player = self.p1name
         elif self.p2name["selectedplayer"] == predicted_winner:

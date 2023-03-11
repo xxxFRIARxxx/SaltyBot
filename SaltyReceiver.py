@@ -8,9 +8,9 @@ class CustomThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.sock = SaltySocket()
-        self.value1 = None
-        self.value2 = None
-        self.value3 = None
+        self.true_p1_streak = None
+        self.true_p2_streak = None
+        self.true_tier = None
  
     def run(self):
         self.sock.open_socket() 
@@ -25,52 +25,31 @@ class CustomThread(threading.Thread):
                             res = re.findall(r"\(\s*\+?(-?\d+)\s*\)", response_message)  # Parse the message from waifu in to winstreaksk
                             self.sock.find_winstreak = False
                             try:
-                                self.value1 = int(res[0])
-                                self.value2 = int(res[1])
+                                self.true_p1_streak = int(res[0])
+                                self.true_p2_streak = int(res[1])
                             except:
-                                self.value1 = None
-                                self.value2 = None
-                            print(f"True Streaks are: {self.value1, self.value2}")
+                                self.true_p1_streak = None
+                                self.true_p2_streak = None
+                            print(f"True Streaks are: {self.true_p1_streak, self.true_p2_streak}")
                         elif (run_message.find("Bets are OPEN")) != -1: 
                             response_message = re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', run_message)[0]  # Find the message from waifu
                             tier_res = re.findall(r"\((.){1} Tier\)", response_message)  # Parse the message from waifu in to tier
                             try:
-                                if tier_res[0] == "P":
-                                    self.value3 = 1
-                                elif tier_res[0] == "B":
-                                    self.value3 = 2
-                                elif tier_res[0] == "A":
-                                    self.value3 = 3
-                                elif tier_res[0] == "S":
-                                    self.value3 = 4
-                                elif tier_res[0] == "X":
-                                    self.value3 = 5
-                                else:
-                                    self.value3 = None
+                                for index, item in enumerate(["P","B","A","S","X"], 1):
+                                    if tier_res[0] in item:
+                                        self.true_tier = index
+                                        break                        
+                                    else:
+                                        self.true_tier = None
                             except IndexError:
-                                self.value3 = None
-                            print(f"Current Tier is: {self.value3}")
+                                self.true_tier = None
+                            finally:
+                                print(f"Current Tier is: {self.true_tier}")
                         # elif (run_message.find("Payout")) != -1:
-                        #     self.sock.send_twitch_chat("Good afternoon chat!")
+                        #     self.sock.send_twitch_chat("Good afternoon chat!")        
 
-            # TODO:  WHY DOESN'T THE FOLLOWING WORK:
-                            # for index, item in enumerate(["P","B","A","S","X"], 1):
-                            #     if tier_res[0] in item:
-                            #         self.value3 = index
-                                                              
-                            #     else:
-                            #         self.value3 = None
-                            #     print(f"Current Tier is: {self.value3}")
-        
-
-                # set timer snapshot here, and set all proper flags to move to recording, and the next stage.
+                # TODO: Set timer snapshot here, and set all proper flags to move to recording, and the next stage.
                 
                 # elif (run_message.startswith(":saltybet!")):
                 #     if (run_message.find("Exhibitions will start shortly.") != -1):
                 #         response_message = re.findall(r'PRIVMSG #[a-zA-Z0-9_]+ :(.+)', run_message)[0]  # Find the message from SaltyBet
-
-
-
-                
-
-            

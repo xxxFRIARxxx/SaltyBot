@@ -1,15 +1,14 @@
 # SaltyBot - A bot for SaltyBet.com
 
-#### Current state - 3/6/23:  Everything works!  :heavy_check_mark:  
-
-:heavy_check_mark: **NEW! 3/9/23  This bot bets an amount based off of the Kelly Criterion.**:heavy_check_mark: 
+#### Current state - 3/11/23:  Everything works!  
+Release:  SaltyBot 1.0! :heavy_check_mark:  
 
 #### Currently Working On:  
-* Trimming the fat of the program (Commented-out code, refactoring, last bugs, etc.)  ETA: 3/15/23  
 
-:x: Bug:  Last match of tournaments doesn't record still  
-:x: Bug:  Outliers for matchTime every last-match of a game mode (Tourney or MM)  
-:x: Bug:  Exhib or Tourney parsing error still occurs.  Fix sometime this week?  3/6/23
+* Awesome stuff to help betting! (SaltyBot 2.0)
+* Possible refactoring
+
+:x: Bug (minor):  Outliers for matchTime every last-match of a game mode (Tourney or MM)  
 
 #### What This Bot Does:
 

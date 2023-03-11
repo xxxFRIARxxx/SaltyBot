@@ -23,6 +23,7 @@ match_start_time = 0
 total_match_time_sec = 0
 
 first_run = True
+exiting_tourney = True
 previous_game_mode = None
 game_state_lies = False
 previous_game_state = None
@@ -47,6 +48,7 @@ while True:
     previous_game_state = game_state
     
     if ((game_mode != 'Exhibition') and (game_state_lies is False)):
+        exiting_tourney = True
         if (game_state == 'open'):
             if (new_match == 0):
                 os.system('cls')
@@ -93,6 +95,9 @@ while True:
                 new_match = 2
         elif (game_state == "1") or (game_state == "2"):
             if (new_match == 2):
+                if exiting_tourney == True:
+                    database.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, 1)
+                    exiting_tourney = False
                 print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 0
        

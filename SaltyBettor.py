@@ -5,13 +5,27 @@ from trueskill import Rating, rate_1vs1
 from statistics import NormalDist
 import decimal
 
+
 class SaltyBettor():
     def __init__(self):
         self.balance = 0
         self.outcome = 0
+        self.old_balance = 0
 
     def set_balance(self, balance_value):
         self.balance = balance_value
+
+    def bet_outcome_amount(self, first_run):
+        if self.old_balance == 0:
+            self.old_balance = self.balance
+        elif (self.old_balance < self.balance) and (first_run == False):
+            balance_diff = self.balance - self.old_balance
+            self.old_balance = self.balance
+            print(f"Last match, you won ${balance_diff:,}.")
+        elif (self.old_balance > self.balance) and (first_run == False):
+            balance_diff = self.old_balance - self.balance
+            self.old_balance = self.balance
+            print(f"Last match, you lost ${balance_diff:,}.")
 
     def bet_outcome(self, p1_json, p2_json, game_state):
         player1_dict = {p1_json:'player1'}

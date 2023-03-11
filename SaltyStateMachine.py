@@ -30,6 +30,7 @@ previous_game_state = None
 p1DB_streak = None
 p2DB_streak = None
 
+
 thread.start() 
 
 while True:
@@ -52,8 +53,10 @@ while True:
         if (game_state == 'open'):
             if (new_match == 0):
                 os.system('cls')
-                first_run = False
                 bettor.set_balance(interactor.get_balance())
+                bettor.bet_outcome_amount(first_run)
+                
+                first_run = False
                 p1DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 p2DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
                 p1DB_streak = database.get_winstreaks_from_DB(my_parser.get_p1name())

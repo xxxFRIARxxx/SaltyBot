@@ -6,7 +6,7 @@ class SaltyPanda():
         self.data_frame = self.data_frame = pandas.DataFrame(self.db_list, columns =["ID","p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p1tier", "p1tourney", "p1time", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "p2tier", "p2tourney", "p2time", "betOutcome"])
         self.match_count = 0
 
-    def dataframe (self,db_list):
+    def dataframe_from_DB(self,db_list):
         self.db_list = list(db_list)
         self.data_frame = pandas.DataFrame(self.db_list, columns =["ID","p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p1tier", "p1tourney", "p1time", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "p2tier", "p2tourney", "p2time", "betOutcome"])
         return self.data_frame
@@ -19,6 +19,6 @@ class SaltyPanda():
             pandas.DataFrame.to_csv(self.data_frame, "SaltyCSV.csv", index=False)
             print("CSV Made!")
 
-    def printpandas(self):
+    def print_pandas(self):
         print(self.db_list) 
         print(self.data_frame) 

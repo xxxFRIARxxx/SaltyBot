@@ -120,7 +120,7 @@ class SaltyJsonParser():
             if self.get_gamestate() == "open":
                 print(tabulate(table, headers=["Fighter","Skill","Variation","Streak"], tablefmt="grid", stralign="center", numalign="decimal"))
                 print(f"Player 1 chance to win: {round(100 * p1_probability, 2)}%")
-                print(f"Current Balance is: ${balance:,}")    
+                print(f"Current Balance is: ${balance:,}")             
         elif (self.get_gameMode() == "Matchmaking"):
             print(f"Currently in {self.get_gameMode()} with {self.get_matches_remaining()} matches remaining.  Game state is {self.get_gamestate()}.")
             if self.get_gamestate() == "open":

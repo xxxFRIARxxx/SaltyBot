@@ -1,4 +1,5 @@
 import pandas
+from SaltyDatabase import SaltyDatabase
 
 class SaltyPanda():
     def __init__(self):
@@ -14,7 +15,13 @@ class SaltyPanda():
             pandas.DataFrame.to_csv(self.data_frame, "SaltyCSV.csv", index=False)
             print("CSV Made!")
 
-# print(self.db_list) 
-# print(self.data_frame) 
+    def printpandas(self):
+        print(self.db_list) 
+        print(self.data_frame) 
 
+# bong = SaltyPanda()
+# bong2 = SaltyDatabase()
+
+# bong.panda_to_csv(bong2.db_for_pandas())
+# bong.printpandas()
 

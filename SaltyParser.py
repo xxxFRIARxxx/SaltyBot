@@ -44,20 +44,27 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
-        exhib_split = self.json_dict["remaining"].split(' ')[1]
-        exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
-        if (exhib_endsin) or (exhib_split == "exhibition"):
+        if (self.json_dict["remaining"].split(' ')[1] == "exhibition") or (self.json_dict["remaining"].endswith('exhibition match!')):
             return True
         else:
             return False
+        # exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
+        # if (exhib_endsin) or (exhib_split == "exhibition"):
+        #     return True
+        # else:
+        #     return False
     
     def is_tourney(self):
-        reverse_split = self.json_dict["remaining"].rsplit(' ', 1)[-1]
-        remaining_split = self.json_dict["remaining"].split(' ')[0]
-        if (reverse_split == "bracket!") or (remaining_split == "FINAL"):
-            return 1       
+        if (self.json_dict["remaining"].rsplit(' ', 1)[-1] == "bracket!") or (self.json_dict["remaining"].split(' ')[0] == "FINAL"):
+            return 1
         else:
             return 0
+        # reverse_split = self.json_dict["remaining"].rsplit(' ', 1)[-1]
+        # remaining_split = self.json_dict["remaining"].split(' ')[0]
+        # if (reverse_split == "bracket!") or (remaining_split == "FINAL"):
+        #     return 1       
+        # else:
+        #     return 0
         
     def get_tourney_remaining(self):
         if self.get_matches_remaining() != 1:

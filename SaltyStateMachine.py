@@ -166,3 +166,46 @@ while True:
                 # Current Tier is: 4
                 # True Streaks are: (-1, 6)
                 # Current Tier is: 2
+
+
+# TODO:
+
+                # Traceback (most recent call last):
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 971, in json
+                #     return complexjson.loads(self.text, **kwargs)
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\__init__.py", line 346, in loads
+                #     return _default_decoder.decode(s)
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 337, in decode
+                #     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 355, in raw_decode
+                #     raise JSONDecodeError("Expecting value", s, err.value) from None
+                # json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+                # During handling of the above exception, another exception occurred:
+
+                # Traceback (most recent call last):
+                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 36, in <module>
+                #     the_json = my_json.get_json()
+                #   File "e:\Python Scripts\SaltyBot\SaltyJson.py", line 18, in get_json
+                #     time.sleep(1)
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 975, in json
+                #     raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+                # requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+                # True Streaks are: (1, -1)
+                # Current Tier is: 4
+                # True Streaks are: (3, -1)
+                # Current Tier is: 2
+                # True Streaks are: (5, 2)
+                # Working... |⠐⠠⢀⡀⠄⠂⠁⠈⠐⠠⢀⡀⠄⠂⠁| 
+                # PS E:\Python Scripts>
+
+                # In Exhibition.  No bets are placed, and nothing is recorded.  8 matches left.
+                # Current Tier is: 4
+                # Traceback (most recent call last):
+                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 38, in <module>
+                #     game_mode = my_parser.get_gameMode()
+                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 91, in get_gameMode
+                #     if self.is_exhib() is True:
+                #   File "e:\Python Scripts\SaltyBot\SaltyParser.py", line 47, in is_exhib
+                #     exhib_split = self.json_dict["remaining"].split(' ')[1]
+                # TypeError: 'NoneType' object is not subscriptable

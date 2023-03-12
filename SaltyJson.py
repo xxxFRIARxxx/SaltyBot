@@ -11,12 +11,12 @@ class SaltyJson():
             if self.response.status_code != 200:
                 print(self.response.status_code)
                 print(self.response.json())
-                self.get_json()       
+                return self.get_json()       
             else:
                 return self.response.json()                
         except requests.exceptions.ConnectionError:
             time.sleep(1)
-            self.get_json()
+            return self.get_json()
         except requests.exceptions.JSONDecodeError:
             time.sleep(1)
-            self.get_json()
+            return self.get_json()

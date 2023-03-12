@@ -44,10 +44,16 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
-        if (self.json_dict["remaining"].split(' ')[1] == "exhibition") or (self.json_dict["remaining"].endswith('exhibition match!')):
-            return True
-        else:
-            return False
+        try:
+
+            if (self.json_dict["remaining"].split(' ')[1] == "exhibition") or (self.json_dict["remaining"].endswith('exhibition match!')):
+                return True
+            else:
+                return False
+        except:
+            print(self.json_dict)
+            raise Exception("JSON Dict failure")
+        
         # exhib_endsin = self.json_dict["remaining"].endswith('exhibition match!')
         # if (exhib_endsin) or (exhib_split == "exhibition"):
         #     return True

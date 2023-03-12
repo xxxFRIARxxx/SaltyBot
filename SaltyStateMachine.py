@@ -23,13 +23,12 @@ match_start_time = 0
 total_match_time_sec = 0
 
 first_run = True
-exiting_tourney = True
+exiting_tourney = False
 previous_game_mode = None
 game_state_lies = False
 previous_game_state = None
 p1DB_streak = None
 p2DB_streak = None
-
 
 thread.start() 
 
@@ -54,12 +53,14 @@ while True:
                 os.system('cls')
                 bettor.set_balance(interactor.get_balance())
                 first_run = False
-                p1DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(my_parser.get_p1name())) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
-                p2DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(my_parser.get_p2name())) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
-                p1DB_streak = database.get_winstreaks_from_DB(my_parser.get_p1name())
-                p2DB_streak = database.get_winstreaks_from_DB(my_parser.get_p2name())
+                p1name = my_parser.get_p1name()
+                p2name = my_parser.get_p2name()
+                p1DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(p1name)) # Gets Mu and Sigma for Player 1 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
+                p2DB_ratings = bettor.set_player_rating(database.get_ratings_from_DB(p2name)) # Gets Mu and Sigma for Player 2 in DB, sets them to default if there are no prior matches in the DB, and sets them accordingly if there are.
+                p1DB_streak = database.get_winstreaks_from_DB(p1name)
+                p2DB_streak = database.get_winstreaks_from_DB(p2name)
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
-                predicted_winner = bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, my_parser.get_p1name(), my_parser.get_p2name(), p1DB_streak, p2DB_streak)
+                predicted_winner = bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, p1name, p2name, p1DB_streak, p2DB_streak)
                 kelly_bet = bettor.kelly_bet(p1_probability, bettor.balance, predicted_winner, game_mode)
                 my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 bettor.bet_outcome_amount()
@@ -76,13 +77,18 @@ while True:
             if (first_run is False):
                 if (new_match == 2):
                     new_match = 0
+                    p1_win_status = my_parser.set_p1winstatus()
+                    p2_win_status = my_parser.set_p2winstatus()
+                    p1_odds = my_parser.get_p1odds()
+                    p2_odds = my_parser.get_p2odds()
+                    is_tourney = my_parser.is_tourney()
                     game_time.timer_snapshot()
                     my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
-                    ratings_to_db = bettor.update_ranking_after(game_state, p1DB_ratings, p2DB_ratings) # Updates ratings after the match.
-                    my_socket.adjust_winstreak(my_parser.set_p1winstatus(), my_parser.set_p2winstatus(), thread.true_p1_streak, thread.true_p2_streak)
+                    ratings_to_db = bettor.update_ranking_after(game_state, p1DB_ratings, p2DB_ratings)
+                    my_socket.adjust_winstreak(p1_win_status, p2_win_status, thread.true_p1_streak, thread.true_p2_streak)
                     my_socket.adjust_tier(thread.true_tier)
-                    bettor.bet_outcome(my_parser.get_p1name(), my_parser.get_p2name(), game_state)
-                    database.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, my_parser.is_tourney())                    
+                    bettor.bet_outcome(p1name, p2name, game_state)
+                    database.record_match(p1name,p1_odds, p1_win_status, p2name, p2_odds, p2_win_status, my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, is_tourney)                    
                     panda.panda_to_csv(database.db_for_pandas())
     elif ((game_mode == "Exhibition") and (game_state_lies is False)):
         if (game_state == "open"):
@@ -97,7 +103,13 @@ while True:
         elif (game_state == "1") or (game_state == "2"):
             if (new_match == 2):
                 if exiting_tourney == True:
-                    database.record_match(my_parser.get_p1name(),my_parser.get_p1odds(), my_parser.set_p1winstatus(), my_parser.get_p2name(), my_parser.get_p2odds(), my_parser.set_p2winstatus(), my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, 1)
+                    # p1name = my_parser.get_p1name()
+                    # p2name = my_parser.get_p2name()
+                    # p1_win_status = my_parser.set_p1winstatus()
+                    # p2_win_status = my_parser.set_p2winstatus()
+                    # p1_odds = my_parser.get_p1odds()
+                    # p2_odds = my_parser.get_p2odds()
+                    database.record_match(p1name,p1_odds, p1_win_status, p2name, p2_odds, p2_win_status, my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, 1)
                     exiting_tourney = False
                 print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 0
@@ -105,3 +117,52 @@ while True:
 # NOTE: GENERAL QUESTIONS / THINGS.
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for match_time:
 #       SaltyBet: Exhibitions will start shortly. Thanks for watching!        
+
+
+# TODO: While it was still in the middle of Exhibition:
+# Traceback (most recent call last):
+#   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 106, in <module>
+#     database.record_match(p1name,p1_odds, p1_win_status, p2name, p2_odds, p2_win_status, my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, 1)
+# NameError: name 'p1name' is not defined
+
+                # TODO:This match has been added to the DB. There are now 6013 records in the database.
+                # Traceback (most recent call last):
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 971, in json
+                #     return complexjson.loads(self.text, **kwargs)
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\__init__.py", line 346, in loads
+                #     return _default_decoder.decode(s)
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 337, in decode
+                #     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+                #   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 355, in raw_decode
+                #     raise JSONDecodeError("Expecting value", s, err.value) from None
+                # json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+                # During handling of the above exception, another exception occurred:
+
+                # Traceback (most recent call last):
+                #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 36, in <module>
+                #     the_json = my_json.get_json()
+                #   File "e:\Python Scripts\SaltyBot\SaltyJson.py", line 18, in get_json
+                #     return self.response.json()
+                #   File "C:\Users\Anon\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\requests\models.py", line 975, in json
+                #     raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+                # requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+                # Current Tier is: 4
+                # True Streaks are: (-1, 1)
+                # Current Tier is: 3
+                # True Streaks are: (-2, -1)
+                # Current Tier is: 4
+                # True Streaks are: (-1, 1)
+                # Current Tier is: 2
+                # True Streaks are: (-1, -1)
+                # Current Tier is: 2
+                # True Streaks are: (-1, 1)
+                # Current Tier is: 4
+                # True Streaks are: (-1, -1)
+                # Current Tier is: 3
+                # True Streaks are: (1, -2)
+                # Current Tier is: 4
+                # True Streaks are: (-1, -2)
+                # Current Tier is: 4
+                # True Streaks are: (-1, 6)
+                # Current Tier is: 2

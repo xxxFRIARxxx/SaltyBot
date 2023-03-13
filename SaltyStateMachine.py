@@ -103,12 +103,6 @@ while True:
         elif (game_state == "1") or (game_state == "2"):
             if (new_match == 2):
                 if exiting_tourney == True:
-                    # p1name = my_parser.get_p1name()
-                    # p2name = my_parser.get_p2name()
-                    # p1_win_status = my_parser.set_p1winstatus()
-                    # p2_win_status = my_parser.set_p2winstatus()
-                    # p1_odds = my_parser.get_p1odds()
-                    # p2_odds = my_parser.get_p2odds()
                     database.record_match(p1name,p1_odds, p1_win_status, p2name, p2_odds, p2_win_status, my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, 1)
                     exiting_tourney = False
                 print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
@@ -117,10 +111,3 @@ while True:
 # NOTE: GENERAL QUESTIONS / THINGS.
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for match_time:
 #       SaltyBet: Exhibitions will start shortly. Thanks for watching!        
-
-
-# TODO: While it was still in the middle of Exhibition:
-# Traceback (most recent call last):
-#   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 106, in <module>
-#     database.record_match(p1name,p1_odds, p1_win_status, p2name, p2_odds, p2_win_status, my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, 1)
-# NameError: name 'p1name' is not defined

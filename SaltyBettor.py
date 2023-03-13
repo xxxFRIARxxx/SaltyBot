@@ -104,6 +104,8 @@ class SaltyBettor():
         self.wager = {'wager': suggested_bet}
         if predicted_winner is None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND their Sigmas are the same (or don't come back), AND if EITHER P1streak or P2 streak DOESN'T come back from DB OR are the same.
             self.suggested_player = self.p1name # Red wins in a draw, so this provides a miniscule advantage over random choice of a suggested winner.
+        elif suggested_bet > 500000:
+            self.wager["wager"] = 500000
         elif self.p1name["selectedplayer"] == predicted_winner:
             self.suggested_player = self.p1name
         elif self.p2name["selectedplayer"] == predicted_winner:

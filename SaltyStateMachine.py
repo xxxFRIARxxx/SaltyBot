@@ -111,3 +111,7 @@ while True:
 # NOTE: GENERAL QUESTIONS / THINGS.
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for match_time:
 #       SaltyBet: Exhibitions will start shortly. Thanks for watching!        
+
+
+# IF the key "remaining" exists, the VALUE of the "remaining" key might be None.  OR "remaining" is not in the Json.  This latter example is most likely.
+# Is None an allowed data value in JSON?  (I don't think so?  Null instead?)

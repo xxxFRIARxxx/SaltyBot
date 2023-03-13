@@ -112,6 +112,14 @@ while True:
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for match_time:
 #       SaltyBet: Exhibitions will start shortly. Thanks for watching!        
 
+# TODO: Traceback (most recent call last):
+#   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 67, in <module>
+#     interactor.place_bet_on_website(bettor.format_bet(predicted_winner, kelly_bet))
+#   File "e:\Python Scripts\SaltyBot\SaltyBettor.py", line 113, in format_bet
+#     return self.suggested_player | self.wager # Returns in the format neccessary for bet-placement on SaltyBet.com: {:} | {:}
+# AttributeError: 'SaltyBettor' object has no attribute 'suggested_player'
+
 
 # IF the key "remaining" exists, the VALUE of the "remaining" key might be None.  OR "remaining" is not in the Json.  This latter example is most likely.
 # Is None an allowed data value in JSON?  (I don't think so?  Null instead?)
+

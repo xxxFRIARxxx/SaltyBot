@@ -93,11 +93,11 @@ class SaltyBettor():
             suggested_wager = self.balance
         if predicted_winner is None:
             suggested_wager = 1
-        elif predicted_winner != None:
+        elif (predicted_winner != None) and not (game_mode == "Tournament"):
             if p1_probability != .5:
                 suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
             elif (p1_probability == .5):
-                suggested_wager = 1              
+                suggested_wager = 1
         return suggested_wager
 
     def format_bet(self, predicted_winner, suggested_bet):

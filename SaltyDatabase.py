@@ -62,6 +62,35 @@ class SaltyDatabase():
                 self.con.execute("DELETE from SBMATCHES where ID <= 1000;")
                 print("Total number of rows deleted:", self.con.total_changes)
 
+        # def get_odds_average(self, player_search): # gets the average of a fighter's odds
+        # TODO:  You're going to have to zip all of the tuples to values in the DB
+        #     db_odds = None
+        #     self.all_matches = self.get_player_matches(player_search)
+        #     if self.all_matches is None:
+        #         db_odds = None
+        #     elif self.all_matches[0] == player_search:
+        #         print(self.all_matches)[0]
+                
+
+
+
+                # self.get_player_matches(player_search)[0]["p1odds"] ==
+                # print(self.get_player_matches(player_search))
+            # elif self.get_player_matches(player_search)[0]['p1name'] == player_search:
+            #     db_winstreak = self.get_player_matches(player_search)[0]['p1streak']
+            # elif self.get_player_matches(player_search)[0]['p2name'] == player_search:
+            #     db_winstreak = self.get_player_matches(player_search)[0]['p2streak']
+            # return db_winstreak
+           
+           
+           
+           
+        #    with self.con:
+        #         data = self.con.execute("""SELECT avg(bet_outcome) FROM SBMATCHES;""")
+        #         avg_bet = data.fetchall()
+        #     print(avg_bet[0][0])
+
+
         def get_win_avg(self): # Gets the average percentage of bets you've won.
             with self.con:
                 data = self.con.execute("""SELECT avg(bet_outcome) FROM SBMATCHES;""")

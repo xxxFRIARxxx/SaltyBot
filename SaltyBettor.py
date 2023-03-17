@@ -13,9 +13,11 @@ class SaltyBettor():
     def set_balance(self, balance_value):
         self.balance = balance_value
 
-    def bet_outcome_amount(self):
+    def bet_outcome_amount(self, gs_lies):
         if self.old_balance == 0:
             self.old_balance = self.balance
+        if gs_lies == True:
+            pass
         elif (self.old_balance < self.balance):
             balance_diff = self.balance - self.old_balance
             self.old_balance = self.balance
@@ -82,23 +84,24 @@ class SaltyBettor():
         return self.predicted_w
 
     def kelly_bet(self, p1_probability, balance, predicted_winner, game_mode):
+        self.suggested_wager = 1
         q = 1-p1_probability
-        # b = p1_probability/(1-p1_probability)
         b = 1
+        # b = p1_probability/(1-p1_probability)
         fraction = p1_probability-(q/b)
         k_suggest = abs(.05*(fraction*balance))
         if (game_mode == "Tournament") and (self.balance < 20000):
-            suggested_wager = self.balance
+            self.suggested_wager = self.balance
         elif (game_mode == "Matchmaking") and (self.balance < 10000):
-            suggested_wager = self.balance
-        if predicted_winner is None:
-            suggested_wager = 1
-        elif predicted_winner != None:
+            self.suggested_wager = self.balance
+        elif predicted_winner is None:
+            self.suggested_wager = 1
+        elif (predicted_winner != None) and (game_mode != "Tournament"):
             if p1_probability != .5:
-                suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
+                self.suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
             elif (p1_probability == .5):
-                suggested_wager = 1              
-        return suggested_wager
+                self.suggested_wager = 1              
+        return self.suggested_wager
 
     def format_bet(self, predicted_winner, suggested_bet):
         self.p1name = {'selectedplayer': 'player1'}
@@ -106,8 +109,8 @@ class SaltyBettor():
         self.wager = {'wager': suggested_bet}
         if predicted_winner is None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND their Sigmas are the same (or don't come back), AND if EITHER P1streak or P2 streak DOESN'T come back from DB OR are the same.
             self.suggested_player = self.p1name # Red wins in a draw, so this provides a miniscule advantage over random choice of a suggested winner.
-        if suggested_bet > 500000:
-            self.wager["wager"] = 500000
+        if suggested_bet > 250000:
+            self.wager["wager"] = 250000
         if self.p1name["selectedplayer"] == predicted_winner:
             self.suggested_player = self.p1name
         elif self.p2name["selectedplayer"] == predicted_winner:

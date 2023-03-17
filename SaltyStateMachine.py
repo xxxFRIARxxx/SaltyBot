@@ -38,13 +38,18 @@ while True:
     game_mode = my_parser.get_gameMode()
     game_state = my_parser.get_gamestate()
 
+
+    #if (game_mode != previous_game_mode) and (game_state == previous_game_state):
+    #exitiing_mode == True
     if (game_mode != previous_game_mode):
         game_state_lies = True
+        print(game_state_lies)
     previous_game_mode = game_mode
     
     if (game_state != previous_game_state):
         game_state_lies = False
     previous_game_state = game_state
+    
     
     if ((game_mode != 'Exhibition') and (game_state_lies is False)):
         exiting_tourney = True
@@ -63,24 +68,24 @@ while True:
                 predicted_winner = bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, p1name, p2name, p1DB_streak, p2DB_streak)
                 kelly_bet = bettor.kelly_bet(p1_probability, bettor.balance, predicted_winner, game_mode)
                 my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
-                bettor.bet_outcome_amount()
+                bettor.bet_outcome_amount(game_state_lies)
                 interactor.place_bet_on_website(bettor.format_bet(predicted_winner, kelly_bet))
                 new_match = 1
                 my_socket.find_winstreak = True            
         elif (game_state == 'locked'):
             if (first_run is False):
                 if (new_match == 1):
-                    new_match = 2
                     game_time.timer_start()
-                    my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
-        elif (game_state == '1') or (game_state == '2'): 
-            if (first_run is False):
-                if (new_match == 2):
-                    new_match = 0
-                    p1_win_status = my_parser.set_p1winstatus()
-                    p2_win_status = my_parser.set_p2winstatus()
                     p1_odds = my_parser.get_p1odds()
                     p2_odds = my_parser.get_p2odds()
+                    print(f"Odds are: ({p1_odds} : {p2_odds})")
+                    my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                    new_match = 2
+        elif (game_state == '1') or (game_state == '2'): 
+            if (first_run is False):
+                if (new_match == 2):            
+                    p1_win_status = my_parser.set_p1winstatus()
+                    p2_win_status = my_parser.set_p2winstatus()
                     is_tourney = my_parser.is_tourney()
                     game_time.timer_snapshot()
                     my_parser.gameMode_printer(p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
@@ -90,6 +95,13 @@ while True:
                     bettor.bet_outcome(p1name, p2name, game_state)
                     database.record_match(p1name,p1_odds, p1_win_status, p2name, p2_odds, p2_win_status, my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, is_tourney)                    
                     panda.panda_to_csv(database.db_for_pandas())
+                    new_match = 0
+    
+    
+    elif ((game_mode == 'Matchmaking') and (game_state_lies is True)):
+        game_state_lies = False
+        new_match = 0
+    
     elif ((game_mode == "Exhibition") and (game_state_lies is False)):
         if (game_state == "open"):
             if (new_match == 0):
@@ -104,13 +116,30 @@ while True:
             if (new_match == 2):
                 if exiting_tourney == True:
                     database.record_match(p1name,p1_odds, p1_win_status, p2name, p2_odds, p2_win_status, my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, 1)
+                    game_state_lies = False
                     exiting_tourney = False
                 print(f"In Exhibition.  No bets are placed, and nothing is recorded.  {my_parser.get_matches_remaining()} matches left.")
                 new_match = 0
+    elif ((game_mode == "Exhibition") and (game_state_lies is True)):
+        database.record_match(p1name,p1_odds, p1_win_status, p2name, p2_odds, p2_win_status, my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, 1)
+        game_state_lies = False
+        new_match = 0
+
+
+
+
 
 # NOTE: GENERAL QUESTIONS / THINGS.
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for match_time:
 #       SaltyBet: Exhibitions will start shortly. Thanks for watching!        
+
+
+# TODO: Traceback (most recent call last):
+#   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 69, in <module>
+#     kelly_bet = bettor.kelly_bet(p1_probability, bettor.balance, predicted_winner, game_mode)
+#   File "e:\Python Scripts\SaltyBot\SaltyBettor.py", line 103, in kelly_bet
+#     return suggested_wager
+# UnboundLocalError: local variable 'suggested_wager' referenced before assignment
 
 # TODO: Traceback (most recent call last):
 #   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 67, in <module>
@@ -119,7 +148,18 @@ while True:
 #     return self.suggested_player | self.wager # Returns in the format neccessary for bet-placement on SaltyBet.com: {:} | {:}
 # AttributeError: 'SaltyBettor' object has no attribute 'suggested_player'
 
-
+# TODO:  
+# Currently in Tournament with 2 matches remaining.  Game state is open.
+# In Exhibition.  No bets are placed, and nothing is recorded.  1 matches left.
+# Current Tier is: None
+# In Exhibition.  No bets are placed, and nothing is recorded.  1 matches left.
+# True Streaks are: (None, None)
+# Current Tier is: 2
+# True Streaks are: (-3, 1)
+# Current Tier is: 3
+# True Streaks are: (-3, -2)
+# Current Tier is: 3
+# True Streaks are: (-1, -2)
 # IF the key "remaining" exists, the VALUE of the "remaining" key might be None.  OR "remaining" is not in the Json.  This latter example is most likely.
 # Is None an allowed data value in JSON?  (I don't think so?  Null instead?)
 

@@ -26,17 +26,17 @@ class SaltyJsonParser():
         if json_status in ['open', 'locked', '1', '2']:
             return json_status
         else:
-             webbrowser.open("https://www.saltybet.com/state.json")
-             print(f"Traditional gamestate not found.  Gamestate = {json_status}. Betting isn't open, betting isn't closed, or Player 1 or Player 2 didn't win.  Did SB break?")
-             print(json_status)
-             return json_status
+            webbrowser.open("https://www.saltybet.com/state.json")
+            print(f"Traditional gamestate not found.  Gamestate = {json_status}. Betting isn't open, betting isn't closed, or Player 1 or Player 2 didn't win.  Did SB break?")
+            print(json_status)
+            return json_status
 
     def set_p1winstatus(self):
-            if (self.get_gamestate() == "1"):
-                return 1
-            else:
-                return 0
-        
+        if (self.get_gamestate() == "1"):
+            return 1
+        else:
+            return 0
+
     def set_p2winstatus(self):
         if (self.get_gamestate() == "2"):
             return 1
@@ -45,11 +45,14 @@ class SaltyJsonParser():
 
     def is_exhib(self):
         try:
-
-            if (self.json_dict["remaining"].split(' ')[1] == "exhibition") or (self.json_dict["remaining"].endswith('exhibition match!')):
-                return True
+            if self.json_dict is not None:
+                if (self.json_dict["remaining"].split(' ')[1] == "exhibition") or (
+                self.json_dict["remaining"].endswith('exhibition match!')):
+                    return True
+                else:
+                    return False
             else:
-                return False
+                pass
         except:
             print(self.json_dict)
             raise Exception("JSON Dict failure")
@@ -61,10 +64,17 @@ class SaltyJsonParser():
         #     return False
     
     def is_tourney(self):
-        if (self.json_dict["remaining"].rsplit(' ', 1)[-1] == "bracket!") or (self.json_dict["remaining"].split(' ')[0] == "FINAL"):
-            return 1
-        else:
-            return 0
+        try:
+            if self.json_dict is not None:
+                if (self.json_dict["remaining"].rsplit(' ', 1)[-1] == "bracket!") or (
+                        self.json_dict["remaining"].split(' ')[0] == "FINAL"):
+                    return 1
+                else:
+                    return 0
+            else:
+                pass
+        except:
+            raise Exception("JSON Dict failure")
         # reverse_split = self.json_dict["remaining"].rsplit(' ', 1)[-1]
         # remaining_split = self.json_dict["remaining"].split(' ')[0]
         # if (reverse_split == "bracket!") or (remaining_split == "FINAL"):

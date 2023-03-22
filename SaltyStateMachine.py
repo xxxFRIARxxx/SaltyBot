@@ -32,11 +32,13 @@ previous_game_state = None
 p1DB_streak = None
 p2DB_streak = None
 
-thread.start() 
+thread.start()
 
 while True:
+    # random sleep to reduce # of API calls made
     sleep_time = 0.2 + random.uniform(0.05, 0.1)
     time.sleep(sleep_time)
+
     the_json = my_json.get_json()
     if not the_json:
         print("JSON returned empty or None, retrying request...")
@@ -139,7 +141,7 @@ while True:
 
 # NOTE: GENERAL QUESTIONS / THINGS.
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for match_time:
-#       SaltyBet: Exhibitions will start shortly. Thanks for watching!        
+#       SaltyBet: Exhibitions will start shortly. Thanks for watching!
 
 
 # TODO: Traceback (most recent call last):
@@ -156,7 +158,7 @@ while True:
 #     return self.suggested_player | self.wager # Returns in the format neccessary for bet-placement on SaltyBet.com: {:} | {:}
 # AttributeError: 'SaltyBettor' object has no attribute 'suggested_player'
 
-# TODO:  
+# TODO:
 # Currently in Tournament with 2 matches remaining.  Game state is open.
 # In Exhibition.  No bets are placed, and nothing is recorded.  1 matches left.
 # Current Tier is: None

@@ -1,5 +1,6 @@
 import os
 import time
+import random
 from SaltyJson import SaltyJson
 from SaltyParser import SaltyJsonParser
 from SaltyDatabase import SaltyDatabase
@@ -34,10 +35,11 @@ p2DB_streak = None
 thread.start() 
 
 while True:
+    sleep_time = 0.2 + random.uniform(0.05, 0.1)
+    time.sleep(sleep_time)
     the_json = my_json.get_json()
     if not the_json:
-        print("the_json empty or None")
-        print("received empty response from server, retrying...")
+        print("JSON returned empty or None, retrying request...")
         time.sleep(1)
         continue
     else:

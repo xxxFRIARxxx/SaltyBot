@@ -36,7 +36,8 @@ thread.start()
 while True:
     the_json = my_json.get_json()
     if not the_json:
-        print("recieved blank response, retrying...")
+        print("the_json empty or None")
+        print("received empty response from server, retrying...")
         time.sleep(1)
         continue
     else:

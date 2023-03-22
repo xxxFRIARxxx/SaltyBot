@@ -13,12 +13,21 @@ class SaltyJson():
     def get_json(self):
         try:
             self.response = self.session.get(self.url)
+
             if self.response.status_code != 200:
-                print(self.response.status_code)
-                print(self.response.json())
+                print("status code received:", self.response.status_code)
+                time.sleep(1)
                 self.get_json()
             else:
-                return self.response.json()
+                if not self.response.text:
+                    # blank / empty response recieved
+                    print("received empty response from server, retrying...")
+                    print("response.text:", self.response.text)
+                    print("response.content:", self.response.content)
+                    time.sleep(1)
+                    self.get_json()
+                else:
+                    return self.response.json()
         except requests.exceptions.ConnectionError:
             time.sleep(1)
             self.get_json()

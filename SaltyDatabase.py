@@ -63,16 +63,19 @@ class SaltyDatabase():
                 print("Total number of rows deleted:", self.con.total_changes)
 
         def get_odds_average(self, player_search): # Gets the average of a fighter's odds from the DB
-            with self.con:
-                oddsfromDB_p1 = self.con.execute(f"""SELECT p1odds FROM SBMATCHES WHERE p1name = ("{player_search}");""")
-                oddsfromDB_p2 = self.con.execute(f"""SELECT p2odds FROM SBMATCHES WHERE p2name = ("{player_search}");""")
-                avg_bet, avg_bet2 = oddsfromDB_p1.fetchall(), oddsfromDB_p2.fetchall()
-            new_list=[]
-            for i in avg_bet:
-                new_list.append(i[0])
-            for j in avg_bet2:
-                new_list.append(j[0])
-            avg = sum(new_list)/len(new_list)    
+            if self.get_player_matches(player_search) != []:
+                with self.con:
+                    oddsfromDB_p1 = self.con.execute(f"""SELECT p1odds FROM SBMATCHES WHERE p1name = ("{player_search}");""")
+                    oddsfromDB_p2 = self.con.execute(f"""SELECT p2odds FROM SBMATCHES WHERE p2name = ("{player_search}");""")
+                    avg_bet, avg_bet2 = oddsfromDB_p1.fetchall(), oddsfromDB_p2.fetchall()
+                new_list=[]
+                for i in avg_bet:
+                    new_list.append(i[0])
+                for j in avg_bet2:
+                    new_list.append(j[0])
+                avg = sum(new_list)/len(new_list)
+            else:
+                avg = None    
             return avg
 
         def get_win_avg(self): # Gets the average percentage of bets you've won.

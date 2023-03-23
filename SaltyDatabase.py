@@ -62,34 +62,18 @@ class SaltyDatabase():
                 self.con.execute("DELETE from SBMATCHES where ID <= 1000;")
                 print("Total number of rows deleted:", self.con.total_changes)
 
-        # def get_odds_average(self, player_search): # gets the average of a fighter's odds
-        # TODO:  You're going to have to zip all of the tuples to values in the DB
-        #     db_odds = None
-        #     self.all_matches = self.get_player_matches(player_search)
-        #     if self.all_matches is None:
-        #         db_odds = None
-        #     elif self.all_matches[0] == player_search:
-        #         print(self.all_matches)[0]
-                
-
-
-
-                # self.get_player_matches(player_search)[0]["p1odds"] ==
-                # print(self.get_player_matches(player_search))
-            # elif self.get_player_matches(player_search)[0]['p1name'] == player_search:
-            #     db_winstreak = self.get_player_matches(player_search)[0]['p1streak']
-            # elif self.get_player_matches(player_search)[0]['p2name'] == player_search:
-            #     db_winstreak = self.get_player_matches(player_search)[0]['p2streak']
-            # return db_winstreak
-           
-           
-           
-           
-        #    with self.con:
-        #         data = self.con.execute("""SELECT avg(bet_outcome) FROM SBMATCHES;""")
-        #         avg_bet = data.fetchall()
-        #     print(avg_bet[0][0])
-
+        def get_odds_average(self, player_search): # Gets the average of a fighter's odds from the DB
+            with self.con:
+                oddsfromDB_p1 = self.con.execute(f"""SELECT p1odds FROM SBMATCHES WHERE p1name = ("{player_search}");""")
+                oddsfromDB_p2 = self.con.execute(f"""SELECT p2odds FROM SBMATCHES WHERE p2name = ("{player_search}");""")
+                avg_bet, avg_bet2 = oddsfromDB_p1.fetchall(), oddsfromDB_p2.fetchall()
+            new_list=[]
+            for i in avg_bet:
+                new_list.append(i[0])
+            for j in avg_bet2:
+                new_list.append(j[0])
+            avg = sum(new_list)/len(new_list)    
+            return avg
 
         def get_win_avg(self): # Gets the average percentage of bets you've won.
             with self.con:

@@ -11,13 +11,16 @@ class SaltyJson():
             self.response = self.session.get(self.url)
             if self.response.status_code != 200:
                 print(self.response.status_code)
-                print(self.response.json())
-                return self.get_json()       
+                self.get_json()
+            elif not self.response:
+                print("Blank response receieved, retrying...")
+                time.sleep(1)
+                self.get_json()
             else:
-                return self.response.json()                
+                return self.response.json()
         except requests.exceptions.ConnectionError:
             time.sleep(1)
-            return self.get_json()
+            self.get_json()
         except requests.exceptions.JSONDecodeError:
             time.sleep(1)
-            return self.get_json()
+            self.get_json()

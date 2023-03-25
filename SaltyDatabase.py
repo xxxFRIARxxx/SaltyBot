@@ -67,11 +67,11 @@ class SaltyDatabase():
                 with self.con:
                     oddsfromDB_p1 = self.con.execute(f"""SELECT p1odds FROM SBMATCHES WHERE p1name = ("{player_search}");""")
                     oddsfromDB_p2 = self.con.execute(f"""SELECT p2odds FROM SBMATCHES WHERE p2name = ("{player_search}");""")
-                    avg_bet, avg_bet2 = oddsfromDB_p1.fetchall(), oddsfromDB_p2.fetchall()
+                    p1_oddsfromDB, p2_oddsfromDB = oddsfromDB_p1.fetchall(), oddsfromDB_p2.fetchall()
                 new_list=[]
-                for i in avg_bet:
+                for i in p1_oddsfromDB:
                     new_list.append(i[0])
-                for j in avg_bet2:
+                for j in p2_oddsfromDB:
                     new_list.append(j[0])
                 avg = sum(new_list)/len(new_list)
             else:
@@ -90,6 +90,14 @@ class SaltyDatabase():
                 for row in data:
                     # print(row)
                     yield row
+
+        def recent_for_pandas(self, player_search):
+            with self.con:
+                data = self.get_most_recent(player_search)
+                for row in data:
+                    yield row
+        #def gameMode_printer(self, p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, balance):
+        #table = [["Player 1:", p1DB_ratings.mu, p1DB_ratings.sigma, p1DB_streak, p1DB_odds], ["Player 2:", p2DB_ratings.mu, p2DB_ratings.sigma, p2DB_streak, p2DB_odds]]
 
         def num_from_db(self):  # Selects and prints out number of records in DB.
             with self.con:

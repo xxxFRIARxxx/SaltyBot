@@ -48,6 +48,7 @@ Requests
 Urllib3  
 Tabulate  
 Pandas
+Jinja2
 
 ## Step 1:  GOGOGOGOGOGOGO
 

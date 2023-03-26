@@ -3,7 +3,7 @@ import pandas
 class SaltyPanda():
     def __init__(self):
         self.db_list = None
-        self.data_frame = self.data_frame = pandas.DataFrame(self.db_list, columns =["ID","p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p1tier", "p1tourney", "p1time", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "p2tier", "p2tourney", "p2time", "betOutcome"])
+        self.data_frame = pandas.DataFrame(self.db_list, columns =["ID","p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p1tier", "p1tourney", "p1time", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "p2tier", "p2tourney", "p2time", "betOutcome"])
         self.match_count = 0
 
     def dataframe_from_DB(self,db_list):
@@ -22,4 +22,9 @@ class SaltyPanda():
     def print_pandas(self):
         print(self.db_list) 
         print(self.data_frame) 
-        
+    
+    # def latest_details(self, player_seach):
+    #     self.data_frame = pandas.DataFrame(player_seach, columns=["ID","p1name", "p1odds", "p1win", "p1streak", "p1mu", "p1sigma", "p1tier", "p1tourney", "p1time", "p2name", "p2odds", "p2win", "p2streak", "p2mu", "p2sigma", "p2tier", "p2tourney", "p2time", "betOutcome"])
+    #     print(self.data_frame)
+
+  

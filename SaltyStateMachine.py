@@ -43,7 +43,7 @@ while True:
     #exitiing_mode == True
     if (game_mode != previous_game_mode):
         game_state_lies = True
-        # print(game_state_lies)
+        print(game_state_lies)
     previous_game_mode = game_mode
     
     if (game_state != previous_game_state):
@@ -79,8 +79,8 @@ while True:
                     game_time.timer_start()
                     p1_odds = my_parser.get_p1odds()
                     p2_odds = my_parser.get_p2odds()
-                    print(f"True Odds are: ({p1_odds} : {p2_odds})")
                     my_parser.gameMode_printer(p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                    print(f"True Odds are: ({p1_odds} : {p2_odds})")
                     new_match = 2
         elif (game_state == '1') or (game_state == '2'): 
             if (first_run is False):
@@ -96,6 +96,7 @@ while True:
                     bettor.bet_outcome(p1name, p2name, game_state)
                     database.record_match(p1name, p1_odds, p1_win_status, p2name, p2_odds, p2_win_status, my_socket.adj_p1winstreak, my_socket.adj_p2winstreak, my_socket.adj_p1_tier, my_socket.adj_p2_tier, ratings_to_db[0].mu, ratings_to_db[0].sigma, ratings_to_db[1].mu, ratings_to_db[1].sigma, game_time.snapshot, bettor.outcome, is_tourney)                    
                     panda.panda_to_csv(database.db_for_pandas())
+                    # panda.latest_details(p1name)
                     new_match = 0
      
     elif ((game_mode == 'Matchmaking') and (game_state_lies is True)):

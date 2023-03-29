@@ -69,7 +69,7 @@ while True:
                 predicted_winner = bettor.prediciton(p1DB_ratings.sigma, p2DB_ratings.sigma, p1DB_ratings.mu, p2DB_ratings.mu,p1_probability,p1name, p2name, p1DB_streak, p2DB_streak, p1DB_odds, p2DB_odds)
                 # predicted_winner = bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, p1name, p2name, p1DB_streak, p2DB_streak)
                 kelly_bet = bettor.kelly_bet(p1_probability, bettor.balance, predicted_winner, game_mode)
-                my_parser.gameMode_printer(p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                my_parser.gameMode_printer(p1name, p2name, p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 bettor.bet_outcome_amount(game_state_lies)
                 interactor.place_bet_on_website(bettor.format_bet(predicted_winner, kelly_bet))
                 new_match = 1
@@ -80,7 +80,7 @@ while True:
                     game_time.timer_start()
                     p1_odds = my_parser.get_p1odds()
                     p2_odds = my_parser.get_p2odds()
-                    my_parser.gameMode_printer(p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                    my_parser.gameMode_printer(p1name, p2name, p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                     print(f"True Odds are: ({p1_odds} : {p2_odds})")
                     new_match = 2
         elif (game_state == '1') or (game_state == '2'): 
@@ -90,7 +90,7 @@ while True:
                     p2_win_status = my_parser.set_p2winstatus()
                     is_tourney = my_parser.is_tourney()
                     game_time.timer_snapshot()
-                    my_parser.gameMode_printer(p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
+                    my_parser.gameMode_printer(p1name, p2name, p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                     ratings_to_db = bettor.update_ranking_after(game_state, p1DB_ratings, p2DB_ratings)
                     my_socket.adjust_winstreak(p1_win_status, p2_win_status, thread.true_p1_streak, thread.true_p2_streak)
                     my_socket.adjust_tier(thread.true_tier)

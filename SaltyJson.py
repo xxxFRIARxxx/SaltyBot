@@ -10,8 +10,7 @@ class SaltyJson():
         try:
             self.response = self.session.get(self.url)
             if self.response.status_code != 200:
-                print("Received non-200 status code, retrying... ")
-                print(self.response.status_code)
+                print(f"Received {self.response.status_code} status code, retrying... ")
                 time.sleep(1)
                 return self.get_json()
             elif not self.response.text:

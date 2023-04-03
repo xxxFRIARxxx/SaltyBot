@@ -68,7 +68,7 @@ while True:
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
                 predicted_winner = bettor.prediciton(p1DB_ratings.sigma, p2DB_ratings.sigma, p1DB_ratings.mu, p2DB_ratings.mu,p1_probability,p1name, p2name, p1DB_streak, p2DB_streak, p1DB_odds, p2DB_odds)
                 # predicted_winner = bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, p1name, p2name, p1DB_streak, p2DB_streak)
-                kelly_bet = bettor.kelly_bet(p1_probability, bettor.balance, predicted_winner, game_mode)
+                kelly_bet = bettor.kelly_bet(p1_probability, p1DB_odds, p2DB_odds, bettor.balance, predicted_winner, game_mode)
                 my_parser.gameMode_printer(p1name, p2name, p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
                 bettor.bet_outcome_amount(game_state_lies)
                 interactor.place_bet_on_website(bettor.format_bet(predicted_winner, kelly_bet))

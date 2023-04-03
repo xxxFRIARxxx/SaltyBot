@@ -50,7 +50,7 @@ class SaltyBettor():
         deltaMu = (p1mu - p2mu)                   
         sumSigma = (p1sigma**2) + (p2sigma**2)  
         playerCount = 2
-        beta = 4.166666666666667                                        
+        beta = 4.166666666666667           # Sigma / 2                             
         denominator = math.sqrt(playerCount * (beta * beta) + sumSigma)   
         prob_P1 = NormalDist().cdf(deltaMu/denominator)
         return prob_P1
@@ -94,25 +94,25 @@ class SaltyBettor():
         elif p1_probability > .5:  
             if (p1mu - p1sigma) > (p2mu + p2sigma): 
                 self.predicted_w = player1_dict[p1_json]
-            elif p1_odds_avg > p2_odds_avg:
+            elif (p1_odds_avg > (p2_odds_avg * 2)):
                 self.predicted_w = player1_dict[p1_json]
-            elif p1sigma < p2sigma:
-                self.predicted_w = player1_dict[p1_json]
-            elif p1DB_streak > p2DB_streak:
-                self.predicted_w = player1_dict[p1_json]
+            # elif p1sigma < p2sigma:
+            #     self.predicted_w = player1_dict[p1_json]
+            # elif p1DB_streak > p2DB_streak:
+            #     self.predicted_w = player1_dict[p1_json]
             else:
-                self.predicted_w = player2_dict[p2_json]
+                self.predicted_w = None
         elif p1_probability < .5:
             if (p2mu - p2sigma) > (p1mu + p1sigma): 
                 self.predicted_w = player2_dict[p2_json]
-            elif p2_odds_avg > p1_odds_avg:
+            elif (p2_odds_avg > (p1_odds_avg * 2)):
                 self.predicted_w = player2_dict[p2_json]
-            elif p2sigma < p1sigma:
-                self.predicted_w = player2_dict[p2_json]
-            elif p2DB_streak > p1DB_streak:
-                self.predicted_w = player2_dict[p2_json]
+            # elif p2sigma < p1sigma:
+            #     self.predicted_w = player2_dict[p2_json]
+            # elif p2DB_streak > p1DB_streak:
+            #     self.predicted_w = player2_dict[p2_json]
             else:
-                self.predicted_w = player1_dict[p1_json]
+                self.predicted_w = None
         elif p1_probability == .5 :
             if p1_odds_avg > p2_odds_avg:
                 self.predicted_w = player1_dict[p1_json]
@@ -138,10 +138,22 @@ class SaltyBettor():
             self.predicted_w = None
         return self.predicted_w
 
-    def kelly_bet(self, p1_probability, balance, predicted_winner, game_mode):
+    def kelly_bet(self, p1_probability, p1_odds_avg, p2_odds_avg, balance, predicted_winner, game_mode):
         self.suggested_wager = 1
         q = 1-p1_probability
-        b = 1
+        if not all([p1_odds_avg, p2_odds_avg]):
+            b = 1
+        elif p1_odds_avg > p2_odds_avg:
+            b = p1_odds_avg
+        elif p2_odds_avg > p1_odds_avg:
+            b = p2_odds_avg
+        # elif abs(p1_odds_avg - p2_odds_avg) == 0:
+        #     b = 5
+        # elif abs(p1_odds_avg - p2_odds_avg) < 1:
+        #     b = 10
+        else:
+            b = 1
+        # b = 1
         # b = p1_probability/(1-p1_probability)
         fraction = p1_probability-(q/b)
         k_suggest = abs(.05*(fraction*balance))
@@ -164,8 +176,8 @@ class SaltyBettor():
         self.wager = {'wager': suggested_bet}
         if predicted_winner is None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND their Sigmas are the same (or don't come back), AND if EITHER P1streak or P2 streak DOESN'T come back from DB OR are the same.
             self.suggested_player = self.p1name # Red wins in a draw, so this provides a miniscule advantage over random choice of a suggested winner.
-        if suggested_bet > 20000:
-            self.wager["wager"] = 20000
+        # if suggested_bet > 20000:
+        #     self.wager["wager"] = 20000
         if self.p1name["selectedplayer"] == predicted_winner:
             self.suggested_player = self.p1name
         elif self.p2name["selectedplayer"] == predicted_winner:

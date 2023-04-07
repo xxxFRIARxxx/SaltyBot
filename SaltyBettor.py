@@ -3,6 +3,7 @@ import math
 from trueskill import Rating, rate_1vs1
 from statistics import NormalDist
 import decimal
+from icecream import ic
 
 class SaltyBettor():
     def __init__(self):
@@ -73,19 +74,29 @@ class SaltyBettor():
 
     def kelly_bet(self, p1_probability, p1_odds_avg, p2_odds_avg, balance, predicted_winner, game_mode):
         self.suggested_wager = 1
-        q = 1-p1_probability
+        # Kelly Bet Formula: fraction_of_balance = ((b*p)-q))/b
+        # b is the net odds received on the wager (“b to 1″), p is the probability of winning, q is the probability of losing, which is 1 − p
+
         if not all([p1_odds_avg, p2_odds_avg]):
-            b = 1
-        elif p1_odds_avg > p2_odds_avg:
+            b = 2.5
+        elif p1_probability > 0.5:
             b = p1_odds_avg
-        elif p2_odds_avg > p1_odds_avg:
+        elif p1_probability < 0.5:
             b = p2_odds_avg
         else:
-            b = 1
-        # b = 1
-        # b = p1_probability/(1-p1_probability)
-        fraction = p1_probability-(q/b)
-        k_suggest = abs(.05*(fraction*balance))
+            b = 2.5
+
+        if p1_probability > 0.5:
+            q = 1 - p1_probability
+        elif p1_probability < 0.5:
+            q = abs(p1_probability - 1)
+        else:
+            q = 1 - p1_probability
+
+        fraction = ((p1_probability*b)-q)/b
+        max_bet_percentage = .10
+        k_suggest = max_bet_percentage*(fraction*balance)
+
         if (game_mode == "Tournament") and (self.balance < 20000):
             self.suggested_wager = self.balance
         elif (game_mode == "Matchmaking") and (self.balance < 10000):
@@ -93,7 +104,7 @@ class SaltyBettor():
         elif predicted_winner is None:
             self.suggested_wager = 1
         elif (predicted_winner != None) and (game_mode != "Tournament"):
-            if p1_probability != .5:
+            if p1_probability != .5 and fraction > 0:
                 self.suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)
             elif (p1_probability == .5):
                 self.suggested_wager = 1

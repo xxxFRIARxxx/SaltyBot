@@ -3,7 +3,6 @@ import math
 from trueskill import Rating, rate_1vs1
 from statistics import NormalDist
 import decimal
-from icecream import ic
 
 class SaltyBettor():
     def __init__(self):
@@ -89,14 +88,13 @@ class SaltyBettor():
         if p1_probability > 0.5:
             q = 1 - p1_probability
         elif p1_probability < 0.5:
-            q = abs(p1_probability - 1)
+            q = p1_probability
         else:
             q = 1 - p1_probability
 
         fraction = ((p1_probability*b)-q)/b
         max_bet_percentage = .10
         k_suggest = max_bet_percentage*(fraction*balance)
-
         if (game_mode == "Tournament") and (self.balance < 20000):
             self.suggested_wager = self.balance
         elif (game_mode == "Matchmaking") and (self.balance < 10000):

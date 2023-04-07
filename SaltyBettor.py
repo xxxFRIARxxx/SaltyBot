@@ -37,7 +37,7 @@ class SaltyBettor():
         else:
             webbrowser.open("https://www.saltybet.com/state.json")
             print(game_state)
-            print('This prints when no player has won the match.  (Draw?) This message comes from bettor -> bet_outcome')       
+            print('This prints when no player has won the match.  (Draw?) This message comes from bettor -> bet_outcome')
         if self.suggested_player['selectedplayer'] == winner:
             print('YOU WON THE BET!')
             self.outcome = 1
@@ -47,57 +47,26 @@ class SaltyBettor():
 
     def probability_of_p1_win(self, p1mu, p1sigma, p2mu, p2sigma): # Uses the cumulative distribution function of a normal distribution to determine probability of p1 winning.
         prob_P1 = None
-        deltaMu = (p1mu - p2mu)                   
-        sumSigma = (p1sigma**2) + (p2sigma**2)  
+        deltaMu = (p1mu - p2mu)
+        sumSigma = (p1sigma**2) + (p2sigma**2)
         playerCount = 2
-        beta = 4.166666666666667           # Sigma / 2                             
-        denominator = math.sqrt(playerCount * (beta * beta) + sumSigma)   
+        beta = 4.166666666666667           # Sigma / 2
+        denominator = math.sqrt(playerCount * (beta * beta) + sumSigma)
         prob_P1 = NormalDist().cdf(deltaMu/denominator)
         return prob_P1
-    
+
     def prediction(self, p1sigma, p2sigma, p1mu, p2mu, p1_probability, p1_json, p2_json, p1DB_streak, p2DB_streak, p1_odds_avg, p2_odds_avg): # Mu != 25, Mu +/- sigma, odds avg, sigma diff, streak diff
         self.predicted_w = None
         player1_dict = {p1_json:'player1'}
-        player2_dict = {p2_json:'player2'} 
+        player2_dict = {p2_json:'player2'}
         if p1mu == 25 or p2mu == 25:
-            self.predicted_w == None
-        if not all([p1_odds_avg, p2_odds_avg, p1DB_streak, p2DB_streak]): # If any odds or streak is None or False
             self.predicted_w = None
-        elif p1_probability > .5:  
-            if (p1mu - p1sigma) > (p2mu + p2sigma): 
-                self.predicted_w = player1_dict[p1_json]
-            elif (p1_odds_avg > (p2_odds_avg * 2)):
-                self.predicted_w = player1_dict[p1_json]
-            else:
-                self.predicted_w = None
+        elif p1_probability > .5:
+            self.predicted_w = player1_dict[p1_json]
         elif p1_probability < .5:
-            if (p2mu - p2sigma) > (p1mu + p1sigma): 
-                self.predicted_w = player2_dict[p2_json]
-            elif (p2_odds_avg > (p1_odds_avg * 2)):
-                self.predicted_w = player2_dict[p2_json]
-            else:
-                self.predicted_w = None
-        elif p1_probability == .5 :
-            if p1_odds_avg > p2_odds_avg:
-                self.predicted_w = player1_dict[p1_json]
-            elif p2_odds_avg > p1_odds_avg:
-                self.predicted_w = player2_dict[p2_json]
-            elif p1_odds_avg == p2_odds_avg: # If the odds-averages are the same
-                if p1sigma < p2sigma:
-                    self.predicted_w = player1_dict[p1_json]
-                elif p2sigma < p1sigma:
-                    self.predicted_w = player2_dict[p2_json]
-                elif p1sigma == p2sigma: # If the sigmas are the same
-                    if p1DB_streak > p2DB_streak:
-                        self.predicted_w = player1_dict[p1_json]
-                    elif p2DB_streak > p1DB_streak:
-                        self.predicted_w = player2_dict[p2_json]
-                    else: # If the streaks are the same
-                        self.predicted_w = None  
-                else:
-                    self.predicted_w = None
-            else:
-                self.predicted_w = None
+            self.predicted_w = player2_dict[p2_json]
+        elif p1_probability == .5:
+            self.predicted_w = None
         else:
             self.predicted_w = None
         return self.predicted_w
@@ -125,14 +94,14 @@ class SaltyBettor():
             self.suggested_wager = 1
         elif (predicted_winner != None) and (game_mode != "Tournament"):
             if p1_probability != .5:
-                self.suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
+                self.suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)
             elif (p1_probability == .5):
-                self.suggested_wager = 1              
+                self.suggested_wager = 1
         return self.suggested_wager
 
     def format_bet(self, predicted_winner, suggested_bet):
         self.p1name = {'selectedplayer': 'player1'}
-        self.p2name = {'selectedplayer': 'player2'}   
+        self.p2name = {'selectedplayer': 'player2'}
         self.wager = {'wager': suggested_bet}
         if predicted_winner is None: # If ratings from the DB are both default thru bettor earlier or they're found and both the same, AND their Sigmas are the same (or don't come back), AND if EITHER P1streak or P2 streak DOESN'T come back from DB OR are the same.
             self.suggested_player = self.p1name # Red wins in a draw, so this provides a miniscule advantage over random choice of a suggested winner.
@@ -143,12 +112,12 @@ class SaltyBettor():
         return self.suggested_player | self.wager # Returns in the format neccessary for bet-placement on SaltyBet.com: {:} | {:}
 
     def set_player_rating(self, db_result):  # Sets player ratings for current match.
-        if db_result is None:  
+        if db_result is None:
             self.rating = Rating()
         else:
             self.rating = Rating(db_result[0],db_result[1])
         return self.rating # Returns either the default rating if none is found in the DB, or the rating of the selected player from their Mu and Sigma pulled from the DB.
-    
+
     def update_ranking_after(self, game_state, p1finalinput, p2finalinput):  # Updates rankings of both players after current match is over.
         if game_state == "1":
             p1final, p2final = rate_1vs1(p1finalinput, p2finalinput)
@@ -156,4 +125,4 @@ class SaltyBettor():
         elif game_state == "2":
             p2final, p1final = rate_1vs1(p2finalinput, p1finalinput)
             print("Player 2 wins!")
-        return p1final, p2final # Returns final Ratings objects of each player from the current match after completion.  Ratings objects contain updated Mu and Sigma values.  
+        return p1final, p2final # Returns final Ratings objects of each player from the current match after completion.  Ratings objects contain updated Mu and Sigma values.

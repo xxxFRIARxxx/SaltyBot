@@ -54,27 +54,14 @@ class SaltyJsonParser():
             return True
         else:
             return False
-        # try:
-        #     if (self.json_dict["remaining"].split(' ')[1] == "exhibition") or (self.json_dict["remaining"].endswith('exhibition match!')):
-        #         return True
-        #     else:
-        #         return False
-        # except:
-        #     print(self.json_dict)
-        #     raise Exception("JSON Dict failure")
+
             
     def is_tourney(self):
         if not any([self.json_dict["alert"] == "Tournament mode start!", self.json_dict["remaining"].endswith("in the bracket!"), (self.json_dict["remaining"].startswith("FINAL ROUND!"))]):
             return 0
         else:
             return 1
-        # if self.json_dict["alert"] == "Tournament mode start!":
-        #     return 1
-        # elif self.json_dict["remaining"].endswith("in the bracket!") or (self.json_dict["remaining"].startswith("FINAL ROUND!")):
-        # # if (self.json_dict["remaining"].rsplit(' ', 1)[-1] == "bracket!") or (self.json_dict["remaining"].split(' ')[0] == "FINAL"):
-        #     return 1
-        # else:
-        #     return 0
+
         
     def get_tourney_remaining(self):
         if self.get_matches_remaining() != 1:

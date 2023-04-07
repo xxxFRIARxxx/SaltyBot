@@ -76,23 +76,20 @@ class SaltyBettor():
         # Kelly Bet Formula: fraction_of_balance = ((b*p)-q))/b
         # b is the net odds received on the wager (“b to 1″), p is the probability of winning, q is the probability of losing, which is 1 − p
 
-        if not all([p1_odds_avg, p2_odds_avg]):
-            b = 2.5
-        elif p1_probability > 0.5:
+        if p1_probability > 0.5:
             b = p1_odds_avg
+            q = 1 - p1_probability
+            p = p1_probability
         elif p1_probability < 0.5:
             b = p2_odds_avg
+            q = p1_probability
+            p = abs(p1_probability-1)
         else:
             b = 2.5
-
-        if p1_probability > 0.5:
             q = 1 - p1_probability
-        elif p1_probability < 0.5:
-            q = p1_probability
-        else:
-            q = 1 - p1_probability
+            p = p1_probability
 
-        fraction = ((p1_probability*b)-q)/b
+        fraction = ((p*b)-q)/b
         max_bet_percentage = .10
         k_suggest = max_bet_percentage*(fraction*balance)
         if (game_mode == "Tournament") and (self.balance < 20000):

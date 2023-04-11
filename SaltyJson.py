@@ -6,7 +6,6 @@ class SaltyJson():
         self.url = "https://www.saltybet.com/state.json"
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": "Mozilla/5.0", "Accept":"application/json"})
-        self.json_data = None
 
     def get_json(self):
         try:
@@ -20,8 +19,7 @@ class SaltyJson():
                 time.sleep(1)
                 return self.get_json()
             else:
-                self.json_data = self.response.json()
-                return self.json_data
+                return self.response.json()
         except requests.exceptions.ConnectionError:
             time.sleep(1)
             return self.get_json()
@@ -32,11 +30,10 @@ class SaltyJson():
 
     def json_is_valid(self, json_data):
         try:
-            data = json.loads(json_data)
             required_keys = ["p1name", "p2name", "p1total", "p2total", "status", "alert", "remaining"]
 
             for key in required_keys:
-                if key in data and data[key]:
+                if key in json_data and json_data[key]:
                     return True
                 print(f"Invalid data: key '{key}' is missing or has a falsey value")
                 return False

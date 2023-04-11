@@ -14,11 +14,10 @@ class SaltyBettor():
     def set_balance(self, balance_value):
         self.balance = balance_value
 
-    def bet_outcome_amount(self, gs_lies):
+    def bet_outcome_amount(self):
         if self.old_balance == 0:
             self.old_balance = self.balance
-        if gs_lies == True:
-            pass
+
         elif self.old_balance < self.balance:
             balance_diff = self.balance - self.old_balance
             self.old_balance = self.balance

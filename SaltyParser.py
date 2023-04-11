@@ -55,14 +55,12 @@ class SaltyJsonParser():
             return False
 
     def is_tourney(self):
-        if not any([self.alert == "Tournament mode start!", self.remaining.endswith("in the bracket!"),
-                    (self.remaining.startswith("FINAL ROUND!"))]):
-            return 0
-            # if self.remaining.endswith("next tournament!") or self.remaining.startswith(
-            #        "Tournament mode will be activated after the next"):
-            #    return 0
-        else:
+        if any([self.alert == "Tournament mode start!", self.remaining.endswith("in the bracket!"),
+                (self.remaining.startswith("FINAL ROUND!"))]):
             return 1
+        if self.remaining.endswith("next tournament!") or self.remaining.startswith(
+                "Tournament mode will be activated after the next"):
+            return 0
 
     def get_tourney_remaining(self):
         if self.get_matches_remaining() != 1:

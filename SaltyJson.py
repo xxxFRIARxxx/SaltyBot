@@ -1,10 +1,12 @@
 import requests
 import time
+import json
 class SaltyJson():
     def __init__(self):
         self.url = "https://www.saltybet.com/state.json"
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": "Mozilla/5.0", "Accept":"application/json"})
+        self.json_data = None
 
     def get_json(self):
         try:
@@ -18,7 +20,8 @@ class SaltyJson():
                 time.sleep(1)
                 return self.get_json()
             else:
-                return self.response.json()
+                self.json_data = self.response.json()
+                return self.json_data
         except requests.exceptions.ConnectionError:
             time.sleep(1)
             return self.get_json()
@@ -26,3 +29,18 @@ class SaltyJson():
             print("Error Decoding JSON, retrying...")
             time.sleep(1)
             return self.get_json()
+
+    def json_is_valid(self, json_data):
+        try:
+            data = json.loads(json_data)
+            required_keys = ["p1name", "p2name", "p1total", "p2total", "status", "alert", "remaining"]
+
+            for key in required_keys:
+                if key in data and data[key]:
+                    return True
+                print(f"Invalid data: key '{key}' is missing or has a falsey value")
+                return False
+        except Exception as e:
+            print(f"Error: {e}")
+            return False
+

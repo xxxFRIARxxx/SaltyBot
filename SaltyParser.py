@@ -49,7 +49,7 @@ class SaltyJsonParser():
             return True
         elif self.remaining.startswith(
                 "Matchmaking mode will be activated after the next"
-        ) and self.get_gamestate() in ["open", "locked"]:
+        ) and self.get_gamestate() in ["1", "2"]:
             return True
         else:
             return False

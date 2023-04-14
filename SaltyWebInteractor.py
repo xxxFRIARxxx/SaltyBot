@@ -3,6 +3,7 @@ import os
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv, find_dotenv
 import time
+from tenacity import retry, retry_if_result, stop_after_attempt, wait_fixed
 
 load_dotenv()
 
@@ -19,35 +20,33 @@ class SaltyWebInteractor():
         if find_dotenv():
             try:
                 login_data = {'email': os.getenv('email'), 'pword': os.getenv('password'), 'authenticate': 'signin'}
-                self.session.post(URL_SIGNIN, data=login_data)
-            except:
-                print("Login failed.")
-            else:
-                print("Login success!")
+                response = self.session.post(URL_SIGNIN, data=login_data)
+                if response.url == "https://www.saltybet.com/":
+                    print("Login successful!")
+                elif response.url == "https://www.saltybet.com/authenticate?signin=1&error=Invalid%20Email%20or%20Password":
+                    print("Login failed. Invalid email or password.")
+                else:
+                    print("Unknown redirect URL:", response.url)
+            except requests.exceptions.RequestException as e:
+                print("Failed to login to SaltyBet:", e)
         else:
             print("Unable to login due to missing .env file.  Please see README for setup instructions.")
 
+    @retry(stop=stop_after_attempt(3), wait=wait_fixed(1), retry_error_callback=lambda x: x.status_code != 200)
     def refresh_session(self):
         response = self.session.get('https://www.saltybet.com/')
+        response.raise_for_status()
         return response
 
+    @retry(retry=retry_if_result(lambda result: not result), stop=stop_after_attempt(3), wait=wait_fixed(0.25))
     def get_balance(self):
         try:
             bal_req = self.refresh_session()
             soup_parser = BeautifulSoup(bal_req.content, "html.parser")
             balance = int(soup_parser.find(id="balance").string.replace(',', ''))
-        except requests.exceptions.HTTPError:
-            time.sleep(.25)
+        except (requests.exceptions.HTTPError, requests.exceptions.SSLError, requests.exceptions.ConnectionError):
             self.login()
-            self.get_balance()
-        except requests.exceptions.SSLError:
-            time.sleep(.25)
-            self.login()
-            self.get_balance()
-        except requests.exceptions.ConnectionError:
-            time.sleep(.25)
-            self.login()
-            self.get_balance()
+            return None
         else:
             return balance
 

@@ -1,7 +1,6 @@
 import webbrowser
 from tabulate import tabulate
 
-
 class SaltyJsonParser():
     def __init__(self, json_dict):
         self.json_dict = json_dict
@@ -49,7 +48,7 @@ class SaltyJsonParser():
             return True
         elif self.remaining.startswith(
                 "Matchmaking mode will be activated after the next"
-        ) and self.get_gamestate() in ["1", "2"]:
+        ):
             return True
         else:
             return False
@@ -60,6 +59,8 @@ class SaltyJsonParser():
             return 1
         if self.remaining.endswith("next tournament!") or self.remaining.startswith(
                 "Tournament mode will be activated after the next"):
+            return 0
+        else:
             return 0
 
     def get_tourney_remaining(self):
@@ -106,6 +107,7 @@ class SaltyJsonParser():
             return 'Matchmaking'
         else:
             print(f"Unable to parse Game Mode. {self.json_dict}")
+            return 'Unknown'
 
     def gamemode_printer(self, p1name, p2name, p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak,
                          p2DB_streak, p1_probability, balance):

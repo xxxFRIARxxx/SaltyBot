@@ -44,11 +44,11 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
-        if self.alert == "Exhibition mode start!":
+        if self.json_dict["alert"] == "Exhibition mode start!":
             return True
-        elif self.remaining.endswith("exhibition matches left!"):
+        elif self.json_dict["remaining"].endswith("exhibition matches left!"):
             return True
-        elif self.remaining.startswith(
+        elif self.json_dict["remaining"].startswith(
                 "Matchmaking mode will be activated after the next"
         ):
             return True

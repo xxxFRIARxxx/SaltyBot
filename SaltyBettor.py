@@ -71,14 +71,16 @@ class SaltyBettor():
     def kelly_bet(self, p1_probability, p1_odds_avg, p2_odds_avg, balance, predicted_winner, game_mode):
         self.suggested_wager = 1
 
-        # b is the net odds on the wager (“b to 1″), p is the probability of winning, q is the probability of losing
         if balance is not None:
+            if not all([p1_odds_avg, p2_odds_avg]):
+                p1_odds_avg = 1
+                p2_odds_avg = 1
             if p1_probability > 0.5:
-                b = p1_odds_avg
+                b = 1 / p1_odds_avg
                 q = 1 - p1_probability
                 p = p1_probability
             elif p1_probability < 0.5:
-                b = p2_odds_avg
+                b = 1 / p2_odds_avg
                 q = p1_probability
                 p = abs(p1_probability - 1)
             else:
@@ -86,20 +88,18 @@ class SaltyBettor():
                 q = 0.5
                 p = 0.5
 
-            # Kelly Bet Formula: fraction_of_balance = ((b*p)-q))/b
-            fraction = ((b * p) - q) / b
-            max_bet_percentage = 0.50
-            k_suggest = max_bet_percentage * (fraction * balance)
-
-            if (game_mode == "Tournament") and (self.balance < 40000):
+            k_fraction = ((p * b) - q) / b
+            k_suggest = k_fraction*balance
+            if (game_mode == "Tournament") and (self.balance < 20000):
                 self.suggested_wager = self.balance
             elif (game_mode == "Matchmaking") and (self.balance < 10000):
                 self.suggested_wager = self.balance
-            elif (predicted_winner is not None) and (game_mode != "Tournament"):
-                if p1_probability != .5 and fraction > 0:
-                    self.suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'),
-                                                                               rounding=decimal.ROUND_UP)
-                elif p1_probability == .5:
+            elif predicted_winner is None:
+                self.suggested_wager = 1
+            elif (predicted_winner != None) and (game_mode != "Tournament"):
+                if p1_probability != .5 and k_fraction > 0:
+                    self.suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)
+                elif (p1_probability == .5):
                     self.suggested_wager = 1
         return self.suggested_wager
 

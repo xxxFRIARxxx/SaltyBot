@@ -154,7 +154,7 @@ class SaltyBettor():
             p = abs(p1_probability - 1)
         else:
             b = 1
-            q = 1
+            q = 0.5
             p = 0.5
 
         k_fraction = ((p * b) - q) / b

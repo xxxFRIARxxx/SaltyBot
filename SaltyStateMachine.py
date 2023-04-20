@@ -1,4 +1,6 @@
 import os
+import time
+
 from SaltyJson import SaltyJson
 from SaltyParser import SaltyJsonParser
 from SaltyDatabase import SaltyDatabase
@@ -31,6 +33,7 @@ p2DB_streak = None
 thread.start()
 
 while True:
+    time.sleep(1)
     the_json = my_json.get_json()
     my_parser = SaltyJsonParser(the_json)
     game_mode = my_parser.get_gamemode()

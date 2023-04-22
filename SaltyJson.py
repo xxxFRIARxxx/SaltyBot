@@ -1,5 +1,4 @@
 import requests
-from fake_useragent import UserAgent
 from tenacity import retry, stop_after_attempt, wait_exponential_jitter, TryAgain
 from requests_cache import CachedSession
 
@@ -10,13 +9,12 @@ class SaltyJson:
         self.session = self.create_session()
 
     def create_session(self):
-        ua = UserAgent()
         session = CachedSession('demo_cache', cache_control=True)
-        headers = {'User-Agent': f"'{ua.random}'"}
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'}
         session.headers.update(headers)
         return session
 
-    @retry(stop=stop_after_attempt(5), wait=wait_exponential_jitter(initial=1, max=6, jitter=1),
+    @retry(stop=stop_after_attempt(15), wait=wait_exponential_jitter(initial=1, max=6, jitter=1),
            retry_error_callback=lambda r: print(f"Error: {r}"))
     def get_json(self):
         response = self.session.get(self.url)
@@ -29,4 +27,6 @@ class SaltyJson:
         elif response.text:
             return response.json()
         else:
+            print(response.text, response.headers, response.status_code)
             raise TryAgain
+

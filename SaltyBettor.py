@@ -88,7 +88,9 @@ class SaltyBettor():
                 q = 0.5
                 p = 0.5
 
-            k_fraction = ((p * b) - q) / b
+            risk_adj = 0.5
+            k_fraction = risk_adj * (((p * b) - q) / b)
+
             k_suggest = k_fraction*balance
             if (game_mode == "Tournament") and (self.balance < 20000):
                 self.suggested_wager = self.balance

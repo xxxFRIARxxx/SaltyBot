@@ -4,6 +4,7 @@ from trueskill import Rating, rate_1vs1
 from statistics import NormalDist
 import decimal
 
+
 class SaltyBettor():
     def __init__(self):
         self.predicted_w = None
@@ -72,6 +73,7 @@ class SaltyBettor():
         return self.predicted_w
 
     def kelly_bet(self, p1_probability, p1_odds_avg, p2_odds_avg, balance, predicted_winner, game_mode):
+        self.upset_bet = False
 
         if p1_probability > 0.5:
             p_winner = p1_probability
@@ -105,10 +107,12 @@ class SaltyBettor():
             self.suggested_wager = 1
         elif game_mode != "Tournament":
             if k_fraction_winner > 0 and k_fraction_loser > 0:
-                self.suggested_wager = decimal.Decimal(k_suggest_winner).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)
+                self.suggested_wager = decimal.Decimal(k_suggest_winner).quantize(decimal.Decimal('0'),
+                                                                                  rounding=decimal.ROUND_UP)
                 self.upset_bet = False
             elif k_fraction_winner < 0 and k_fraction_loser > 0:
-                self.suggested_wager = decimal.Decimal(k_suggest_loser).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)
+                self.suggested_wager = decimal.Decimal(k_suggest_loser).quantize(decimal.Decimal('0'),
+                                                                                 rounding=decimal.ROUND_UP)
                 self.upset_bet = True
             elif k_fraction_winner < 0 and k_fraction_loser < 0:
                 self.upset_bet = False

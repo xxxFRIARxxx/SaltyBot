@@ -14,7 +14,7 @@ class SaltyJson:
         session.headers.update(headers)
         return session
 
-    @retry(stop=stop_after_attempt(15), wait=wait_exponential_jitter(initial=1, max=6, jitter=1),
+    @retry(stop=stop_after_attempt(5), wait=wait_exponential_jitter(initial=2, max=8, jitter=1),
            retry_error_callback=lambda r: print(f"Error: {r}"))
     def get_json(self):
         response = self.session.get(self.url)
@@ -27,6 +27,6 @@ class SaltyJson:
         elif response.text:
             return response.json()
         else:
-            print(response.text, response.headers, response.status_code)
+            self.session.cache.clear()
             raise TryAgain
 

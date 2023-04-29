@@ -94,8 +94,8 @@ class SaltyBettor():
         elif p1_probability > .5:  
             if (p1mu - p1sigma) > (p2mu + p2sigma): 
                 self.predicted_w = player1_dict[p1_json]
-            elif (p1_odds_avg > (p2_odds_avg * 2)):
-                self.predicted_w = player1_dict[p1_json]
+            # elif (p1_odds_avg > (p2_odds_avg * 2)):
+            #     self.predicted_w = player1_dict[p1_json]
             # elif p1sigma < p2sigma:
             #     self.predicted_w = player1_dict[p1_json]
             # elif p1DB_streak > p2DB_streak:
@@ -105,8 +105,8 @@ class SaltyBettor():
         elif p1_probability < .5:
             if (p2mu - p2sigma) > (p1mu + p1sigma): 
                 self.predicted_w = player2_dict[p2_json]
-            elif (p2_odds_avg > (p1_odds_avg * 2)):
-                self.predicted_w = player2_dict[p2_json]
+            # elif (p2_odds_avg > (p1_odds_avg * 2)):
+            #     self.predicted_w = player2_dict[p2_json]
             # elif p2sigma < p1sigma:
             #     self.predicted_w = player2_dict[p2_json]
             # elif p2DB_streak > p1DB_streak:
@@ -139,6 +139,7 @@ class SaltyBettor():
         return self.predicted_w
 
     def kelly_bet(self, p1_probability, p1_odds_avg, p2_odds_avg, balance, predicted_winner, game_mode):
+        # self.suggested_wager = 1
         self.suggested_wager = 1
 
         if not all([p1_odds_avg, p2_odds_avg]):
@@ -170,6 +171,7 @@ class SaltyBettor():
                 self.suggested_wager = decimal.Decimal(k_suggest).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
             elif (p1_probability == .5):
                 self.suggested_wager = 1              
+
         return self.suggested_wager
 
     def format_bet(self, predicted_winner, suggested_bet):

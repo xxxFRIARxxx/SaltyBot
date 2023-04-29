@@ -19,11 +19,15 @@ class SaltyWebInteractor():
         if find_dotenv():
             try:
                 login_data = {'email': os.getenv('email'), 'pword': os.getenv('password'), 'authenticate': 'signin'}
-                self.session.post(URL_SIGNIN, data=login_data)
-            except:
-                print("Login failed.")
-            else:
-                print("Login success!")
+                response = self.session.post(URL_SIGNIN, data=login_data)
+                if response.url == "https://www.saltybet.com/":
+                    print("Login successful!")
+                elif response.url == "https://www.saltybet.com/authenticate?signin=1&error=Invalid%20Email%20or%20Password":
+                    print("Login failed. Invalid email or password.")
+                else:
+                    print("Unknown redirect URL:", response.url)
+            except requests.exceptions.RequestException as e:
+                print("Failed to login to SaltyBet:", e)
         else:
             print("Unable to login due to missing .env file.  Please see README for setup instructions.")
 

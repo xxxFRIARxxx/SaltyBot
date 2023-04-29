@@ -44,6 +44,7 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
+
         if not any([self.json_dict["alert"] == "Exhibition mode start!", self.json_dict["remaining"].endswith("exhibition matches left!"), self.json_dict["remaining"].startswith("Matchmaking mode will be activated after the next")]):
             return False
         # if self.json_dict["alert"] == "Exhibition mode start!":

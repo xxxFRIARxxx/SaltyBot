@@ -1,11 +1,11 @@
-alive-progress==3.0.1
-beautifulsoup4==4.11.1
-python-dotenv==0.21.1
-requests==2.28.1
+alive-progress==3.1.0
+beautifulsoup4==4.12.0
+python-dotenv==1.0.0
+requests==2.28.2
 trueskill==0.4.5
-urllib3==1.26.13
+urllib3==1.26.15
 tabulate==0.9.0
-pandas==1.5.3
+pandas==2.0.0
 numpy==1.24.2
 matplotlib
 scikit-learn

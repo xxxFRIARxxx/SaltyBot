@@ -74,6 +74,11 @@ class SaltyBettor():
 
     def kelly_bet(self, p1_probability, p1_odds_avg, p2_odds_avg, balance, predicted_winner, game_mode):
         self.upset_bet = False
+
+        if not all([p1_odds_avg, p2_odds_avg]):
+            # average odds is around ~2.2 based on 400k matches
+            p1_odds_avg = p2_odds_avg = 2
+
         if p1_probability != 0.5:
             if p1_probability > 0.5:
                 p_winner = p1_probability

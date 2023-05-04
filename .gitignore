@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# requests_cache
+.sqlite
+
+# pycharm
+/.idea
+
+# project-created database and csv files
+.db
+.csv

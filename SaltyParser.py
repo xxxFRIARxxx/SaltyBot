@@ -42,6 +42,7 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
+
         if self.alert == "Exhibition mode start!":
             return True
         elif self.remaining.endswith("exhibition matches left!"):
@@ -129,6 +130,8 @@ class SaltyJsonParser():
                                colalign=("center",), tablefmt="grid", stralign="center", numalign="center"))
                 print(f"Player 1 chance to win: {round(100 * p1_probability, 2)}%")
                 print(f"Current Balance is: ${balance:,}")
+
         elif self.get_gamemode() == "Exhibition":
             print(
                 f"No bets are placed, and nothing is recorded in Exhibitions.  {self.get_matches_remaining()} matches remaining.  Game state is {self.get_gamestate()}")
+

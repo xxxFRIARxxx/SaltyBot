@@ -96,6 +96,7 @@ class SaltyBettor():
 
         b_winner = odds_winner
         q_winner = 1 - p_winner
+
         risk_adjust = 0.5
 
         k_fraction_winner = ((p_winner * b_winner) - q_winner) / b_winner
@@ -141,12 +142,14 @@ class SaltyBettor():
             print("kelly bet suggests upset bet!")
         elif self.p2name["selectedplayer"] == predicted_winner and self.upset_bet is False:
             self.suggested_player = self.p2name
+
         elif self.p2name["selectedplayer"] == predicted_winner and self.upset_bet is True:
             self.suggested_player = self.p1name
             print("kelly bet suggests upset bet!")
 
         # Returns the format neccessary for betting on SaltyBet.com: {:} | {:}
         return self.suggested_player | self.wager
+
 
     def set_player_rating(self, db_result):
         if db_result is None:

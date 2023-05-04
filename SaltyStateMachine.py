@@ -134,6 +134,24 @@ while True:
 
         new_match = 0
 
+
+# Login success!
+# Current Tier is: 4
+# Traceback (most recent call last):
+#   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 71, in <module>
+#     kelly_bet = bettor.kelly_bet(p1_probability, p1DB_odds, p2DB_odds, bettor.balance, predicted_winner, game_mode)
+#   File "e:\Python Scripts\SaltyBot\SaltyBettor.py", line 159, in kelly_bet
+#     k_suggest = abs(.05*(fraction*balance))
+# TypeError: unsupported operand type(s) for *: 'float' and 'NoneType'
+
+# Traceback (most recent call last):
+#   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 71, in <module>
+#     kelly_bet = bettor.kelly_bet(p1_probability, p1DB_odds, p2DB_odds, bettor.balance, predicted_winner, game_mode)
+#   File "e:\Python Scripts\SaltyBot\SaltyBettor.py", line 159, in kelly_bet
+#     k_suggest = abs(.05*(fraction*balance))
+# TypeError: unsupported operand type(s) for *: 'float' and 'NoneType'
+
+
 # NOTE: GENERAL QUESTIONS / THINGS.
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for match_time:
 #       SaltyBet: Exhibitions will start shortly. Thanks for watching!

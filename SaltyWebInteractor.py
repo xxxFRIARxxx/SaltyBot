@@ -32,24 +32,21 @@ class SaltyWebInteractor():
         else:
             print("Unable to login due to missing .env file.  Please see README for setup instructions.")
 
-    @retry(stop=stop_after_attempt(3), wait=wait_fixed(1), retry_error_callback=lambda x: x.status_code != 200)
+    @retry(stop=stop_after_attempt(3), wait=wait_fixed(2), retry_error_callback=lambda x: x.status_code != 200)
     def refresh_session(self):
         response = self.session.get('https://www.saltybet.com/')
         response.raise_for_status()
         return response
 
-    @retry(retry=retry_if_result(lambda result: not result), stop=stop_after_attempt(3), wait=wait_fixed(0.25))
+    @retry(retry=retry_if_result(lambda result: not result), stop=stop_after_attempt(3), wait=wait_fixed(2))
     def get_balance(self):
-        try:
-            bal_req = self.refresh_session()
-            soup_parser = BeautifulSoup(bal_req.content, "html.parser")
-            balance = int(soup_parser.find(id="balance").string.replace(',', ''))
-        except (requests.exceptions.HTTPError, requests.exceptions.SSLError, requests.exceptions.ConnectionError):
-            self.login()
-            return None
-        else:
-            return balance
+        bal_req = self.refresh_session()
+        soup_parser = BeautifulSoup(bal_req.content, "html.parser")
+        balance = int(soup_parser.find(id="balance").string.replace(',', ''))
+        return balance
 
+
+    @retry(stop=stop_after_attempt(3), wait=wait_fixed(2), retry_error_callback=lambda _, __, ___: None)
     def place_bet_on_website(self, bet_data):
         try:
             self.session.post(URL_BET, data=bet_data)

@@ -45,6 +45,7 @@ class SaltyWebInteractor():
         balance = int(soup_parser.find(id="balance").string.replace(',', ''))
         return balance
 
+
     @retry(stop=stop_after_attempt(3), wait=wait_fixed(2), retry_error_callback=lambda _, __, ___: None)
     def place_bet_on_website(self, bet_data):
         try:

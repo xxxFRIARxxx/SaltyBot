@@ -18,12 +18,11 @@ class SaltyBettor():
     def set_balance(self, balance_value):
         self.balance = balance_value
 
-    def bet_outcome_amount(self, gs_lies):
+    def bet_outcome_amount(self):
         if self.old_balance == 0:
             self.old_balance = self.balance
-        if gs_lies == True:
-            pass
-        elif (self.old_balance < self.balance):
+
+        elif self.old_balance < self.balance:
             balance_diff = self.balance - self.old_balance
             self.old_balance = self.balance
             print(f"Last bet: You won ${balance_diff:,}")
@@ -74,6 +73,7 @@ class SaltyBettor():
         return self.predicted_w
 
     def kelly_bet(self, p1_probability, p1_odds_avg, p2_odds_avg, balance, predicted_winner, game_mode):
+
         self.upset_bet = False
 
         if not all([p1_odds_avg, p2_odds_avg]):
@@ -133,19 +133,23 @@ class SaltyBettor():
         self.wager = {'wager': suggested_bet}
         if predicted_winner is None:
             self.suggested_player = self.p1name  # Red wins in a draw, so this provides a miniscule advantage
+
         if self.p1name["selectedplayer"] == predicted_winner and self.upset_bet is False:
+
             self.suggested_player = self.p1name
         elif self.p1name["selectedplayer"] == predicted_winner and self.upset_bet is True:
             self.suggested_player = self.p2name
             print("kelly bet suggests upset bet!")
         elif self.p2name["selectedplayer"] == predicted_winner and self.upset_bet is False:
             self.suggested_player = self.p2name
+
         elif self.p2name["selectedplayer"] == predicted_winner and self.upset_bet is True:
             self.suggested_player = self.p1name
             print("kelly bet suggests upset bet!")
 
         # Returns the format neccessary for betting on SaltyBet.com: {:} | {:}
         return self.suggested_player | self.wager
+
 
     def set_player_rating(self, db_result):
         if db_result is None:

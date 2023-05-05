@@ -37,7 +37,6 @@ class SaltyBettor():
         elif game_state == "2":
             winner = player2_dict[p2_json]
         else:
-            webbrowser.open("https://www.saltybet.com/state.json")
             print(game_state)
             print('This prints when no player has won the match.  (Draw?) This message comes from bettor -> bet_outcome')       
         if self.suggested_player['selectedplayer'] == winner:

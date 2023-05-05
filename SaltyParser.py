@@ -24,18 +24,9 @@ class SaltyJsonParser():
 
     def get_gamestate(self):
         json_status = self.json_dict["status"]
-<<<<<<< HEAD
-        if json_status in ['open', 'locked', '1', '2']:
-            return json_status
-        else:
-             webbrowser.open("https://www.saltybet.com/state.json")
-             print(f"Traditional gamestate not found.  Gamestate = {json_status}. Betting isn't open, betting isn't closed, or Player 1 or Player 2 didn't win.  Is SB broken?")
-             return json_status
-=======
         if json_status not in ['open', 'locked', '1', '2']:
             print(f"Traditional gamestate not found. Gamestate = {json_status}")
         return json_status
->>>>>>> 5d58cbd35feacd165d9f5e8743222b9770f2bc70
 
     def set_p1winstatus(self):
         if self.get_gamestate() == "1":
@@ -50,19 +41,6 @@ class SaltyJsonParser():
             return 0
 
     def is_exhib(self):
-<<<<<<< HEAD
-        if not any([self.json_dict["alert"] == "Exhibition mode start!", self.json_dict["remaining"].endswith("exhibition matches left!"), self.json_dict["remaining"].startswith("Matchmaking mode will be activated after the next")]):
-            return False
-        else:
-            return True
-        
-    def is_tourney(self):
-        if not any([self.json_dict["alert"] == "Tournament mode start!", self.json_dict["remaining"].endswith("in the bracket!"), (self.json_dict["remaining"].startswith("FINAL ROUND!"))]):
-            return 0
-        else:
-            return 1
-        
-=======
         """
         Determine if the current mode is exhibition mode based on alert or remaining messages.
 
@@ -90,7 +68,6 @@ class SaltyJsonParser():
                 "Tournament mode will be activated after the next")
         ]))
 
->>>>>>> 5d58cbd35feacd165d9f5e8743222b9770f2bc70
     def get_tourney_remaining(self):
         if self.get_matches_remaining() != 1:
             self.tourney_remaining = self.get_matches_remaining() - 1
@@ -110,15 +87,6 @@ class SaltyJsonParser():
         known_lines = [
             "Tournament mode will be activated after the next",
             "Matchmaking mode will be activated after the next",
-<<<<<<< HEAD
-            "FINAL ROUND!", 
-        ]:
-            if self.json_dict["remaining"].startswith(known_line):
-                return 1
-                
-        remaining_value = self.json_dict["remaining"].split(' ', 1)[0]
-        if (remaining_value.isdigit()):
-=======
             "FINAL ROUND!",
         ]
 
@@ -129,7 +97,6 @@ class SaltyJsonParser():
         remaining_value = self.remaining.split(' ', 1)[0]
 
         if remaining_value.isdigit():
->>>>>>> 5d58cbd35feacd165d9f5e8743222b9770f2bc70
             return int(remaining_value)
         else:
             print(f"Couldn't retrieve number of matches from: {self.remaining}")

@@ -66,11 +66,12 @@ while True:
                 p1DB_odds = database.get_odds_average(p1name)
                 p2DB_odds = database.get_odds_average(p2name)
                 p1_probability = bettor.probability_of_p1_win(p1DB_ratings.mu, p1DB_ratings.sigma, p2DB_ratings.mu, p2DB_ratings.sigma)
-                predicted_winner = bettor.prediciton(p1DB_ratings.sigma, p2DB_ratings.sigma, p1DB_ratings.mu, p2DB_ratings.mu,p1_probability,p1name, p2name, p1DB_streak, p2DB_streak, p1DB_odds, p2DB_odds)
+                # predicted_winner = bettor.prediction(p1DB_ratings.sigma, p2DB_ratings.sigma, p1DB_ratings.mu, p2DB_ratings.mu,p1_probability,p1name, p2name, p1DB_streak, p2DB_streak, p1DB_odds, p2DB_odds)
                 # predicted_winner = bettor.predicted_winner(p1DB_ratings.sigma, p2DB_ratings.sigma, p1_probability, p1name, p2name, p1DB_streak, p2DB_streak)
+                predicted_winner = bettor.prediction(p1DB_ratings.mu, p2DB_ratings.mu, p1_probability, p1name, p2name)
                 kelly_bet = bettor.kelly_bet(p1_probability, p1DB_odds, p2DB_odds, bettor.balance, predicted_winner, game_mode)
                 my_parser.gamemode_printer(p1name, p2name, p1DB_odds, p2DB_odds, p1DB_ratings, p2DB_ratings, p1DB_streak, p2DB_streak, p1_probability, bettor.balance)
-                bettor.bet_outcome_amount(game_state_lies)
+                bettor.bet_outcome_amount()
                 interactor.place_bet_on_website(bettor.format_bet(predicted_winner, kelly_bet))
                 new_match = 1
                 my_socket.find_winstreak = True            
@@ -130,3 +131,12 @@ while True:
 # NOTE: GENERAL QUESTIONS / THINGS.
 # TODO: A way to stop the last match in a game mode earlier than have it become a super outlier for match_time:
 #       SaltyBet: Exhibitions will start shortly. Thanks for watching!
+
+# TODO: Traceback (most recent call last):
+
+#   File "e:\Python Scripts\SaltyBot\SaltyStateMachine.py", line 72, in <module>
+#     kelly_bet = bettor.kelly_bet(p1_probability, p1DB_odds, p2DB_odds, bettor.balance, predicted_winner, game_mode)
+# Current Tier is: 1
+#   File "e:\Python Scripts\SaltyBot\SaltyBettor.py", line 96, in kelly_bet
+#     k_fraction_winner, k_fraction_loser = self.calculate_kelly_fractions(p_winner, odds_winner, p_loser, odds_loser)
+# UnboundLocalError: local variable 'p_winner' referenced before assignment

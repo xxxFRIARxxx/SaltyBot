@@ -86,6 +86,7 @@ class SaltyBettor():
         self.upset_bet = False
         risk_adjust = 0.5
 
+
         if not all([p1_odds_avg, p2_odds_avg]): # average odds is around ~2.2 based on 400k matches     
             p1_odds_avg = p2_odds_avg = 2
 
@@ -94,7 +95,8 @@ class SaltyBettor():
         elif p1_probability < 0.5:
             p_winner, p_loser, odds_winner, odds_loser = (1 - p1_probability, p1_probability, 1 / p2_odds_avg, p2_odds_avg)       
         else:
-            self.suggested_wager = 1   
+            self.suggested_wager = 1
+            pass
 
         k_fraction_winner, k_fraction_loser = self.calculate_kelly_fractions(p_winner, odds_winner, p_loser, odds_loser)
         k_suggest_winner, k_suggest_loser = self.calculate_suggested_wagers(k_fraction_winner, k_fraction_loser, balance, risk_adjust)
@@ -107,11 +109,11 @@ class SaltyBettor():
             self.suggested_wager = 1
         elif game_mode != "Tournament":
             if (k_fraction_winner > 0) and (k_fraction_loser > 0):
-                # self.suggested_wager = self._quantize_value(k_suggest_winner)
+
                 self.suggested_wager = decimal.Decimal(k_suggest_winner).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
                 self.upset_bet = False
             elif (k_fraction_winner < 0) and (k_fraction_loser > 0):
-                # self.suggested_wager = self._quantize_value(k_suggest_loser)
+
                 self.suggested_wager = decimal.Decimal(k_suggest_loser).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP) 
                 self.upset_bet = True
             elif (k_fraction_winner < 0) and (k_fraction_loser < 0):

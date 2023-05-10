@@ -85,21 +85,30 @@ class SaltyBettor():
     def kelly_bet(self, p1_probability, p1_odds_avg, p2_odds_avg, balance, predicted_winner, game_mode):
         self.upset_bet = False
         risk_adjust = 0.5
-
-
         if not all([p1_odds_avg, p2_odds_avg]): # average odds is around ~2.2 based on 400k matches     
             p1_odds_avg = p2_odds_avg = 2
-
-        if p1_probability > 0.5:
-            p_winner, p_loser, odds_winner, odds_loser = (p1_probability, 1 - p1_probability, 1 / p1_odds_avg, p1_odds_avg)
-        elif p1_probability < 0.5:
-            p_winner, p_loser, odds_winner, odds_loser = (1 - p1_probability, p1_probability, 1 / p2_odds_avg, p2_odds_avg)       
+        if p1_probability != .5:
+            if p1_probability > 0.5:           
+                p_winner, p_loser, odds_winner, odds_loser = (p1_probability, 1 - p1_probability, 1 / p1_odds_avg, p1_odds_avg)
+            elif p1_probability < 0.5:
+                p_winner, p_loser, odds_winner, odds_loser = (1 - p1_probability, p1_probability, 1 / p2_odds_avg, p2_odds_avg)
+            k_fraction_winner, k_fraction_loser = self.calculate_kelly_fractions(p_winner, odds_winner, p_loser, odds_loser)
+            k_suggest_winner, k_suggest_loser = self.calculate_suggested_wagers(k_fraction_winner, k_fraction_loser, balance, risk_adjust)
+            if (k_fraction_winner > 0) and (k_fraction_loser > 0):
+                self.suggested_wager = decimal.Decimal(k_suggest_winner).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
+                self.upset_bet = False
+            elif (k_fraction_winner < 0) and (k_fraction_loser > 0):
+                self.suggested_wager = decimal.Decimal(k_suggest_loser).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP) 
+                self.upset_bet = True
+            elif (k_fraction_winner < 0) and (k_fraction_loser < 0):
+                self.upset_bet = False
+                self.suggested_wager = 1                       
         else:
             self.suggested_wager = 1
-            pass
+            self.upset_bet = False
 
-        k_fraction_winner, k_fraction_loser = self.calculate_kelly_fractions(p_winner, odds_winner, p_loser, odds_loser)
-        k_suggest_winner, k_suggest_loser = self.calculate_suggested_wagers(k_fraction_winner, k_fraction_loser, balance, risk_adjust)
+        # k_fraction_winner, k_fraction_loser = self.calculate_kelly_fractions(p_winner, odds_winner, p_loser, odds_loser)
+        # k_suggest_winner, k_suggest_loser = self.calculate_suggested_wagers(k_fraction_winner, k_fraction_loser, balance, risk_adjust)
 
         if (game_mode == "Tournament" and self.balance < 20000):
             self.suggested_wager = self.balance
@@ -107,18 +116,18 @@ class SaltyBettor():
             self.suggested_wager = self.balance
         elif predicted_winner is None:
             self.suggested_wager = 1
-        elif game_mode != "Tournament":
-            if (k_fraction_winner > 0) and (k_fraction_loser > 0):
+        # elif game_mode != "Tournament":
+        #     if (k_fraction_winner > 0) and (k_fraction_loser > 0):
 
-                self.suggested_wager = decimal.Decimal(k_suggest_winner).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
-                self.upset_bet = False
-            elif (k_fraction_winner < 0) and (k_fraction_loser > 0):
+        #         self.suggested_wager = decimal.Decimal(k_suggest_winner).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP)          
+        #         self.upset_bet = False
+        #     elif (k_fraction_winner < 0) and (k_fraction_loser > 0):
 
-                self.suggested_wager = decimal.Decimal(k_suggest_loser).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP) 
-                self.upset_bet = True
-            elif (k_fraction_winner < 0) and (k_fraction_loser < 0):
-                self.upset_bet = False
-                self.suggested_wager = 1
+        #         self.suggested_wager = decimal.Decimal(k_suggest_loser).quantize(decimal.Decimal('0'), rounding=decimal.ROUND_UP) 
+        #         self.upset_bet = True
+        #     elif (k_fraction_winner < 0) and (k_fraction_loser < 0):
+        #         self.upset_bet = False
+        #         self.suggested_wager = 1
         return self.suggested_wager
 
     def format_bet(self, predicted_winner, suggested_bet):
